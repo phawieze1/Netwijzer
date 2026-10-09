@@ -1,0 +1,20 @@
+---
+/**
+ * Harde regel: voorbeelddata wordt altijd zichtbaar als voorbeeld gemarkeerd.
+ * Zolang de site met placeholdercontent draait staat deze balk bovenaan elke
+ * pagina. Hij verdwijnt zodra er gecontroleerde content staat (fase 3).
+ */
+
+interface Props {
+  /** Extra regels naast de vaste melding. */
+  regels?: string[];
+}
+
+const { regels = [] } = Astro.props;
+---
+
+<p class="demo">
+  <b>Voorbeeld</b>
+  <span>Alle inhoud is placeholder</span>
+  {regels.map((regel) => <span>{regel}</span>)}
+</p>

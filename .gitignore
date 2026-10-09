@@ -1,0 +1,22 @@
+# build
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# logs en lokale rommel
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+
+# lokale omgeving — geheimen horen in GitHub repository secrets, nooit hier
+.env
+.env.*
+!.env.example
+
+# editor
+.vscode/*
+!.vscode/extensions.json
+.idea/

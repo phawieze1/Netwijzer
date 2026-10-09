@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "astro/tsconfigs/strictest",
+  "compilerOptions": {
+    "types": ["astro/client", "node"]
+  },
+  "include": [".astro/types.d.ts", "src/**/*", "scripts/**/*", "*.mjs", "*.ts"],
+  "exclude": ["node_modules", "dist", ".astro", "prototype", ".claude"]
+}

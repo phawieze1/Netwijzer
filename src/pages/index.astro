@@ -1,0 +1,25 @@
+---
+/**
+ * Homepage. In fase 0 alleen de kop en de ondertitel, zodat we de huisstijl en
+ * de deploy kunnen controleren. De secties (landschap, catalogus, nieuws,
+ * agenda, bronnen) komen in fase 1.
+ */
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  titel="Netwijzer — Elke dataset over het Nederlandse net, op één plek."
+  beschrijving="Datasets, nieuws en agenda voor iedereen die met energiedata werkt. Dagelijks bijgehouden, altijd met bron."
+  titelIsVolledig={true}
+>
+  <header class="hero-top">
+    <div>
+      <span class="label">Onafhankelijk · Nederlandstalig</span>
+      <h1 style="margin-top:14px">Elke dataset over het <em>Nederlandse net</em>, op één plek.</h1>
+      <p class="lede">
+        Datasets, nieuws en agenda voor iedereen die met energiedata werkt. Dagelijks bijgehouden,
+        altijd met bron.
+      </p>
+    </div>
+  </header>
+</Base>

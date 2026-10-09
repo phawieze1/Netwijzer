@@ -1,0 +1,31 @@
+{
+  "name": "netwijzer",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Netwijzer — datasets, nieuws en agenda over data in de Nederlandse energiesector.",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "npm run validate && npm run check:schemas && astro check && astro build",
+    "check": "astro check",
+    "check:schemas": "node scripts/check-schema-drift.ts",
+    "preview": "astro preview",
+    "validate": "node scripts/validate-content.ts"
+  },
+  "dependencies": {
+    "astro": "7.3.8"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.10",
+    "@fontsource/azeret-mono": "5.3.0",
+    "@fontsource/schibsted-grotesk": "5.3.0",
+    "@fontsource/source-serif-4": "5.3.0",
+    "@types/node": "26.6.4",
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "typescript": "6.0.3"
+  }
+}

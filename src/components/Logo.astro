@@ -1,0 +1,50 @@
+---
+/**
+ * Het Netwijzer-logo: het venster van een Ferraris-kWh-meter.
+ * Constructie exact volgens docs/01-identiteit.md §2 — kader 44x26 (radius 5,
+ * lijndikte 2), venster 36x10 (radius 2), schijfrand 1 eenheid, markering 8x6
+ * (radius 1) in --needle.
+ *
+ * Inline SVG in plaats van <img>, zodat het logo de design tokens volgt en dus
+ * meewisselt met licht/donker. De animatie en de reduced-motion-stand staan in
+ * src/styles/global.css (.meter .mark).
+ *
+ * Het woordmerk staat niet in deze SVG maar als tekst in Header.astro, zodat het
+ * de echte Azeret Mono gebruikt.
+ */
+
+import { uid } from '../lib/uid.ts';
+
+interface Props {
+  /** Hoogte in px. Minimum volgens de identiteit is 20px. */
+  hoogte?: number;
+}
+
+const { hoogte = 28 } = Astro.props;
+const breedte = Math.round((46 / 28) * hoogte);
+
+// Een clipPath-id moet uniek zijn in het document; het logo kan meerdere keren
+// op een pagina staan.
+const vensterId = uid('netwijzer-venster');
+---
+
+<svg
+  class="meter"
+  width={breedte}
+  height={hoogte}
+  viewBox="0 0 46 28"
+  aria-hidden="true"
+  focusable="false"
+>
+  <defs>
+    <clipPath id={vensterId}>
+      <rect x="5" y="9" width="36" height="10" rx="2" />
+    </clipPath>
+  </defs>
+  <rect x="1" y="1" width="44" height="26" rx="5" fill="none" style="stroke:var(--ink)" stroke-width="2" />
+  <rect x="5" y="9" width="36" height="10" rx="2" style="fill:var(--paper-2)" />
+  <g clip-path={`url(#${vensterId})`}>
+    <line x1="5" y1="14" x2="41" y2="14" style="stroke:var(--ink-2)" stroke-width="1" />
+    <rect class="mark" x="12" y="11" width="8" height="6" rx="1" style="fill:var(--needle)" />
+  </g>
+</svg>

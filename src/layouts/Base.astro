@@ -1,0 +1,98 @@
+---
+/**
+ * Basis-layout voor elke pagina.
+ *
+ * Tokens komen rechtstreeks uit design/tokens.css — dat bestand is de enige bron
+ * van waarheid voor kleur, letter en maat, en wordt niet gekopieerd naar src/.
+ *
+ * Lettertypes worden self-hosted via Fontsource, alleen de gewichten uit
+ * docs/01-identiteit.md §4: Source Serif 4 600 (en 400 cursief), Schibsted
+ * Grotesk 400/500/600, Azeret Mono 400/500.
+ */
+
+// Source Serif 4 — koppen (600) en één nadrukwoord per kop (400 cursief)
+import '@fontsource/source-serif-4/latin-600.css';
+import '@fontsource/source-serif-4/latin-ext-600.css';
+import '@fontsource/source-serif-4/latin-400-italic.css';
+import '@fontsource/source-serif-4/latin-ext-400-italic.css';
+// Schibsted Grotesk — lopende tekst, knoppen, navigatie
+import '@fontsource/schibsted-grotesk/latin-400.css';
+import '@fontsource/schibsted-grotesk/latin-ext-400.css';
+import '@fontsource/schibsted-grotesk/latin-500.css';
+import '@fontsource/schibsted-grotesk/latin-ext-500.css';
+import '@fontsource/schibsted-grotesk/latin-600.css';
+import '@fontsource/schibsted-grotesk/latin-ext-600.css';
+// Azeret Mono — getallen, tijden, labels in kapitalen, woordmerk
+import '@fontsource/azeret-mono/latin-400.css';
+import '@fontsource/azeret-mono/latin-ext-400.css';
+import '@fontsource/azeret-mono/latin-500.css';
+import '@fontsource/azeret-mono/latin-ext-500.css';
+
+import '../../design/tokens.css';
+import '../styles/global.css';
+
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Voorbeeldbalk from '../components/Voorbeeldbalk.astro';
+import { bestand } from '../lib/paden.ts';
+
+interface Props {
+  /** Paginatitel zonder sitenaam; die wordt toegevoegd. */
+  titel: string;
+  /** Meta-description, in het Nederlands, één zin. */
+  beschrijving: string;
+  /** Welk menu-item actief is. */
+  actief?: 'datasets' | 'nieuws' | 'agenda' | 'bronnen' | 'over' | null;
+  /** Extra regels in de voorbeeldbalk. */
+  voorbeeldregels?: string[];
+  /** Zet de titel zonder " · Netwijzer" erachter (alleen de homepage). */
+  titelIsVolledig?: boolean;
+}
+
+const {
+  titel,
+  beschrijving,
+  actief = null,
+  voorbeeldregels = [],
+  titelIsVolledig = false,
+} = Astro.props;
+
+const volledigeTitel = titelIsVolledig ? titel : `${titel} · Netwijzer`;
+const canoniek = new URL(Astro.url.pathname, Astro.site).href;
+---
+
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{volledigeTitel}</title>
+    <meta name="description" content={beschrijving} />
+    <link rel="canonical" href={canoniek} />
+
+    <link rel="icon" href={bestand('favicon.svg')} type="image/svg+xml" />
+    <link rel="apple-touch-icon" href={bestand('apple-touch-icon.png')} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Netwijzer" />
+    <meta property="og:locale" content="nl_NL" />
+    <meta property="og:title" content={volledigeTitel} />
+    <meta property="og:description" content={beschrijving} />
+    <meta property="og:url" content={canoniek} />
+    <meta name="twitter:card" content="summary" />
+
+    <meta name="robots" content="index, follow" />
+    <meta name="generator" content={Astro.generator} />
+  </head>
+  <body>
+    <a class="skip" href="#inhoud">Naar de inhoud</a>
+    <div class="wrap">
+      <Voorbeeldbalk regels={voorbeeldregels} />
+      <Header actief={actief} />
+      <main id="inhoud">
+        <slot />
+      </main>
+      <Footer />
+    </div>
+  </body>
+</html>

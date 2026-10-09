@@ -28,8 +28,30 @@ Netwijzer is een onafhankelijke, Nederlandstalige website die toegang geeft tot 
 - Toegankelijkheid: WCAG 2.2 AA, toetsenbord bedienbaar, `prefers-reduced-motion` gerespecteerd.
 - Prestaties: hero-script maximaal 30 KB (gzip), geen client-side framework.
 
-## Commando's (in te vullen na fase 0)
+## Commando's
 
-- `npm run dev` — lokale ontwikkelserver
-- `npm run build` — statische build
-- `npm run validate` — content valideren tegen de schema's
+- `npm run dev` — lokale ontwikkelserver op http://localhost:4321/Netwijzer/
+- `npm run build` — volledige build: valideren, schema's vergelijken, typecontrole, statische site naar `dist/`
+- `npm run preview` — `dist/` lokaal bekijken zoals het op Pages staat
+- `npm run validate` — content valideren tegen `content/schemas/` (Ajv) plus de verbanden tussen bestanden
+- `npm run check:schemas` — controleren of de zod-spiegels in `src/content.schemas.ts` nog gelijk zijn aan de JSON-schema's
+- `npm run check` — alleen de TypeScript-controle (`astro check`)
+
+Node 22.12 of nieuwer is vereist (Astro 7). De scripts in `scripts/` zijn TypeScript
+en draaien rechtstreeks met Node, zonder bouwstap.
+
+## Hoe het in elkaar zit
+
+- **Bron van waarheid voor content:** de JSON-schema's in `content/schemas/`. De
+  zod-schema's in `src/content.schemas.ts` zijn alleen een spiegel voor de
+  TypeScript-typen; `npm run check:schemas` faalt als ze uiteenlopen.
+- **Tokens:** `design/tokens.css` wordt rechtstreeks geïmporteerd in
+  `src/layouts/Base.astro`. Niet kopiëren naar `src/`.
+- **Stijlen:** alle gedeelde CSS staat in `src/styles/global.css`, een getrouwe port
+  van het prototype met dezelfde klassennamen. Componenten voegen geen eigen
+  kleuren of maten toe.
+- **Links:** altijd via `src/lib/paden.ts`. De site staat op GitHub Pages onder
+  `/Netwijzer/`, dus een hard-coded pad breekt daar.
+- **Getallen en datums:** via `src/lib/format.ts` (komma als decimaalteken,
+  `9 okt 2026`, `14:00`, tijdzone Europe/Amsterdam).
+- **Thema's:** via `src/lib/themas.ts`, nooit een losse kleurwaarde.

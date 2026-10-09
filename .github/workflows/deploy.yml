@@ -1,0 +1,71 @@
+name: Build en deploy
+
+# Bij elke push op main wordt de site gebouwd en naar GitHub Pages gezet.
+# Bij een pull request wordt alleen gebouwd, niet gedeployed: dat is de
+# validatiestap voor content die een agent aanlevert (docs/03-content-en-agents.md).
+#
+# Actieversies zijn vastgezet op de actuele stabiele release (gecontroleerd 9 okt 2026).
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Bouwen en valideren
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code ophalen
+        uses: actions/checkout@v7.0.1
+
+      - name: Node installeren
+        uses: actions/setup-node@v7.1.0
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Dependencies installeren
+        run: npm ci
+
+      # `npm run build` draait achtereenvolgens:
+      #   1. npm run validate       — content tegen content/schemas/ (Ajv)
+      #   2. npm run check:schemas  — zod-spiegels gelijk aan de JSON-schema's
+      #   3. astro check            — TypeScript; een typefout breekt de build
+      #   4. astro build            — statische site naar dist/
+      - name: Site bouwen
+        run: npm run build
+
+      - name: Pages instellen
+        if: github.event_name != 'pull_request'
+        uses: actions/configure-pages@v6.0.0
+
+      - name: Artifact uploaden
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v5.0.0
+        with:
+          path: dist
+
+  deploy:
+    name: Naar GitHub Pages
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Deployen
+        id: deployment
+        uses: actions/deploy-pages@v5.0.1
