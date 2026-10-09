@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="28" viewBox="0 0 200 28" role="img" aria-label="Netwijzer">
+  <style>
+    .ink{fill:none;stroke:#121A24}
+    .word{font:500 15px "Azeret Mono", ui-monospace, Menlo, monospace;letter-spacing:.14em;fill:#121A24}
+    .mark{animation:turn 6s linear infinite}
+    @keyframes turn{from{transform:translateX(-14px)}to{transform:translateX(30px)}}
+    @media (prefers-reduced-motion:reduce){.mark{animation:none}}
+    @media (prefers-color-scheme:dark){.ink{stroke:#E7E9E4}.word{fill:#E7E9E4}.win{fill:#161E26}.disc{stroke:#9AA4AE}.mk{fill:#FF5B4F}}
+  </style>
+  <defs><clipPath id="win"><rect x="5" y="9" width="36" height="10" rx="2"/></clipPath></defs>
+  <rect class="ink" x="1" y="1" width="44" height="26" rx="5" stroke-width="2"/>
+  <rect class="win" x="5" y="9" width="36" height="10" rx="2" fill="#E7E9E3"/>
+  <g clip-path="url(#win)">
+    <line class="disc" x1="5" y1="14" x2="41" y2="14" stroke="#55606C" stroke-width="1"/>
+    <rect class="mark mk" x="12" y="11" width="8" height="6" rx="1" fill="#D2302A"/>
+  </g>
+  <text class="word" x="58" y="19.5">NETWIJZER</text>
+</svg>

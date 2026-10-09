@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://netwijzer.example/schemas/bron.schema.json",
+  "title": "bron",
+  "description": "Een leverancier van datasets of nieuws.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "slug",
+    "naam",
+    "type",
+    "website"
+  ],
+  "properties": {
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "naam": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "netbeheerder",
+        "overheid",
+        "onderzoek",
+        "markt",
+        "community",
+        "overig"
+      ]
+    },
+    "website": {
+      "type": "string",
+      "format": "uri"
+    },
+    "beschrijving": {
+      "type": "string",
+      "maxLength": 300
+    },
+    "feeds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uri"
+      },
+      "description": "RSS/Atom of GitHub-releases die agents mogen volgen."
+    },
+    "voorbeeld": {
+      "type": "boolean"
+    }
+  }
+}

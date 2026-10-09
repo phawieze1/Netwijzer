@@ -1,0 +1,51 @@
+{
+  "slug": "opwek-zon-landelijk",
+  "naam": "Opwek zon, landelijk",
+  "leverancier": "ned",
+  "thema": "opwek",
+  "beschrijving": "Geschatte opwek van alle zonnepanelen in Nederland per kwartier, op basis van metingen en weerdata. Geschikt om de dagelijkse zonnecurve en het aandeel zon in het verbruik te volgen.",
+  "frequentie": "kwartier",
+  "formaat": "API",
+  "toegang": "account",
+  "sinds": 2019,
+  "eenheid": "kW",
+  "laatstBijgewerkt": "2026-10-08",
+  "laatstGecontroleerd": "2026-10-09T06:12:00+02:00",
+  "bronUrl": "https://ned.nl/",
+  "documentatieUrl": "https://ned-edb.atlassian.net/wiki/spaces/PAD/overview",
+  "licentie": {
+    "naam": "Voorwaarden van de bron (te controleren)"
+  },
+  "velden": [
+    {
+      "naam": "tijdstip_start",
+      "type": "datum-tijd (UTC)",
+      "betekenis": "Begin van het meetinterval"
+    },
+    {
+      "naam": "tijdstip_eind",
+      "type": "datum-tijd (UTC)",
+      "betekenis": "Einde van het meetinterval"
+    },
+    {
+      "naam": "waarde",
+      "type": "getal",
+      "betekenis": "Geschatte opwek in kW"
+    }
+  ],
+  "beperkingen": [
+    "Voorbeeld: waarden zijn schattingen en kunnen achteraf worden bijgesteld."
+  ],
+  "preview": {
+    "enabled": true,
+    "weergave": "weefsel"
+  },
+  "prompt": {
+    "valkuilen": [
+      "Tijdstippen zijn in UTC; zet om naar Nederlandse tijd.",
+      "Recente waarden zijn voorlopig."
+    ]
+  },
+  "zekerheid": "midden",
+  "voorbeeld": true
+}

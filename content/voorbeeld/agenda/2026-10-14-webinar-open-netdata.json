@@ -1,0 +1,14 @@
+{
+  "slug": "2026-10-14-webinar-open-netdata",
+  "titel": "Webinar over open netdata",
+  "start": "2026-10-14T15:00:00+02:00",
+  "eind": "2026-10-14T16:00:00+02:00",
+  "plaats": "Online",
+  "online": true,
+  "organisator": "Voorbeeldorganisator",
+  "url": "https://example.org/webinar",
+  "thema": "net",
+  "beschrijving": "Voorbeeld-evenement.",
+  "zekerheid": "hoog",
+  "voorbeeld": true
+}

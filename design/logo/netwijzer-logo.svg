@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="28" viewBox="0 0 200 28" role="img" aria-label="Netwijzer">
+  <rect x="1" y="1" width="44" height="26" rx="5" fill="none" stroke="#121A24" stroke-width="2"/>
+  <rect x="5" y="9" width="36" height="10" rx="2" fill="#E7E9E3"/>
+  <line x1="5" y1="14" x2="41" y2="14" stroke="#55606C" stroke-width="1"/>
+  <rect x="15" y="11" width="8" height="6" rx="1" fill="#D2302A"/>
+  <text x="58" y="19.5" font-family="Azeret Mono, ui-monospace, Menlo, monospace" font-weight="500" font-size="15" letter-spacing="2.1" fill="#121A24">NETWIJZER</text>
+</svg>

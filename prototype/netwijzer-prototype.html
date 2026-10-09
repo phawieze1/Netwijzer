@@ -1,0 +1,687 @@
+<!doctype html>
+<html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<title>Netwijzer data-art</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Schibsted+Grotesk:wght@400;500;600&family=Azeret+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: kop + zoeken, randloos polderlandschap (gisteren tot nu), catalogus, nieuws, agenda, bronnen. Detailpagina per dataset via #ds-n. */
+:root{
+  --paper:#F2F3EF; --paper-2:#E7E9E3; --ink:#121A24; --ink-2:#55606C; --rule:#CBCFC7;
+  --needle:#D2302A; --sun:#D99A0B; --wind:#2B7B88; --verbruik:#3D5AA8; --geo:#6E7F3C;
+  --f-display:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --f-body:"Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --f-data:"Azeret Mono", ui-monospace, Menlo, monospace;
+  --gutter:clamp(16px,4vw,48px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0E1318; --paper-2:#161E26; --ink:#E7E9E4; --ink-2:#9AA4AE; --rule:#2A3440;
+  --needle:#FF5B4F; --sun:#F0B431; --wind:#4FB0C0; --verbruik:#8CA4EA; --geo:#AFC274; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0E1318; --paper-2:#161E26; --ink:#E7E9E4; --ink-2:#9AA4AE; --rule:#2A3440;
+  --needle:#FF5B4F; --sun:#F0B431; --wind:#4FB0C0; --verbruik:#8CA4EA; --geo:#AFC274; color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:1rem;line-height:1.55;padding-inline:var(--gutter);padding-block:0 56px;overflow-x:hidden}
+.wrap{max-width:1240px;margin:0 auto}
+a{color:inherit;text-decoration-color:var(--rule);text-underline-offset:3px}
+a:hover{text-decoration-color:var(--needle)}
+:focus-visible{outline:2px solid var(--needle);outline-offset:3px}
+h1,h2,h3{font-family:var(--f-display);font-weight:600;margin:0;line-height:1.08;text-wrap:balance}
+p{margin:0}
+.label{font-family:var(--f-data);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.mono{font-family:var(--f-data);font-variant-numeric:tabular-nums}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+.demo{display:flex;justify-content:center;gap:10px 16px;flex-wrap:wrap;padding-block:8px;font-family:var(--f-data);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);border-bottom:1px dashed var(--rule);margin-inline:calc(-1 * var(--gutter));padding-inline:var(--gutter)}
+.demo b{color:var(--needle);font-weight:500}
+
+.nav{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding-block:18px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.brand .word{font-family:var(--f-data);font-weight:500;font-size:1.05rem;letter-spacing:.14em}
+.meter .mark{animation:turn 6s linear infinite}
+@keyframes turn{from{transform:translateX(-14px)}to{transform:translateX(30px)}}
+.nav ul{display:flex;gap:clamp(12px,2.4vw,28px);list-style:none;margin:0;padding:0;font-size:.9375rem;flex-wrap:wrap}
+.nav ul a{text-decoration:none;color:var(--ink-2)}
+.nav ul a:hover{color:var(--ink)}
+.soon{font-family:var(--f-data);font-size:.6rem;letter-spacing:.06em;border:1px solid var(--rule);border-radius:999px;padding:1px 6px;margin-left:4px;vertical-align:2px}
+
+/* hero */
+.hero-top{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(24px,5vw,72px);align-items:end;padding-block:28px 32px}
+.hero-top h1{font-size:clamp(2.2rem,4.4vw,3.5rem);letter-spacing:-.02em}
+.hero-top h1 em{font-style:italic;font-weight:400}
+.hero-top .lede{margin-top:16px;font-size:1.125rem;color:var(--ink-2);max-width:46ch}
+.search{display:flex;align-items:center;gap:10px;background:var(--paper);border:1.5px solid var(--ink);border-radius:999px;padding:6px 6px 6px 18px}
+.search svg{flex:none}
+.search input{flex:1;min-width:0;border:0;background:transparent;font:inherit;font-size:1rem;color:var(--ink);padding-block:8px}
+.search input::placeholder{color:var(--ink-2)}
+.search input:focus{outline:none}
+.search:focus-within{box-shadow:0 0 0 3px color-mix(in srgb,var(--needle) 25%,transparent)}
+.search button{border:0;background:var(--ink);color:var(--paper);font:500 .875rem var(--f-body);padding:10px 16px;border-radius:999px;cursor:pointer}
+.quick{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chip{display:inline-flex;align-items:center;gap:7px;font-size:.8125rem;border:1px solid var(--rule);background:var(--paper);color:var(--ink);border-radius:999px;padding:5px 11px;cursor:pointer;font-family:var(--f-body);text-decoration:none}
+.chip i{width:8px;height:8px;border-radius:50%;display:inline-block}
+.chip[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--paper)}
+.stats{display:flex;gap:22px;flex-wrap:wrap;margin-top:22px}
+.stats div{display:grid}
+.stats b{font-family:var(--f-data);font-weight:500;font-size:1.4rem;line-height:1.1}
+.stats span{font-size:.78rem;color:var(--ink-2)}
+
+.scene{position:relative;margin-inline:calc(50% - 50vw)}
+.scene canvas{display:block;width:100%;height:clamp(360px,40vw,540px);cursor:ew-resize;touch-action:pan-y}
+.readout{position:absolute;left:max(var(--gutter),calc(50vw - 620px));top:18px;background:rgba(242,243,239,.9);color:#121A24;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-radius:6px;padding:12px 14px;display:grid;gap:2px;min-width:210px;pointer-events:none}
+.readout .t{font-family:var(--f-data);font-size:1.7rem;font-weight:500;line-height:1}
+.readout .t small{font-size:.7rem;color:#55606C;margin-left:6px;letter-spacing:.06em;text-transform:uppercase}
+.readout dl{display:grid;grid-template-columns:auto auto;column-gap:16px;row-gap:1px;margin:8px 0 0;font-size:.8125rem}
+.readout dt{display:flex;align-items:center;gap:7px}
+.readout dd{margin:0;text-align:right;font-family:var(--f-data);font-variant-numeric:tabular-nums}
+.readout dt i{width:9px;height:9px;border-radius:2px;display:inline-block}
+.legend{display:flex;justify-content:space-between;gap:12px 28px;flex-wrap:wrap;padding-block:14px 0;font-size:.84rem;color:var(--ink-2)}
+.legend .keys{display:flex;gap:12px 26px;flex-wrap:wrap}
+.legend .k{display:inline-flex;align-items:center;gap:9px}
+.legend .k b{color:var(--ink);font-weight:600}
+.legend svg{flex:none}
+
+section.block{padding-block:88px 0}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:24px;padding-bottom:14px;border-bottom:1px solid var(--ink)}
+.sec-head h2{font-size:clamp(1.8rem,3vw,2.4rem);letter-spacing:-.015em}
+.sec-head p{color:var(--ink-2);max-width:52ch;font-size:.9375rem}
+
+/* catalogus */
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.filters{display:flex;flex-wrap:wrap;gap:8px}
+.view{display:inline-flex;gap:2px;background:var(--paper-2);border-radius:999px;padding:3px}
+.view button{font:500 .8125rem var(--f-body);color:var(--ink-2);background:transparent;border:0;border-radius:999px;padding:7px 14px;cursor:pointer}
+.view button[aria-pressed="true"]{background:var(--paper);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.14)}
+.list{display:grid}
+.row,.list-head{display:grid;grid-template-columns:minmax(0,2.3fr) minmax(0,1fr) minmax(0,.9fr) minmax(0,.8fr) minmax(0,.9fr) minmax(0,1.7fr);gap:16px;align-items:center}
+.list-head{font-family:var(--f-data);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);padding-block:8px;border-bottom:1px solid var(--rule)}
+.list-head .yrs{display:flex;justify-content:space-between}
+.row{padding-block:14px;border-bottom:1px solid var(--rule);text-decoration:none}
+.row:hover{background:linear-gradient(90deg,var(--paper-2),transparent)}
+.row:hover .nm b{text-decoration:underline;text-decoration-color:var(--needle);text-underline-offset:3px}
+.row .nm b{display:block;font-weight:600;font-size:.98rem;line-height:1.3}
+.row .nm span{font-size:.82rem;color:var(--ink-2)}
+.th{display:inline-flex;align-items:center;gap:7px;font-size:.84rem}
+.th i{width:8px;height:8px;border-radius:50%;flex:none}
+.cell{font-size:.86rem}
+.cell small{display:block;font-size:.72rem;color:var(--ink-2)}
+.badge{display:inline-block;font-family:var(--f-data);font-size:.68rem;padding:2px 7px;border-radius:3px;border:1px solid var(--rule)}
+.badge.key{border-style:dashed}
+.tl{position:relative;height:22px}
+.tl .axis{position:absolute;left:0;right:0;top:10px;height:1px;background:var(--rule)}
+.tl .span{position:absolute;top:7px;height:7px;border-radius:4px}
+.tl .now{position:absolute;top:5px;width:3px;height:11px;border-radius:1px;background:var(--needle);right:0}
+.tl .yr{position:absolute;font-family:var(--f-data);font-size:.62rem;color:var(--ink-2);transform:translateX(-50%)}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.card{background:var(--paper-2);border-radius:6px;padding:18px;display:grid;gap:12px;align-content:start;text-decoration:none;min-width:0}
+.card:hover{outline:1.5px solid var(--ink)}
+.card .top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.card h3{font-size:1.15rem;line-height:1.2}
+.card .prov{font-size:.82rem;color:var(--ink-2)}
+.card svg{width:100%;height:64px;display:block}
+.card .facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;border-top:1px solid var(--rule);padding-top:10px}
+.card .facts span{font-size:.8rem;line-height:1.3}
+.card .facts small{display:block;font-family:var(--f-data);font-size:.6rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.empty{padding:28px;text-align:center;color:var(--ink-2)}
+
+/* nieuws, agenda, bronnen */
+.river-wrap{overflow-x:auto}
+.river{width:100%;min-width:640px;height:auto;display:block}
+.river circle{cursor:pointer}
+.news{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:clamp(24px,4vw,56px);margin-top:28px}
+.ni{display:grid;grid-template-columns:4px minmax(0,1fr);gap:16px;padding-block:18px;border-top:1px solid var(--rule);text-decoration:none}
+.ni .stripe{border-radius:2px}
+.ni h3{font-size:1.2rem;line-height:1.25}
+.ni p{font-size:.9rem;color:var(--ink-2);margin-top:6px;max-width:60ch}
+.ni .src{font-family:var(--f-data);font-size:.7rem;color:var(--ink-2);margin-top:8px}
+.duo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,5vw,80px)}
+.agenda{display:grid;grid-template-columns:200px minmax(0,1fr);gap:28px;align-items:start}
+.ring{width:100%;height:auto}
+.ag{display:grid;grid-template-columns:3.4rem minmax(0,1fr);gap:12px;padding-block:13px;border-top:1px solid var(--rule)}
+.ag:first-child{border-top:0;padding-top:0}
+.ag .d{font-family:var(--f-data);line-height:1.1}
+.ag .d b{display:block;font-size:1.35rem;font-weight:500}
+.ag .d span{font-size:.66rem;letter-spacing:.08em;color:var(--ink-2)}
+.ag h3{font-family:var(--f-body);font-size:.95rem;font-weight:600;line-height:1.3}
+.ag p{font-size:.8125rem;color:var(--ink-2)}
+.sources{display:grid}
+.src-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:center;padding-block:11px;border-top:1px solid var(--rule);font-size:.9375rem}
+.src-row:first-child{border-top:0;padding-top:0}
+.dots{display:flex;gap:4px}
+.dots i{width:9px;height:9px;border-radius:50%;display:block}
+
+/* detailpagina */
+.crumbs{display:flex;gap:8px;flex-wrap:wrap;font-size:.84rem;color:var(--ink-2);padding-block:12px 0}
+.crumbs a{color:var(--ink-2)}
+.dhead{display:grid;gap:14px;padding-block:20px 28px;border-bottom:1px solid var(--ink)}
+.dhead h1{font-size:clamp(2rem,4vw,3.2rem);letter-spacing:-.02em}
+.dhead .prov{font-size:1.05rem;color:var(--ink-2)}
+.dhead .lede{font-size:1.1rem;max-width:62ch}
+.dgrid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:clamp(28px,4vw,64px);padding-top:28px;align-items:start}
+.facts6{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1px solid var(--rule);border-left:1px solid var(--rule)}
+.facts6 div{padding:14px 16px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);display:grid;gap:2px}
+.facts6 b{font-weight:600;font-size:1rem}
+.dsec{padding-top:44px;display:grid;gap:14px}
+.dsec > *,.dgrid > *{min-width:0}
+.dsec h2{font-size:1.5rem}
+.dsec > p{color:var(--ink-2);max-width:62ch;font-size:.95rem}
+.weave{width:100%;height:auto;display:block}
+.tbl{overflow-x:auto;border:1px solid var(--rule);border-radius:6px}
+.tbl table{width:100%;border-collapse:collapse;font-size:.86rem;min-width:520px}
+.tbl th{font-family:var(--f-data);font-weight:400;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);text-align:left;padding:10px 14px;background:var(--paper-2)}
+.tbl td{padding:10px 14px;border-top:1px solid var(--rule)}
+.tbl td.m{font-family:var(--f-data);font-size:.78rem;font-variant-numeric:tabular-nums}
+.code{position:relative}
+.code pre{margin:0;background:var(--ink);color:var(--paper);border-radius:6px;padding:46px 18px 18px;overflow-x:auto;font-family:var(--f-data);font-size:.78rem;line-height:1.65}
+.code button{position:absolute;top:10px;right:10px;font:500 .75rem var(--f-body);border:1px solid currentColor;background:var(--ink);color:var(--paper);opacity:.85;border-radius:4px;padding:5px 10px;cursor:pointer}
+.cover{display:grid;gap:6px}
+.cov{display:grid;grid-template-columns:3rem minmax(0,1fr) 3.2rem;gap:10px;align-items:center;font-size:.8rem}
+.cov .bar{height:8px;background:var(--paper-2);border-radius:4px;overflow:hidden}
+.cov .bar span{display:block;height:100%}
+.cov .pct{font-family:var(--f-data);text-align:right;color:var(--ink-2)}
+.notes{margin:0;padding-left:1.1rem;display:grid;gap:6px;color:var(--ink-2);font-size:.92rem}
+.aside{position:sticky;top:16px;display:grid;gap:16px;background:var(--paper-2);border-radius:8px;padding:20px}
+.cta{display:flex;justify-content:center;align-items:center;gap:8px;background:var(--ink);color:var(--paper);text-decoration:none;border-radius:999px;padding:12px 16px;font-weight:500}
+.aside dl{margin:0;display:grid;gap:10px;font-size:.88rem}
+.aside dt{font-family:var(--f-data);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.aside dd{margin:0}
+.agent{font-size:.8rem;color:var(--ink-2);border-top:1px solid var(--rule);padding-top:12px;display:flex;gap:8px;align-items:flex-start}
+.agent i{width:8px;height:8px;border-radius:50%;background:var(--wind);margin-top:6px;flex:none}
+.related{display:grid;gap:0}
+.related a{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding-block:12px;border-top:1px solid var(--rule);text-decoration:none;font-size:.92rem}
+.related a span:last-child{color:var(--ink-2);font-size:.8rem}
+
+footer{margin-top:96px;padding-top:22px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:.8rem;color:var(--ink-2)}
+
+@media (max-width:1000px){
+  .duo{grid-template-columns:minmax(0,1fr)}
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .list-head{display:none}
+  .row{grid-template-columns:repeat(4,minmax(0,1fr));row-gap:8px}
+  .row .nm,.row .tlc{grid-column:1/-1}
+  .dgrid{grid-template-columns:minmax(0,1fr)}
+  .aside{position:static}
+}
+@media (max-width:820px){
+  .hero-top{grid-template-columns:minmax(0,1fr)}
+  .news{grid-template-columns:minmax(0,1fr)}
+  .agenda{grid-template-columns:minmax(0,1fr)}
+  .ring{max-width:220px}
+  .facts6{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:560px){
+  .readout{top:10px;left:10px;padding:8px 10px;min-width:0}
+  .readout .t{font-size:1.2rem}
+  .readout dl{font-size:.72rem;column-gap:10px}
+}
+@media (max-width:520px){
+  .cards{grid-template-columns:minmax(0,1fr)}
+  .row{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .search button{display:none}
+}
+@media (prefers-reduced-motion:reduce){.meter .mark{animation:none}}
+</style>
+
+<div class="wrap">
+  <div class="demo"><b>Voorbeeld v0.5</b><span>Hero: gisteren tot nu</span><span>Klik een dataset voor de detailpagina</span><span>Alle inhoud is placeholder</span></div>
+
+  <nav class="nav" aria-label="Hoofdmenu">
+    <a class="brand" href="#top" aria-label="Netwijzer">
+      <svg class="meter" width="46" height="28" viewBox="0 0 46 28" aria-hidden="true">
+        <defs><clipPath id="win"><rect x="5" y="9" width="36" height="10" rx="2"/></clipPath></defs>
+        <rect x="1" y="1" width="44" height="26" rx="5" fill="none" style="stroke:var(--ink)" stroke-width="2"/>
+        <rect x="5" y="9" width="36" height="10" rx="2" style="fill:var(--paper-2)"/>
+        <g clip-path="url(#win)"><line x1="5" y1="14" x2="41" y2="14" style="stroke:var(--ink-2)" stroke-width="1"/><rect class="mark" x="12" y="11" width="8" height="6" rx="1" style="fill:var(--needle)"/></g>
+      </svg>
+      <span class="word">NETWIJZER</span>
+    </a>
+    <ul>
+      <li><a href="#datasets">Datasets</a></li>
+      <li><a href="#nieuws">Nieuws</a></li>
+      <li><a href="#agenda">Agenda</a></li>
+      <li><a href="#bronnen">Bronnen</a></li>
+      <li><a href="#top" aria-disabled="true">Kaart<span class="soon">later</span></a></li>
+    </ul>
+  </nav>
+
+  <!-- ============ HOME ============ -->
+  <main id="home">
+  <header id="top">
+    <div class="hero-top">
+      <div>
+        <span class="label">Onafhankelijk · Nederlandstalig</span>
+        <h1 style="margin-top:14px">Elke dataset over het <em>Nederlandse net</em>, op één plek.</h1>
+        <p class="lede">Datasets, nieuws en agenda voor iedereen die met energiedata werkt. Dagelijks bijgehouden, altijd met bron.</p>
+      </div>
+      <div>
+        <form class="search" id="search" role="search">
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" style="stroke:var(--ink)" stroke-width="2"/><line x1="15.5" y1="15.5" x2="21" y2="21" style="stroke:var(--ink)" stroke-width="2" stroke-linecap="round"/></svg>
+          <label for="q" class="sr">Zoek datasets</label>
+          <input id="q" type="search" placeholder="Zoek een dataset, bv. kleinverbruik" autocomplete="off">
+          <button type="submit">Zoeken</button>
+        </form>
+        <div class="quick" id="quick"></div>
+        <div class="stats">
+          <div><b>12</b><span>datasets</span></div>
+          <div><b>11</b><span>bronnen</span></div>
+          <div><b>6</b><span>nieuw deze week</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scene" id="scene">
+      <canvas id="cv" aria-label="Polderlandschap getekend uit de energiedata van gisteren tot nu: de zonnebaan is de zonopwek, de molens draaien op windopwek, de landlijn en de verlichte ramen volgen het verbruik. Het deel na nu is mist. Voorbeelddata."></canvas>
+      <div class="readout" aria-live="off">
+        <span class="t"><span id="r-t">12:00</span><small id="r-d">gisteren</small></span>
+        <dl>
+          <dt><i style="background:#E9A21C"></i>Zon</dt><dd id="r-s">–</dd>
+          <dt><i style="background:#3E8C98"></i>Wind</dt><dd id="r-w">–</dd>
+          <dt><i style="background:#24302A"></i>Verbruik</dt><dd id="r-l">–</dd>
+          <dt>Zon + wind dekt</dt><dd id="r-p">–</dd>
+        </dl>
+      </div>
+    </div>
+    <div class="legend">
+      <div class="keys">
+        <span class="k"><svg width="26" height="16" viewBox="0 0 26 16" aria-hidden="true"><path d="M1 15 Q13 -6 25 15" fill="none" stroke="#E9A21C" stroke-width="2"/><circle cx="13" cy="5" r="3.5" fill="#E9A21C"/></svg><span><b>Hoogte van de zon</b> = zonopwek</span></span>
+        <span class="k"><svg width="16" height="18" viewBox="0 0 16 18" aria-hidden="true"><line x1="8" y1="7" x2="8" y2="18" style="stroke:var(--ink)" stroke-width="1.5"/><g style="stroke:var(--ink)" stroke-width="1.5" stroke-linecap="round"><line x1="8" y1="7" x2="8" y2="1"/><line x1="8" y1="7" x2="13" y2="10"/><line x1="8" y1="7" x2="3" y2="10"/></g></svg><span><b>Draaisnelheid molen</b> = windopwek op dat uur</span></span>
+        <span class="k"><svg width="26" height="14" viewBox="0 0 26 14" aria-hidden="true"><path d="M0 9 Q6 5 10 7 T20 4 L26 6 L26 14 L0 14 Z" fill="#24302A"/><circle cx="8" cy="11" r="1.2" fill="#F2C14E"/><circle cx="18" cy="10" r="1.2" fill="#F2C14E"/></svg><span><b>Landlijn en lichtjes</b> = verbruik</span></span>
+        <span class="k"><svg width="22" height="14" viewBox="0 0 22 14" aria-hidden="true"><rect width="22" height="14" rx="2" fill="#DCE2E2"/><line x1="4" y1="7" x2="18" y2="7" stroke="#8A979B" stroke-dasharray="2 2"/></svg><span><b>Mist</b> = nog niet gemeten</span></span>
+      </div>
+      <span>Voorbeelddata · sleep over het landschap om door de tijd te gaan</span>
+    </div>
+  </header>
+
+  <section class="block" id="datasets" aria-labelledby="h-ds">
+    <div class="sec-head">
+      <h2 id="h-ds">Datasets</h2>
+      <p>Alles wat je wilt weten voordat je een dataset opent: wie levert hem, hoe vaak wordt er gemeten, hoe kom je erbij en hoe ver gaat hij terug.</p>
+    </div>
+    <div class="toolbar">
+      <div class="filters" id="filters"></div>
+      <div class="view" role="group" aria-label="Weergave">
+        <button type="button" data-v="list" aria-pressed="true">Lijst</button>
+        <button type="button" data-v="cards" aria-pressed="false">Kaarten</button>
+      </div>
+    </div>
+    <div id="listView">
+      <div class="list-head"><span>Dataset</span><span>Thema</span><span>Meetfrequentie</span><span>Formaat</span><span>Toegang</span><span class="yrs"><span>Beschikbaar sinds</span><span>2005 – nu</span></span></div>
+      <div class="list" id="list"></div>
+    </div>
+    <div class="cards" id="cards" hidden></div>
+    <div class="empty" id="empty" hidden>Geen dataset gevonden. Probeer een ander woord of kies “Alle thema's”.</div>
+    <p class="label" style="margin-top:14px">Metadata in dit voorbeeld is indicatief en nog niet gecontroleerd.</p>
+  </section>
+
+  <section class="block" id="nieuws" aria-labelledby="h-news">
+    <div class="sec-head">
+      <h2 id="h-news">Nieuws</h2>
+      <p>De afgelopen 30 dagen als rivier. Elke stip is een bericht, de kleur is het thema. Ga met de muis over een stip voor de kop.</p>
+    </div>
+    <div class="river-wrap"><svg class="river" id="river" viewBox="0 0 1000 150" role="img" aria-label="Berichten per dag, laatste 30 dagen, voorbeeld"></svg></div>
+    <div class="news" id="news"></div>
+  </section>
+
+  <section class="block" aria-label="Agenda en bronnen">
+    <div class="duo">
+      <div id="agenda">
+        <div class="sec-head"><h2>Agenda</h2><p>Het jaar als ring.</p></div>
+        <div class="agenda">
+          <svg class="ring" id="ring" viewBox="0 0 220 220" role="img" aria-label="Evenementen op een jaarring, voorbeeld"></svg>
+          <div id="events"></div>
+        </div>
+      </div>
+      <div id="bronnen">
+        <div class="sec-head"><h2>Bronnen</h2><p>Elke stip is een dataset van die bron.</p></div>
+        <div class="sources" id="sources"></div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <!-- ============ DETAIL ============ -->
+  <main id="detail" hidden aria-live="polite"></main>
+
+  <footer>
+    <span>Netwijzer · onafhankelijk initiatief</span>
+    <span>Voorbeeldsite · alle namen, cijfers en berichten zijn placeholders</span>
+  </footer>
+</div>
+
+<script>
+(function(){
+  const TH={opwek:{name:'Opwek',v:'--sun'},verbruik:{name:'Verbruik',v:'--verbruik'},net:{name:'Net & congestie',v:'--needle'},markt:{name:'Markt',v:'--wind'},geo:{name:'Geo & infra',v:'--geo'}};
+  const col=k=>`var(${TH[k].v})`;
+  function rng(seed){let s=seed>>>0||1;return()=>{s^=s<<13;s>>>=0;s^=s>>17;s^=s<<5;s>>>=0;return s/4294967296;};}
+  const hash=str=>{let h=2166136261;for(const c of str){h^=c.charCodeAt(0);h=Math.imul(h,16777619);}return h>>>0;};
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const months=['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec'];
+  const today=new Date(2026,9,9);
+  const hhmm=q=>{const m=Math.round(q*15)%1440;return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');};
+  const gw=v=>v.toFixed(1).replace('.',',')+' GW';
+  const nl=(v,d=1)=>v.toFixed(d).replace('.',',');
+
+  /* ================= HERO: polderlandschap, gisteren tot nu ================= */
+  const DAY=96, TOT=192, gs=(x,m,s)=>Math.exp(-((x-m)**2)/(2*s*s)), RISE=7.75, SET=18.4;
+  const clock=new Date(); const NOWQ=Math.max(DAY+6, Math.min(TOT-1.01, DAY+clock.getHours()*4+clock.getMinutes()/15));
+  const series=[];
+  for(let q=0;q<TOT;q++){
+    const d=q<DAY?0:1, h=(q%DAY)/4;
+    const load=10.6+(d?.3:0)+2.2*gs(h,8.3,1.5)+1.6*gs(h,13,3.6)+3.4*gs(h,18.6,1.9)-1.0*gs(h,4,2.2)+.15*Math.sin(q*1.7);
+    let sun=0; if(h>RISE&&h<SET){ sun=(d?4.9:6.6)*Math.pow(Math.sin(Math.PI*(h-RISE)/(SET-RISE)),1.35)*(1-(d?.18:.28)*gs(h,d?11.2:14.1,.55)); }
+    const wind=Math.max(.5,(d?3.9:3.0)+1.4*Math.sin((q/96)*Math.PI*1.8+1.6)+.3*Math.sin(h*1.9));
+    series.push({load,sun,wind});
+  }
+  const at=q=>{ q=Math.max(0,Math.min(TOT-1,q)); const i=Math.floor(q), f=q-i, a=series[i], b=series[Math.min(TOT-1,i+1)]; return {load:a.load+(b.load-a.load)*f, sun:a.sun+(b.sun-a.sun)*f, wind:a.wind+(b.wind-a.wind)*f}; };
+
+  const P={dayTop:[176,205,218],dayBot:[236,239,230],nightTop:[14,22,36],nightBot:[40,56,74],dusk:[236,176,128],
+           land:[36,48,42],landNight:[12,18,22],water:[46,78,88],waterNight:[16,28,36],sun:[233,162,28],win:[242,193,78],
+           mill:[30,42,48],millNight:[176,188,194],mist:[226,231,231]};
+  const mix=(a,b,t)=>a.map((v,i)=>Math.round(v+(b[i]-v)*t));
+  const rgb=(c,a=1)=>`rgba(${c[0]},${c[1]},${c[2]},${a})`;
+  const smooth=(e0,e1,x)=>{const t=Math.max(0,Math.min(1,(x-e0)/(e1-e0)));return t*t*(3-2*t);};
+
+  const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+  let W=0,H=0, playQ=Math.min(NOWQ,DAY*.55), scrub=null, last=performance.now(), raf=0, visible=true, tt=0, mills=[];
+  const rnd=rng(11);
+  const stars=[...Array(80)].map(()=>({x:rnd(),y:rnd()*.55,r:.4+rnd()*1.1,tw:rnd()*6}));
+  const windows=[...Array(700)].map(()=>({x:rnd(),y:rnd(),k:rnd()}));
+  const streaks=[...Array(26)].map(()=>({x:rnd(),y:.12+rnd()*.42,l:.03+rnd()*.07,s:.6+rnd()*.8}));
+
+  function layout(){
+    const dpr=Math.min(window.devicePixelRatio||1,2), b=cv.getBoundingClientRect();
+    W=b.width; H=b.height; cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr); ctx.setTransform(dpr,0,0,dpr,0,0);
+    const step=W<640?24:12; mills=[]; for(let q=step/2;q<NOWQ;q+=step) mills.push({q,ang:rnd()*6.28});
+  }
+  const G=()=>{ const gy=H*.78; return {gy, x:q=>q/(TOT-1)*W, ySun:v=>gy-8-(v/8)*(gy-40), yLand:v=>gy-(H*.05+Math.max(0,(v-9))/8*H*.17)}; };
+  const daylight=h=>smooth(RISE-1.1,RISE+.9,h)*(1-smooth(SET-.9,SET+1.1,h));
+  const nq=Math.floor(NOWQ);
+
+  function render(){
+    if(!W||!H) layout();
+    const S=G(), q=scrub!==null?scrub:playQ, h=(q%DAY)/4, now=at(q), f=daylight(h), xNow=S.x(NOWQ);
+    const duskAmt=Math.max(gs(h,RISE,.7),gs(h,SET,.7));
+    const top=mix(P.nightTop,P.dayTop,f), bot=mix(mix(P.nightBot,P.dayBot,f),P.dusk,duskAmt*.75);
+    const sky=ctx.createLinearGradient(0,0,0,S.gy); sky.addColorStop(0,rgb(top)); sky.addColorStop(1,rgb(bot));
+    ctx.fillStyle=sky; ctx.fillRect(0,0,W,S.gy+1);
+    if(f<.95){ stars.forEach(s=>{ ctx.fillStyle=`rgba(255,255,255,${((1-f)*(.5+.5*Math.sin(tt*1.3+s.tw))).toFixed(3)})`; ctx.beginPath(); ctx.arc(s.x*W,s.y*S.gy,s.r,0,6.283); ctx.fill(); }); }
+    const txt=f>.5?'rgba(18,26,36,':'rgba(232,236,234,';
+    ctx.font='10px "Azeret Mono", monospace'; ctx.textAlign='right'; ctx.textBaseline='bottom';
+    [2,4,6].forEach(v=>{ const y=S.ySun(v); ctx.strokeStyle=txt+'0.14)'; ctx.setLineDash([2,5]); ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle=txt+'0.55)'; ctx.fillText(v+' GW zon',W-10,y-3); });
+    // zonnebaan tot nu
+    const path=fn=>{ ctx.beginPath(); for(let i=0;i<=nq;i++){ const x=S.x(i), y=fn(series[i]); i?ctx.lineTo(x,y):ctx.moveTo(x,y);} const e=at(NOWQ); ctx.lineTo(xNow,fn(e)); };
+    path(d=>S.ySun(d.sun)); ctx.lineTo(xNow,S.gy); ctx.lineTo(0,S.gy); ctx.closePath();
+    const sg=ctx.createLinearGradient(0,S.ySun(6.6),0,S.gy); sg.addColorStop(0,rgb(P.sun,.30)); sg.addColorStop(1,rgb(P.sun,.04)); ctx.fillStyle=sg; ctx.fill();
+    path(d=>S.ySun(d.sun)); ctx.strokeStyle=rgb(P.sun,.9); ctx.lineWidth=2; ctx.stroke();
+    streaks.forEach(s=>{ const xx=((s.x+tt*.018*s.s*now.wind)%1)*W*1.2-W*.1, y=s.y*S.gy, l=s.l*W*(.5+now.wind/5); ctx.strokeStyle=txt+(0.10+now.wind*.03).toFixed(2)+')'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(xx,y); ctx.lineTo(xx+l,y); ctx.stroke(); });
+    if(now.sun>.03){ const x=S.x(q), y=S.ySun(now.sun); const gl=ctx.createRadialGradient(x,y,0,x,y,46); gl.addColorStop(0,rgb(P.sun,.55)); gl.addColorStop(1,rgb(P.sun,0)); ctx.fillStyle=gl; ctx.beginPath(); ctx.arc(x,y,46,0,6.283); ctx.fill(); ctx.fillStyle=rgb(mix(P.sun,[255,236,180],.4)); ctx.beginPath(); ctx.arc(x,y,12,0,6.283); ctx.fill(); }
+    // molens
+    const millC=rgb(mix(P.millNight,P.mill,f)), towerH=Math.min(H*.17,120), blade=towerH*.42;
+    mills.forEach(m=>{ const d=series[Math.round(m.q)], x=S.x(m.q), base=S.yLand(d.load)+6, hub=base-towerH; ctx.strokeStyle=millC; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(x,base); ctx.lineTo(x,hub); ctx.stroke();
+      ctx.lineWidth=1.6; ctx.lineCap='round'; for(let k=0;k<3;k++){ const a=m.ang+k*2.0944; ctx.beginPath(); ctx.moveTo(x,hub); ctx.lineTo(x+Math.cos(a)*blade,hub+Math.sin(a)*blade); ctx.stroke(); } ctx.lineCap='butt';
+      ctx.fillStyle=millC; ctx.beginPath(); ctx.arc(x,hub,2.4,0,6.283); ctx.fill(); });
+    // land tot nu, daarna een vlakke voortzetting
+    const landC=mix(P.landNight,P.land,f);
+    ctx.beginPath(); ctx.moveTo(0,S.gy+1); for(let i=0;i<=nq;i++) ctx.lineTo(S.x(i),S.yLand(series[i].load)); const yN=S.yLand(at(NOWQ).load); ctx.lineTo(xNow,yN); ctx.lineTo(W,S.gy-H*.05); ctx.lineTo(W,S.gy+1); ctx.closePath(); ctx.fillStyle=rgb(landC); ctx.fill();
+    windows.forEach(w=>{ const qq=w.x*(TOT-1); if(qq>NOWQ) return; const d=at(qq); const dens=(d.load-9.5)/7; if(w.k>dens) return; const yTop=S.yLand(d.load), y=yTop+6+w.y*(S.gy-yTop-10); ctx.fillStyle=rgb(P.win,(.18+.75*(1-f))*(.5+.5*w.k/dens)); ctx.fillRect(w.x*W,y,2,2); });
+    // water
+    const wc=mix(P.waterNight,P.water,f); const wg=ctx.createLinearGradient(0,S.gy,0,H); wg.addColorStop(0,rgb(mix(wc,bot,.35))); wg.addColorStop(1,rgb(wc)); ctx.fillStyle=wg; ctx.fillRect(0,S.gy,W,H-S.gy);
+    ctx.beginPath(); ctx.moveTo(0,S.gy); for(let i=0;i<=nq;i++){ ctx.lineTo(S.x(i),S.gy+(S.gy-S.yLand(series[i].load))*.35);} ctx.lineTo(xNow,S.gy); ctx.closePath(); ctx.fillStyle=rgb(landC,.35); ctx.fill();
+    if(now.sun>.03){ const x=S.x(q); for(let k=0;k<7;k++){ const y=S.gy+8+k*7, w=(18-k*2)*(1+.3*Math.sin(tt*3+k)); ctx.fillStyle=rgb(P.sun,.5-k*.06); ctx.fillRect(x-w/2,y,w,1.5);} }
+    // mist na nu
+    const mg=ctx.createLinearGradient(xNow,0,Math.min(W,xNow+90),0); mg.addColorStop(0,rgb(P.mist,.0)); mg.addColorStop(1,rgb(P.mist,.86));
+    ctx.fillStyle=mg; ctx.fillRect(xNow,0,W-xNow,H);
+    ctx.fillStyle=rgb(P.mist,.86); ctx.fillRect(Math.min(W,xNow+90),0,Math.max(0,W-xNow-90),H);
+    ctx.strokeStyle='rgba(120,134,140,.6)'; ctx.setLineDash([3,4]); ctx.beginPath(); ctx.moveTo(xNow,S.gy); ctx.lineTo(W,S.gy); ctx.stroke(); ctx.setLineDash([]);
+    if(W-xNow>110){ ctx.fillStyle='rgba(70,84,90,.85)'; ctx.font='italic 15px "Source Serif 4", Georgia, serif'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('nog niet gemeten', (xNow+W)/2+20, S.gy*.55); }
+    // dagscheiding + tijdas
+    const xMid=S.x(DAY); ctx.strokeStyle=txt+'0.35)'; ctx.setLineDash([1,4]); ctx.beginPath(); ctx.moveTo(xMid,10); ctx.lineTo(xMid,S.gy); ctx.stroke(); ctx.setLineDash([]);
+    ctx.font='500 10px "Azeret Mono", monospace'; ctx.textAlign='left'; ctx.textBaseline='top'; ctx.fillStyle=txt+'0.7)';
+    ctx.fillText('VANDAAG →', xMid+8, 12);
+    ctx.fillStyle='rgba(232,236,234,.75)'; ctx.font='10px "Azeret Mono", monospace'; ctx.textBaseline='alphabetic';
+    for(let k=0;k<=8;k++){ const qq=Math.min(TOT-1,k*24), x=S.x(qq), lbl=(k===8?'24':String((k%4)*6).padStart(2,'0'))+':00'; ctx.textAlign=k===0?'left':(k===8?'right':'center'); if(W<640&&k%2) continue; ctx.fillStyle= qq>NOWQ?'rgba(90,104,110,.8)':'rgba(232,236,234,.75)'; ctx.fillText(lbl, k===0?x+8:(k===8?x-8:x), H-12); }
+    // nu-markering
+    ctx.fillStyle='#D2302A'; ctx.beginPath(); ctx.arc(xNow,yN,4,0,6.283); ctx.fill();
+    ctx.font='500 11px "Azeret Mono", monospace'; ctx.textAlign='left'; ctx.textBaseline='bottom'; ctx.fillText('nu '+hhmm(NOWQ), xNow+7, yN-6);
+    // afspeelkop
+    const px=S.x(q); ctx.strokeStyle='rgba(210,48,42,.9)'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(px,8); ctx.lineTo(px,H-28); ctx.stroke();
+    annotate(S,txt);
+  }
+  function label(x,y,lines,txt,align){ ctx.font='500 11px "Schibsted Grotesk", Arial, sans-serif'; ctx.textAlign=align||'left'; ctx.textBaseline='alphabetic'; lines.forEach((l,i)=>{ ctx.fillStyle=i?txt+'0.7)':txt+'0.95)'; ctx.fillText(l,x,y+i*14); }); }
+  function annotate(S,txt){
+    let ps=0,pl=0; for(let i=0;i<=nq;i++){ if(series[i].sun>series[ps].sun) ps=i; } for(let i=0;i<DAY;i++){ if(series[i].load>series[pl].load) pl=i; }
+    const sx=S.x(ps), sy=S.ySun(series[ps].sun); ctx.strokeStyle=txt+'0.5)'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(sx,sy-8); ctx.lineTo(sx,sy-22); ctx.stroke();
+    label(sx+6,sy-26,['Zonpiek '+gw(series[ps].sun),(ps<DAY?'gisteren ':'vandaag ')+hhmm(ps)],txt);
+    if(W>=640){ const lx=S.x(pl), ly=S.yLand(series[pl].load); ctx.beginPath(); ctx.moveTo(lx,ly-4); ctx.lineTo(lx-24,ly-14); ctx.stroke(); label(lx-28,ly-18,['Avondpiek verbruik',gw(series[pl].load)+' gisteren '+hhmm(pl)],txt,'right'); }
+    if(!mills.length) return; let pw=0; mills.forEach((m,i)=>{ if(series[Math.round(m.q)].wind>series[Math.round(mills[pw].q)].wind) pw=i; });
+    const mq=mills[pw].q, md=series[Math.round(mq)], mx=S.x(mq), towerH=Math.min(H*.17,120), my=S.yLand(md.load)+6-towerH-towerH*.45;
+    if(mx<W*.22) return; label(mx,my-10,['Hardst draaiende molen',gw(md.wind)+' wind, '+(mq<DAY?'gisteren ':'vandaag ')+hhmm(mq)],txt,'center');
+  }
+  const rT=document.getElementById('r-t'), rD=document.getElementById('r-d'), rS=document.getElementById('r-s'), rW=document.getElementById('r-w'), rL=document.getElementById('r-l'), rP=document.getElementById('r-p');
+  function readout(){ const q=scrub!==null?scrub:playQ, d=at(q); rT.textContent=hhmm(q); rD.textContent=q<DAY?'gisteren':'vandaag'; rS.textContent=gw(d.sun); rW.textContent=gw(d.wind); rL.textContent=gw(d.load); rP.textContent=Math.round((d.sun+d.wind)/d.load*100)+'%'; }
+  function frame(t){
+    const dt=Math.min(.05,Math.max(0,(t-last)/1000)); last=t;
+    if(!reduce){ tt+=dt; if(scrub===null) playQ=(playQ+dt*NOWQ/36)%NOWQ; mills.forEach(m=>{ m.ang+=dt*series[Math.round(m.q)].wind*.55; }); }
+    render(); readout();
+    raf=(!reduce&&visible&&!detailOpen)?requestAnimationFrame(frame):0;
+  }
+  function kick(){ if(!raf){ last=performance.now(); raf=requestAnimationFrame(frame);} }
+  function scrubTo(ev){ const b=cv.getBoundingClientRect(); scrub=Math.max(0,Math.min(NOWQ,(ev.clientX-b.left)/b.width*(TOT-1))); render(); readout(); kick(); }
+  cv.addEventListener('pointermove',scrubTo); cv.addEventListener('pointerdown',scrubTo);
+  cv.addEventListener('pointerleave',()=>{ if(scrub!==null) playQ=scrub; scrub=null; kick(); });
+  new IntersectionObserver(es=>{ visible=es[0].isIntersecting; if(visible) kick(); }).observe(cv);
+  new ResizeObserver(()=>{ layout(); render(); readout(); kick(); }).observe(cv);
+
+  /* ================= DATASETS ================= */
+  const DS=[
+    {n:'Totale belasting Nederland',p:'ENTSO-E Transparency',th:'verbruik',res:'kwartier',f:'API',since:2015,lic:'account',upd:'gisteren',unit:'MW'},
+    {n:'Day-ahead prijzen NL',p:'ENTSO-E Transparency',th:'markt',res:'uur',f:'API',since:2015,lic:'account',upd:'gisteren',unit:'€/MWh'},
+    {n:'Opwek zon, landelijk',p:'NED.nl',th:'opwek',res:'kwartier',f:'API',since:2019,lic:'account',upd:'gisteren',unit:'kW',
+      desc:'Geschatte opwek van alle zonnepanelen in Nederland per kwartier, op basis van metingen en weerdata. Geschikt om de dagelijkse zonnecurve en het aandeel zon in het verbruik te volgen.'},
+    {n:'Opwek wind op zee',p:'NED.nl',th:'opwek',res:'kwartier',f:'API',since:2019,lic:'account',upd:'gisteren',unit:'kW'},
+    {n:'Capaciteitskaart elektriciteitsnet',p:'Netbeheer Nederland',th:'net',res:'per station',f:'Kaart',since:2022,lic:'open',upd:'12 dagen',unit:'MVA'},
+    {n:'Balansdelta',p:'TenneT',th:'net',res:'minuut',f:'API',since:2018,lic:'open',upd:'vandaag',unit:'MW'},
+    {n:'Elektriciteitsbalans',p:'CBS StatLine',th:'verbruik',res:'maand',f:'API',since:2008,lic:'open',upd:'3 weken',unit:'GWh'},
+    {n:'Kleinverbruik per postcode',p:'Liander',th:'verbruik',res:'jaar',f:'Bestand',since:2010,lic:'open',upd:'5 mnd',unit:'kWh'},
+    {n:'Kleinverbruik per postcode',p:'Enexis',th:'verbruik',res:'jaar',f:'Bestand',since:2011,lic:'open',upd:'5 mnd',unit:'kWh'},
+    {n:'Hernieuwbare elektriciteit per gemeente',p:'Klimaatmonitor',th:'opwek',res:'jaar',f:'Bestand',since:2010,lic:'open',upd:'2 mnd',unit:'TJ'},
+    {n:'Hoogspanningsnet',p:'PDOK / OpenStreetMap',th:'geo',res:'per lijn',f:'Kaart',since:2016,lic:'open',upd:'1 week',unit:'kV'},
+    {n:'Openbare laadpunten',p:'Voorbeeldbron',th:'geo',res:'dag',f:'Bestand',since:2021,lic:'open',upd:'gisteren',unit:'aantal'}
+  ];
+  const RESLBL={minuut:'per minuut',kwartier:'per kwartier',uur:'per uur',dag:'per dag',maand:'per maand',jaar:'per jaar','per station':'per station','per lijn':'per lijn'};
+  const Y0=2005,Y1=2026.8,yx=y=>((y-Y0)/(Y1-Y0)*100);
+  const timeline=d=>`<div class="tl" aria-label="Beschikbaar sinds ${d.since}"><div class="axis"></div><div class="span" style="left:${yx(d.since)}%;right:0;background:${col(d.th)}"></div><div class="now"></div><span class="yr" style="left:${yx(d.since)}%;top:-9px">${d.since}</span></div>`;
+  function spark(d){
+    const r=rng(hash(d.n+d.p)); const pts=[]; let v=.5;
+    const n={minuut:60,kwartier:48,uur:36,dag:30,maand:24,jaar:12}[d.res]||0;
+    if(!n){ let s=''; for(let i=0;i<70;i++){ s+=`<circle cx="${(8+r()*284).toFixed(1)}" cy="${(6+r()*52).toFixed(1)}" r="${(1.2+r()*2).toFixed(1)}" style="fill:${col(d.th)}" opacity="${(.35+r()*.6).toFixed(2)}"/>`; } return `<svg viewBox="0 0 300 64" preserveAspectRatio="none" aria-hidden="true">${s}</svg>`; }
+    for(let i=0;i<n;i++){ v+=(r()-.5)*.3; v=Math.max(.1,Math.min(.95,v)); pts.push(v); }
+    const X=i=>i*(300/(n-1)), Yp=p=>60-p*54;
+    if(n<=12){ const bw=300/n*.62; return `<svg viewBox="0 0 300 64" preserveAspectRatio="none" aria-hidden="true">${pts.map((p,i)=>`<rect x="${(i*300/n+(300/n-bw)/2).toFixed(1)}" y="${Yp(p).toFixed(1)}" width="${bw.toFixed(1)}" height="${(60-Yp(p)).toFixed(1)}" style="fill:${col(d.th)}" opacity=".85"/>`).join('')}</svg>`; }
+    const line='M'+pts.map((p,i)=>X(i).toFixed(1)+','+Yp(p).toFixed(1)).join(' L');
+    return `<svg viewBox="0 0 300 64" preserveAspectRatio="none" aria-hidden="true"><path d="${line} L300,62 L0,62 Z" style="fill:${col(d.th)}" opacity=".16"/><path d="${line}" fill="none" style="stroke:${col(d.th)}" stroke-width="1.8" vector-effect="non-scaling-stroke"/></svg>`;
+  }
+  const access=d=>d.lic==='open'?'<span class="badge">Open</span>':'<span class="badge key">Account nodig</span>';
+  const txt=d=>(d.n+' '+d.p+' '+TH[d.th].name).toLowerCase();
+  document.getElementById('list').innerHTML=DS.map((d,i)=>`<a class="row" href="#ds-${i}" data-th="${d.th}" data-txt="${txt(d)}"><span class="nm"><b>${d.n}</b><span>${d.p}</span></span><span class="th"><i style="background:${col(d.th)}"></i>${TH[d.th].name}</span><span class="cell">${RESLBL[d.res]}<small>bijgewerkt ${d.upd}</small></span><span class="cell"><span class="badge">${d.f}</span></span><span class="cell">${access(d)}</span><span class="tlc">${timeline(d)}</span></a>`).join('');
+  document.getElementById('cards').innerHTML=DS.map((d,i)=>`<a class="card" href="#ds-${i}" data-th="${d.th}" data-txt="${txt(d)}"><div class="top"><span class="th"><i style="background:${col(d.th)}"></i>${TH[d.th].name}</span>${access(d)}</div><div><h3>${d.n}</h3><span class="prov">${d.p}</span></div>${spark(d)}<div class="facts"><span><small>Frequentie</small>${RESLBL[d.res]}</span><span><small>Formaat</small>${d.f}</span><span><small>Sinds</small>${d.since}</span></div></a>`).join('');
+
+  let activeTh=null, query='';
+  const chipHTML=k=>`<button type="button" class="chip" data-th="${k}" aria-pressed="false"><i style="background:${col(k)}"></i>${TH[k].name}</button>`;
+  document.getElementById('filters').innerHTML=`<button type="button" class="chip" data-th="" aria-pressed="true">Alle thema's</button>`+Object.keys(TH).map(chipHTML).join('');
+  document.getElementById('quick').innerHTML=['net','opwek','verbruik','markt'].map(chipHTML).join('');
+  function apply(){ let shown=0; document.querySelectorAll('.row,.card').forEach(el=>{ const ok=(!activeTh||el.dataset.th===activeTh)&&(!query||el.dataset.txt.includes(query)); el.hidden=!ok; if(ok&&el.classList.contains('row'))shown++; }); document.getElementById('empty').hidden=shown>0; document.querySelectorAll('#filters .chip,#quick .chip').forEach(c=>c.setAttribute('aria-pressed',String((c.dataset.th||null)===activeTh))); }
+  const go=()=>document.getElementById('datasets').scrollIntoView({behavior:reduce?'auto':'smooth'});
+  document.addEventListener('click',e=>{
+    const c=e.target.closest('#filters .chip,#quick .chip'); if(c){ activeTh=c.dataset.th||null; if(c.closest('#quick')) go(); apply(); return; }
+    const v=e.target.closest('.view button'); if(v){ document.querySelectorAll('.view button').forEach(b=>b.setAttribute('aria-pressed',String(b===v))); document.getElementById('listView').hidden=v.dataset.v!=='list'; document.getElementById('cards').hidden=v.dataset.v!=='cards'; return; }
+    const cp=e.target.closest('[data-copy]'); if(cp){ const t=document.getElementById(cp.dataset.copy).textContent; const done=()=>{cp.textContent='Gekopieerd';setTimeout(()=>cp.textContent='Kopieer',1600);}; try{ navigator.clipboard.writeText(t).then(done,()=>{ selectText(cp.dataset.copy); cp.textContent='Geselecteerd'; }); }catch(_){ selectText(cp.dataset.copy); } }
+  });
+  function selectText(id){ const r=document.createRange(); r.selectNodeContents(document.getElementById(id)); const s=getSelection(); s.removeAllRanges(); s.addRange(r); }
+  const qi=document.getElementById('q');
+  qi.addEventListener('input',()=>{ query=qi.value.trim().toLowerCase(); apply(); });
+  document.getElementById('search').addEventListener('submit',e=>{ e.preventDefault(); query=qi.value.trim().toLowerCase(); apply(); go(); });
+
+  /* ================= DETAILPAGINA ================= */
+  const NEWS=[
+    {th:'net',t:'Nieuwe versie capaciteitskaart toont meer ruimte voor teruglevering in het noorden',s:'Korte samenvatting in eigen woorden. Wat is er veranderd en wat betekent het voor wie met de data werkt.',src:'Voorbeeldbron · 8 okt 2026'},
+    {th:'verbruik',t:'Kleinverbruikdata per postcode bijgewerkt met cijfers over 2025',s:'Placeholder. De agent vat samen, linkt naar het origineel en vermeldt de licentie.',src:'Voorbeeldbron · 7 okt 2026'},
+    {th:'markt',t:'Day-ahead markt rekent voortaan per kwartier: wat verandert er in de data?',s:'Placeholder voor een uitlegstuk met een link naar de bijbehorende dataset in de catalogus.',src:'Voorbeeldbron · 5 okt 2026'},
+    {th:'opwek',t:'Open source model voor zonvoorspelling krijgt nieuwe release',s:'Placeholder. Interessant voor wie prognoses bouwt op open data.',src:'Voorbeeldbron · 3 okt 2026'}
+  ];
+  const isTS=d=>['minuut','kwartier','uur','dag'].includes(d.res), isPeriod=d=>['maand','jaar'].includes(d.res);
+  function fields(d){
+    if(isTS(d)) return [['tijdstip_start','datum-tijd (UTC)','Begin van het meetinterval'],['tijdstip_eind','datum-tijd (UTC)','Einde van het meetinterval'],['waarde','getal','Gemeten of geschatte waarde in '+d.unit],['eenheid','tekst',d.unit],['status','tekst','definitief of voorlopig']];
+    if(isPeriod(d)) return [['periode','tekst','Jaar of maand, bv. 2025 of 2025-09'],['gebied','tekst','Postcode, gemeente of land'],['waarde','getal','Waarde in '+d.unit],['aantal_aansluitingen','geheel getal','Aantal aansluitingen in het gebied']];
+    return [['id','tekst','Unieke sleutel van het object'],['naam','tekst','Naam van station of lijn'],['geometrie','GeoJSON','Punt of lijn in WGS84'],['waarde','getal','Capaciteit of spanning in '+d.unit]];
+  }
+  function sampleRows(d){
+    const r=rng(hash(d.n+'rows')), rows=[];
+    for(let i=0;i<5;i++){
+      if(isTS(d)){ const m=(i*({minuut:1,kwartier:15,uur:60,dag:1440}[d.res])); const t0=new Date(Date.UTC(2026,9,8,10,0)+m*60000), t1=new Date(t0.getTime()+({minuut:1,kwartier:15,uur:60,dag:1440}[d.res])*60000); rows.push([t0.toISOString().slice(0,16)+'Z',t1.toISOString().slice(0,16)+'Z',nl(1000+r()*5000,0),d.unit,'voorlopig']); }
+      else if(isPeriod(d)) rows.push([d.res==='jaar'?String(2025-i):'2026-0'+(9-i),['1011','3511','5611','9711','6811'][i],nl(800+r()*3000,0),String(Math.round(40+r()*300))]);
+      else rows.push(['obj-'+(1000+i),['Station Noord','Station Oost','Lijn 380-12','Station Zuid','Lijn 150-07'][i],'{…}',nl(50+r()*400,0)]);
+    }
+    return rows;
+  }
+  function weave(d){
+    // 7 dagen x 24 uur, intensiteit = waarde
+    const r=rng(hash(d.n+'weave')), cols=d.res==='dag'?1:24, days=7, cw=24, ch=26, lw=46, W2=lw+cols*cw, H2=days*ch+28;
+    let s=''; const dn=['ma','di','wo','do','vr','za','zo'];
+    for(let dd=0;dd<days;dd++){
+      const cloud=.4+r()*.6; s+=`<text x="${lw-10}" y="${dd*ch+ch/2+4}" text-anchor="end" font-size="11" font-family="Azeret Mono, monospace" style="fill:var(--ink-2)">${dn[(dd+3)%7]} ${2+dd} okt</text>`;
+      for(let hh=0;hh<cols;hh++){
+        let v; if(d.th==='opwek') v=Math.max(0,Math.sin(Math.PI*(hh-7.5)/11))**1.3*cloud; else v=.35+.25*gs(hh,8,1.6)+.4*gs(hh,18.5,2)+.1*r();
+        v=Math.max(0,Math.min(1,v));
+        s+=`<rect x="${lw+hh*cw+1}" y="${dd*ch+1}" width="${cw-2}" height="${ch-2}" rx="2" style="fill:${col(d.th)}" opacity="${(.08+v*.92).toFixed(2)}"><title>${dn[(dd+3)%7]} ${2+dd} okt ${String(hh).padStart(2,'0')}:00 · ${Math.round(v*100)}% van maximum (voorbeeld)</title></rect>`;
+      }
+    }
+    for(let hh=0;hh<=24;hh+=6) s+=`<text x="${lw+hh*cw}" y="${days*ch+18}" text-anchor="${hh===0?'start':hh===24?'end':'middle'}" font-size="11" font-family="Azeret Mono, monospace" style="fill:var(--ink-2)">${String(hh).padStart(2,'0')}:00</text>`;
+    return `<svg class="weave" viewBox="0 0 ${W2} ${H2}" role="img" aria-label="Afgelopen 7 dagen per uur, voorbeelddata">${s}</svg>`;
+  }
+  function periodBars(d){
+    const r=rng(hash(d.n+'bars')), n=d.res==='jaar'?12:24, W2=720, H2=200; let s='', v=.5;
+    for(let i=0;i<n;i++){ v=Math.max(.15,Math.min(1,v+(r()-.45)*.2)); const bw=W2/n*.7, x=i*W2/n+(W2/n-bw)/2, h=v*(H2-40); s+=`<rect x="${x.toFixed(1)}" y="${(H2-24-h).toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" style="fill:${col(d.th)}" opacity=".85"/>`; if(i%(d.res==='jaar'?2:6)===0) s+=`<text x="${(x+bw/2).toFixed(1)}" y="${H2-8}" text-anchor="middle" font-size="11" font-family="Azeret Mono, monospace" style="fill:var(--ink-2)">${d.res==='jaar'?2014+i:(['okt','apr'][Math.floor(i/6)%2])}</text>`; }
+    return `<svg class="weave" viewBox="0 0 ${W2} ${H2}" role="img" aria-label="Verloop per periode, voorbeelddata">${s}</svg>`;
+  }
+  function dotMap(d){ const r=rng(hash(d.n+'map')); let s=''; for(let i=0;i<260;i++){ const x=40+r()*640, y=10+r()*260; s+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(1.5+r()*3).toFixed(1)}" style="fill:${col(d.th)}" opacity="${(.3+r()*.6).toFixed(2)}"/>`; } return `<svg class="weave" viewBox="0 0 720 280" role="img" aria-label="Kaartvoorbeeld, voorbeelddata">${s}<text x="12" y="270" font-size="11" font-family="Azeret Mono, monospace" style="fill:var(--ink-2)">kaartweergave volgt in fase 2</text></svg>`; }
+  function promptText(d){
+    const f=fields(d).map(x=>x[0]).join(', ');
+    const how=d.f==='API'?'via de API'+(d.lic==='open'?'':' (ik heb een API-sleutel)'):d.f==='Bestand'?'als downloadbaar bestand (CSV)':'als kaartlaag (WFS/GeoJSON)';
+    return `Je bent een ervaren data-analist in de Nederlandse energiesector.
+
+Ik werk met de dataset "${d.n}" van ${d.p}.
+- Meetfrequentie: ${RESLBL[d.res]}
+- Eenheid: ${d.unit}
+- Beschikbaar sinds: ${d.since}
+- Velden: ${f}
+- Ik haal de data op ${how}.
+
+Mijn doel: [beschrijf hier je vraag, bv. "het aandeel zon in het verbruik per maand"].
+
+Help me in deze stappen:
+1. Leg in drie zinnen uit wat deze dataset wel en niet meet.
+2. Noem de valkuilen (tijdzone UTC vs. Nederlandse tijd, voorlopige waarden, ontbrekende kwartieren).
+3. Stel drie analyses voor die passen bij mijn doel en zeg welke het meest oplevert.
+4. Schrijf voor de beste analyse code in Python (pandas) om de data op te halen, op te schonen en in één grafiek te tonen.
+
+Vraag eerst door als mijn doel onduidelijk is.`;
+  }
+  function coverage(d){ const r=rng(hash(d.n+'cov')); let s=''; for(let y=Math.max(d.since,2026-7);y<=2026;y++){ const p=y===2026?Math.round(75+r()*3):Math.round(93+r()*7); s+=`<div class="cov"><span class="mono">${y}</span><span class="bar"><span style="width:${p}%;background:${col(d.th)}"></span></span><span class="pct">${p}%</span></div>`; } return s; }
+
+  const detail=document.getElementById('detail'), home=document.getElementById('home');
+  let detailOpen=false;
+  function showDetail(i){
+    const d=DS[i]; if(!d) return showHome();
+    detailOpen=true; home.hidden=true; detail.hidden=false;
+    const f=fields(d), rows=sampleRows(d), rel=DS.map((x,j)=>({x,j})).filter(o=>o.j!==i&&o.x.th===d.th).slice(0,4), relNews=NEWS.filter(n=>n.th===d.th);
+    const desc=d.desc||`Placeholder voor een korte uitleg in eigen woorden: wat meet deze dataset, waarvoor gebruik je hem en wat zijn de belangrijkste beperkingen. De agent vult dit in op basis van de documentatie van ${d.p}.`;
+    const preview = isTS(d)?weave(d):isPeriod(d)?periodBars(d):dotMap(d);
+    const prevTitle = isTS(d)?'Afgelopen 7 dagen':isPeriod(d)?'Verloop per '+(d.res==='jaar'?'jaar':'maand'):'Ruimtelijke spreiding';
+    const prevSub = isTS(d)?'Elke rij is een dag, elk vakje een uur. Hoe donkerder, hoe hoger de waarde. Ga met de muis over een vakje voor details.':isPeriod(d)?'Elke staaf is een '+(d.res==='jaar'?'jaar':'maand')+'.':'Elke stip is een object uit de dataset.';
+    detail.innerHTML=`
+      <nav class="crumbs" aria-label="Kruimelpad"><a href="#datasets">Datasets</a><span>›</span><span>${TH[d.th].name}</span><span>›</span><span aria-current="page">${d.n}</span></nav>
+      <div class="dhead">
+        <span class="th"><i style="background:${col(d.th)}"></i>${TH[d.th].name}</span>
+        <h1>${d.n}</h1>
+        <span class="prov">${d.p}</span>
+        <p class="lede">${desc}</p>
+      </div>
+      <div class="dgrid">
+        <div>
+          <div class="facts6">
+            <div><span class="label">Meetfrequentie</span><b>${RESLBL[d.res]}</b></div>
+            <div><span class="label">Formaat</span><b>${d.f}</b></div>
+            <div><span class="label">Toegang</span><b>${d.lic==='open'?'Open':'Account nodig'}</b></div>
+            <div><span class="label">Beschikbaar sinds</span><b>${d.since}</b></div>
+            <div><span class="label">Laatst bijgewerkt</span><b>${d.upd}</b></div>
+            <div><span class="label">Eenheid</span><b>${d.unit}</b></div>
+          </div>
+          <div class="dsec"><h2>${prevTitle}</h2><p>${prevSub}</p>${preview}</div>
+          <div class="dsec"><h2>Zo ziet de data eruit</h2><p>De eerste vijf rijen. Veldnamen zijn een voorbeeld en worden per bron gecontroleerd.</p>
+            <div class="tbl"><table><thead><tr>${f.map(x=>`<th>${x[0]}</th>`).join('')}</tr></thead><tbody>${rows.map(rw=>`<tr>${rw.map(c=>`<td class="m">${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div></div>
+          <div class="dsec"><h2>Velden</h2>
+            <div class="tbl"><table><thead><tr><th>Veld</th><th>Type</th><th>Betekenis</th></tr></thead><tbody>${f.map(x=>`<tr><td class="m">${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td></tr>`).join('')}</tbody></table></div></div>
+          <div class="dsec"><h2>Begin met een prompt</h2><p>Plak deze prompt in Claude of een andere AI-assistent en vul je eigen doel in. De gegevens van de dataset staan er al in. ${d.lic==='open'?'Voor deze dataset heb je geen account nodig.':'Voor deze dataset heb je een gratis account en API-sleutel bij de bron nodig.'}</p>
+            <div class="code"><pre id="code-${i}" style="white-space:pre-wrap">${promptText(d).replace(/</g,'&lt;')}</pre><button type="button" data-copy="code-${i}">Kopieer</button></div></div>
+          <div class="dsec"><h2>Dekking</h2><p>Aandeel van de verwachte metingen dat per jaar aanwezig is.</p><div class="cover">${coverage(d)}</div></div>
+          <div class="dsec"><h2>Let op</h2><ul class="notes"><li>Placeholder: de agent zet hier bekende beperkingen uit de documentatie, zoals schattingen of revisies.</li><li>Placeholder: tijdzone en zomertijd, en of waarden achteraf nog worden aangepast.</li></ul></div>
+        </div>
+        <aside class="aside" aria-label="Samenvatting">
+          <a class="cta" href="#ds-${i}">Naar de bron ↗</a>
+          <dl>
+            <div><dt>Leverancier</dt><dd>${d.p}</dd></div>
+            <div><dt>Licentie</dt><dd>${d.lic==='open'?'Open data (voorbeeld: CC BY 4.0)':'Gratis met account (voorwaarden van de bron)'}</dd></div>
+            <div><dt>Thema</dt><dd>${TH[d.th].name}</dd></div>
+          </dl>
+          <div class="agent"><i></i><span>Gecontroleerd door de Netwijzer-agent op 9 okt 2026, 06:12. Link werkt, metadata ongewijzigd.</span></div>
+          ${rel.length?`<div><span class="label">Vergelijkbare datasets</span><div class="related" style="margin-top:6px">${rel.map(o=>`<a href="#ds-${o.j}"><span>${o.x.n}</span><span>${o.x.p}</span></a>`).join('')}</div></div>`:''}
+          ${relNews.length?`<div><span class="label">In het nieuws</span><div class="related" style="margin-top:6px">${relNews.map(n=>`<a href="#nieuws"><span>${n.t}</span><span>${n.src.split('·')[1]||''}</span></a>`).join('')}</div></div>`:''}
+        </aside>
+      </div>`;
+    window.scrollTo(0,0);
+  }
+  function showHome(){ detailOpen=false; detail.hidden=true; home.hidden=false; kick(); }
+  function route(){
+    const h=location.hash.slice(1), m=h.match(/^ds-(\d+)$/);
+    if(m) showDetail(+m[1]);
+    else { const wasDetail=detailOpen; showHome(); if(wasDetail&&h){ const el=document.getElementById(h); if(el) el.scrollIntoView(); } }
+  }
+  window.addEventListener('hashchange',route);
+
+  /* ================= NIEUWS ================= */
+  const days=[...Array(30)].map((_,i)=>{const d=new Date(today);d.setDate(d.getDate()-29+i);return d;});
+  const HEAD={net:['Nieuwe versie capaciteitskaart gepubliceerd','Wachtrij aansluitingen opnieuw berekend','Congestiegebied uitgebreid in voorbeeldregio'],opwek:['Record zonneproductie op voorbeelddag','Nieuwe dataset opwek per gemeente','Windpark op zee levert eerste stroom'],verbruik:['Kleinverbruikdata per postcode bijgewerkt','Analyse: verschuiving avondpiek','Nieuwe profielen voor grootverbruik'],markt:['Negatieve prijzen vaker in het weekend','Day-ahead data nu per kwartier','Overzicht onbalansprijzen september'],geo:['Laadpuntenkaart vernieuwd','Open data hoogspanningsnet aangevuld','Nieuwe geodata voor stations']};
+  const rn=rng(7), items=[];
+  days.forEach((d,i)=>{const cnt=Math.floor(rn()*3.2)+(d.getDay()%6===0?0:1);for(let k=0;k<cnt;k++){const th=Object.keys(TH)[Math.floor(rn()*5)];items.push({i,k,th,date:d,title:HEAD[th][Math.floor(rn()*3)]});}});
+  let rs=''; const X=i=>20+i*(960/29), base=118;
+  rs+=`<line x1="10" x2="990" y1="${base+10}" y2="${base+10}" style="stroke:var(--rule)" stroke-width="1"/>`;
+  days.forEach((d,i)=>{ if(i%7===1||i===29) rs+=`<text x="${X(i)}" y="${base+28}" text-anchor="middle" font-size="11" font-family="Azeret Mono, monospace" style="fill:var(--ink-2)">${d.getDate()} ${months[d.getMonth()]}</text>`; });
+  items.forEach(it=>{ rs+=`<circle cx="${X(it.i)}" cy="${base-it.k*17}" r="6.5" style="fill:${col(it.th)}"><title>${it.date.getDate()} ${months[it.date.getMonth()]} · ${TH[it.th].name}: ${it.title} (voorbeeld)</title></circle>`; });
+  rs+=`<line x1="${X(29)+12}" x2="${X(29)+12}" y1="40" y2="${base+12}" style="stroke:var(--needle)" stroke-width="1.5"/><text x="${X(29)+8}" y="34" text-anchor="end" font-size="11" font-family="Azeret Mono, monospace" style="fill:var(--needle)">vandaag</text>`;
+  document.getElementById('river').innerHTML=rs;
+  document.getElementById('news').innerHTML=NEWS.map(n=>`<a class="ni" href="#nieuws"><span class="stripe" style="background:${col(n.th)}"></span><div><span class="label" style="color:${col(n.th)}">${TH[n.th].name}</span><h3 style="margin-top:4px">${n.t}</h3><p>${n.s}</p><div class="src">${n.src}</div></div></a>`).join('');
+
+  /* ================= AGENDA ================= */
+  const EV=[{d:new Date(2026,9,14),t:'Webinar over open netdata',w:'Online · 15:00',th:'net'},{d:new Date(2026,9,22),t:'Meetup datavisualisatie energie',w:'Utrecht · 18:30',th:'verbruik'},{d:new Date(2026,10,5),t:'Congres energie-informatievoorziening',w:'Den Haag · hele dag',th:'markt'},{d:new Date(2026,11,3),t:'Hackathon open energiedata',w:'Amsterdam · 2 dagen',th:'opwek'},{d:new Date(2027,0,20),t:'Kennissessie netcongestie',w:'Arnhem · middag',th:'net'}];
+  let gsv=''; const cxr=110,Rr=84,ang=d=>-Math.PI/2+((d.getMonth()+(d.getDate()-1)/31)/12)*Math.PI*2;
+  for(let m=0;m<12;m++){const a0=-Math.PI/2+m/12*Math.PI*2+.03,a1=-Math.PI/2+(m+1)/12*Math.PI*2-.03;const p=(a,r)=>`${(cxr+Math.cos(a)*r).toFixed(1)} ${(cxr+Math.sin(a)*r).toFixed(1)}`;
+    gsv+=`<path d="M${p(a0,Rr)} A${Rr} ${Rr} 0 0 1 ${p(a1,Rr)}" fill="none" style="stroke:${m===today.getMonth()?'var(--ink)':'var(--rule)'}" stroke-width="${m===today.getMonth()?3:2}"/>`;
+    const am=(a0+a1)/2; gsv+=`<text x="${(cxr+Math.cos(am)*(Rr+16)).toFixed(1)}" y="${(cxr+Math.sin(am)*(Rr+16)+3.5).toFixed(1)}" text-anchor="middle" font-size="9" font-family="Azeret Mono, monospace" style="fill:var(--ink-2)">${months[m]}</text>`;}
+  const at2=ang(today); gsv+=`<line x1="${cxr}" y1="${cxr}" x2="${(cxr+Math.cos(at2)*(Rr-6)).toFixed(1)}" y2="${(cxr+Math.sin(at2)*(Rr-6)).toFixed(1)}" style="stroke:var(--needle)" stroke-width="2" stroke-linecap="round"/><circle cx="${cxr}" cy="${cxr}" r="4" style="fill:var(--ink)"/>`;
+  EV.forEach(e=>{const a=ang(e.d);gsv+=`<circle cx="${(cxr+Math.cos(a)*(Rr-12)).toFixed(1)}" cy="${(cxr+Math.sin(a)*(Rr-12)).toFixed(1)}" r="5" style="fill:${col(e.th)}"><title>${e.t} (voorbeeld)</title></circle>`;});
+  document.getElementById('ring').innerHTML=gsv;
+  document.getElementById('events').innerHTML=EV.slice(0,4).map(e=>`<div class="ag"><div class="d"><b>${String(e.d.getDate()).padStart(2,'0')}</b><span>${months[e.d.getMonth()].toUpperCase()}</span></div><div><h3>${e.t}</h3><p>${e.w} · voorbeeld</p></div></div>`).join('');
+
+  /* ================= BRONNEN ================= */
+  const SRC={}; DS.forEach(d=>(SRC[d.p]=SRC[d.p]||[]).push(d.th));
+  document.getElementById('sources').innerHTML=Object.entries(SRC).sort((a,b)=>b[1].length-a[1].length||a[0].localeCompare(b[0])).map(([p,ths])=>`<div class="src-row"><span>${p}</span><span class="dots" aria-label="${ths.length} datasets">${ths.map(t=>`<i style="background:${col(t)}"></i>`).join('')}</span></div>`).join('');
+
+  layout(); render(); readout(); route(); kick();
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>{ if(!detailOpen) render(); kick(); });
+})();
+</script>
+</body></html>

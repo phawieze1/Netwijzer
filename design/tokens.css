@@ -1,0 +1,74 @@
+/* Netwijzer design tokens — bron: docs/01-identiteit.md
+   Gebruik in componenten uitsluitend deze variabelen. */
+
+:root {
+  /* Basis (licht) */
+  --paper: #F2F3EF;
+  --paper-2: #E7E9E3;
+  --ink: #121A24;
+  --ink-2: #55606C;
+  --rule: #CBCFC7;
+  --needle: #D2302A;
+
+  /* Thema's */
+  --sun: #D99A0B;        /* Opwek */
+  --verbruik: #3D5AA8;   /* Verbruik */
+  --wind: #2B7B88;       /* Markt (en wind in de hero-legenda) */
+  --geo: #6E7F3C;        /* Geo & infra */
+  /* Net & congestie gebruikt --needle */
+
+  /* Typografie */
+  --f-display: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --f-body: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --f-data: "Azeret Mono", ui-monospace, Menlo, monospace;
+
+  --step--1: 0.8125rem;
+  --step-0: 1rem;
+  --step-1: 1.125rem;
+  --step-2: 1.5rem;
+  --step-3: clamp(1.8rem, 3vw, 2.4rem);
+  --step-4: clamp(2.2rem, 4.4vw, 3.5rem);
+
+  /* Ruimte en vorm */
+  --max: 1240px;
+  --gutter: clamp(16px, 4vw, 48px);
+  --section: 88px;
+  --radius: 6px;
+  --radius-pill: 999px;
+
+  /* Beweging */
+  --ease-out: cubic-bezier(.2, .7, .2, 1);
+  --logo-cycle: 6s;
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0E1318;
+    --paper-2: #161E26;
+    --ink: #E7E9E4;
+    --ink-2: #9AA4AE;
+    --rule: #2A3440;
+    --needle: #FF5B4F;
+    --sun: #F0B431;
+    --verbruik: #8CA4EA;
+    --wind: #4FB0C0;
+    --geo: #AFC274;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper: #0E1318;
+  --paper-2: #161E26;
+  --ink: #E7E9E4;
+  --ink-2: #9AA4AE;
+  --rule: #2A3440;
+  --needle: #FF5B4F;
+  --sun: #F0B431;
+  --verbruik: #8CA4EA;
+  --wind: #4FB0C0;
+  --geo: #AFC274;
+  color-scheme: dark;
+}

@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://netwijzer.example/schemas/evenement.schema.json",
+  "title": "evenement",
+  "description": "Een evenement in de agenda.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "slug",
+    "titel",
+    "start",
+    "plaats",
+    "organisator",
+    "url",
+    "thema",
+    "zekerheid"
+  ],
+  "properties": {
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "titel": {
+      "type": "string",
+      "maxLength": 120
+    },
+    "start": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "eind": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "plaats": {
+      "type": "string"
+    },
+    "online": {
+      "type": "boolean"
+    },
+    "organisator": {
+      "type": "string"
+    },
+    "url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "thema": {
+      "type": "string",
+      "enum": [
+        "opwek",
+        "verbruik",
+        "net",
+        "markt",
+        "geo"
+      ]
+    },
+    "beschrijving": {
+      "type": "string",
+      "maxLength": 300
+    },
+    "zekerheid": {
+      "type": "string",
+      "enum": [
+        "hoog",
+        "midden",
+        "laag"
+      ]
+    },
+    "voorbeeld": {
+      "type": "boolean"
+    }
+  }
+}

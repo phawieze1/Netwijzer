@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://netwijzer.example/schemas/energiereeks.schema.json",
+  "title": "energiereeks",
+  "description": "Kwartierwaarden voor de hero: gisteren 00:00 tot nu (Nederlandse tijd).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "gegenereerd",
+    "tijdzone",
+    "van",
+    "tot",
+    "interval",
+    "eenheid",
+    "bronnen",
+    "punten"
+  ],
+  "properties": {
+    "gegenereerd": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "tijdzone": {
+      "const": "Europe/Amsterdam"
+    },
+    "van": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "tot": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Einde van het laatste beschikbare kwartier."
+    },
+    "interval": {
+      "const": "PT15M"
+    },
+    "eenheid": {
+      "const": "GW"
+    },
+    "bronnen": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "zon",
+        "wind",
+        "verbruik"
+      ],
+      "properties": {
+        "zon": {
+          "type": "string"
+        },
+        "wind": {
+          "type": "string"
+        },
+        "verbruik": {
+          "type": "string"
+        }
+      }
+    },
+    "punten": {
+      "type": "array",
+      "maxItems": 192,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "t",
+          "zon",
+          "wind",
+          "verbruik"
+        ],
+        "properties": {
+          "t": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "zon": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "wind": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "verbruik": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "voorbeeld": {
+      "type": "boolean"
+    }
+  }
+}

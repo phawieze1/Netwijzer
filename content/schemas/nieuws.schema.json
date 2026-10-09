@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://netwijzer.example/schemas/nieuws.schema.json",
+  "title": "nieuws",
+  "description": "Een nieuwsbericht (samenvatting in eigen woorden met link naar origineel).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "slug",
+    "titel",
+    "samenvatting",
+    "thema",
+    "bron",
+    "bronUrl",
+    "gepubliceerd",
+    "zekerheid"
+  ],
+  "properties": {
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "titel": {
+      "type": "string",
+      "maxLength": 140
+    },
+    "samenvatting": {
+      "type": "string",
+      "maxLength": 450,
+      "description": "Maximaal 60 woorden, eigen woorden."
+    },
+    "thema": {
+      "type": "string",
+      "enum": [
+        "opwek",
+        "verbruik",
+        "net",
+        "markt",
+        "geo"
+      ]
+    },
+    "bron": {
+      "type": "string",
+      "description": "Naam van de publicerende partij"
+    },
+    "bronUrl": {
+      "type": "string",
+      "format": "uri"
+    },
+    "gepubliceerd": {
+      "type": "string",
+      "format": "date"
+    },
+    "toegevoegd": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "datasets": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+      }
+    },
+    "zekerheid": {
+      "type": "string",
+      "enum": [
+        "hoog",
+        "midden",
+        "laag"
+      ]
+    },
+    "voorbeeld": {
+      "type": "boolean"
+    }
+  }
+}
