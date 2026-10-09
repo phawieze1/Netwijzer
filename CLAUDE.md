@@ -54,4 +54,7 @@ en draaien rechtstreeks met Node, zonder bouwstap.
   `/Netwijzer/`, dus een hard-coded pad breekt daar.
 - **Getallen en datums:** via `src/lib/format.ts` (komma als decimaalteken,
   `9 okt 2026`, `14:00`, tijdzone Europe/Amsterdam).
-- **Thema's:** via `src/lib/themas.ts`, nooit een losse kleurwaarde.
+- **Thema's:** via `src/lib/themas.ts`, nooit een losse kleurwaarde. Een themakleur
+  is een **markering** (stip, streep, staaf, lijn), nooit tekst: vier van de vijf
+  halen in de lichte modus geen 4,5:1. Tekst staat in `--ink` of `--ink-2`. Zie
+  `docs/01-identiteit.md` §10 voor de gemeten waarden.
