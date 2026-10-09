@@ -1,0 +1,49 @@
+{
+  "slug": "hoogspanningsnet",
+  "naam": "Hoogspanningsnet",
+  "leverancier": "pdok",
+  "thema": "geo",
+  "beschrijving": "Voorbeeld: geodata van hoogspanningslijnen en stations, per lijn. Gegevens uit overheidsbronnen en OpenStreetMap lopen hier door elkaar. Herkomst en metadata nog niet gecontroleerd.",
+  "frequentie": "statisch",
+  "frequentieLabel": "per lijn",
+  "formaat": "Kaart",
+  "toegang": "open",
+  "sinds": 2016,
+  "eenheid": "kV",
+  "laatstBijgewerkt": "2026-10-02",
+  "bronUrl": "https://www.pdok.nl/",
+  "licentie": {
+    "naam": "Te controleren"
+  },
+  "velden": [
+    {
+      "naam": "id",
+      "type": "tekst",
+      "betekenis": "Unieke sleutel van het object"
+    },
+    {
+      "naam": "naam",
+      "type": "tekst",
+      "betekenis": "Naam van station of lijn"
+    },
+    {
+      "naam": "geometrie",
+      "type": "GeoJSON",
+      "betekenis": "Punt of lijn in WGS84"
+    },
+    {
+      "naam": "waarde",
+      "type": "getal",
+      "betekenis": "Spanningsniveau in kV"
+    }
+  ],
+  "beperkingen": [
+    "Voorbeeld: de dekking van vrijwilligersdata is per regio verschillend."
+  ],
+  "preview": {
+    "enabled": true,
+    "weergave": "punten"
+  },
+  "zekerheid": "laag",
+  "voorbeeld": true
+}

@@ -1,0 +1,15 @@
+{
+  "slug": "2026-10-05-day-ahead-per-kwartier",
+  "titel": "Day-ahead markt rekent voortaan per kwartier: wat verandert er in de data?",
+  "samenvatting": "Voorbeeld. Placeholder voor een uitlegstuk over een fijnere tijdsresolutie in de prijsdata. Hier komt in eigen woorden wat er verandert voor wie reeksen inleest, en een link naar de bijbehorende dataset in de catalogus.",
+  "thema": "markt",
+  "bron": "Voorbeeldbron",
+  "bronUrl": "https://example.org/day-ahead-kwartier",
+  "gepubliceerd": "2026-10-05",
+  "toegevoegd": "2026-10-05T07:00:00+02:00",
+  "datasets": [
+    "day-ahead-prijzen-nl"
+  ],
+  "zekerheid": "laag",
+  "voorbeeld": true
+}

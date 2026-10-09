@@ -1,0 +1,59 @@
+{
+  "slug": "opwek-wind-op-zee",
+  "naam": "Opwek wind op zee",
+  "leverancier": "ned",
+  "thema": "opwek",
+  "beschrijving": "Voorbeeld: geschatte opwek van windparken op zee per kwartier. Geschikt om het aandeel wind in de opwek te volgen. Metadata nog niet gecontroleerd.",
+  "frequentie": "kwartier",
+  "formaat": "API",
+  "toegang": "account",
+  "sinds": 2019,
+  "eenheid": "kW",
+  "laatstBijgewerkt": "2026-10-08",
+  "bronUrl": "https://ned.nl/",
+  "licentie": {
+    "naam": "Te controleren"
+  },
+  "velden": [
+    {
+      "naam": "tijdstip_start",
+      "type": "datum-tijd (UTC)",
+      "betekenis": "Begin van het meetinterval"
+    },
+    {
+      "naam": "tijdstip_eind",
+      "type": "datum-tijd (UTC)",
+      "betekenis": "Einde van het meetinterval"
+    },
+    {
+      "naam": "waarde",
+      "type": "getal",
+      "betekenis": "Geschatte opwek in kW"
+    },
+    {
+      "naam": "eenheid",
+      "type": "tekst",
+      "betekenis": "kW"
+    },
+    {
+      "naam": "status",
+      "type": "tekst",
+      "betekenis": "definitief of voorlopig"
+    }
+  ],
+  "beperkingen": [
+    "Voorbeeld: waarden zijn schattingen en kunnen achteraf worden bijgesteld."
+  ],
+  "preview": {
+    "enabled": true,
+    "weergave": "weefsel"
+  },
+  "prompt": {
+    "valkuilen": [
+      "Tijdstippen zijn in UTC; zet om naar Nederlandse tijd.",
+      "Recente waarden zijn voorlopig."
+    ]
+  },
+  "zekerheid": "laag",
+  "voorbeeld": true
+}

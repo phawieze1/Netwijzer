@@ -1,0 +1,48 @@
+{
+  "slug": "kleinverbruik-postcode-enexis",
+  "naam": "Kleinverbruik per postcode",
+  "leverancier": "enexis",
+  "thema": "verbruik",
+  "beschrijving": "Voorbeeld: jaarlijks gemiddeld verbruik van kleinverbruikers per postcodegebied in het verzorgingsgebied van Enexis. Metadata nog niet gecontroleerd.",
+  "frequentie": "jaar",
+  "formaat": "Bestand",
+  "toegang": "open",
+  "sinds": 2011,
+  "eenheid": "kWh",
+  "laatstBijgewerkt": "2026-05-01",
+  "bronUrl": "https://www.enexis.nl/",
+  "licentie": {
+    "naam": "Te controleren"
+  },
+  "velden": [
+    {
+      "naam": "periode",
+      "type": "tekst",
+      "betekenis": "Jaar, bijvoorbeeld 2025"
+    },
+    {
+      "naam": "gebied",
+      "type": "tekst",
+      "betekenis": "Postcodegebied"
+    },
+    {
+      "naam": "waarde",
+      "type": "getal",
+      "betekenis": "Gemiddeld verbruik in kWh"
+    },
+    {
+      "naam": "aantal_aansluitingen",
+      "type": "geheel getal",
+      "betekenis": "Aantal aansluitingen in het gebied"
+    }
+  ],
+  "beperkingen": [
+    "Voorbeeld: kleine gebieden kunnen zijn samengevoegd of weggelaten om herleidbaarheid te voorkomen."
+  ],
+  "preview": {
+    "enabled": true,
+    "weergave": "staven"
+  },
+  "zekerheid": "laag",
+  "voorbeeld": true
+}

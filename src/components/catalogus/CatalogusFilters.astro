@@ -1,0 +1,154 @@
+---
+/**
+ * Filters en weergaveschakelaar van de catalogus (`.toolbar`, `.filters`,
+ * `.view` uit het prototype).
+ *
+ * Alleen waarden die in de meegegeven datasets voorkomen worden een chip; een
+ * filter dat niets oplevert tonen we niet.
+ *
+ * De bediening staat op `hidden` en wordt door het island zichtbaar gemaakt.
+ * Zonder JavaScript zouden deze knoppen niets doen; alle items zijn dan gewoon
+ * zichtbaar.
+ */
+
+import { frequentieLabel, toegangLabel, type Frequentie } from '../../lib/format.ts';
+import type { Dataset } from '../../lib/inhoud.ts';
+import { THEMA_SLUGS, themaKleur, themaNaam } from '../../lib/themas.ts';
+import type { Filtergroep } from '../../scripts/catalogus/velden.ts';
+
+interface Props {
+  datasets: ReadonlyArray<Dataset>;
+  groepen: readonly Filtergroep[];
+  weergaveschakelaar: boolean;
+  weergave: 'lijst' | 'kaarten';
+}
+
+const { datasets, groepen, weergaveschakelaar, weergave } = Astro.props;
+
+const FORMATEN = ['API', 'Bestand', 'Kaart'] as const;
+const TOEGANGEN = ['open', 'account'] as const;
+const FREQUENTIES = [
+  'minuut',
+  'kwartier',
+  'uur',
+  'dag',
+  'maand',
+  'jaar',
+  'statisch',
+] as const satisfies readonly Frequentie[];
+
+const OPSCHRIFT: Record<Filtergroep, { label: string; alles: string }> = {
+  thema: { label: 'Thema', alles: "Alle thema's" },
+  formaat: { label: 'Formaat', alles: 'Alle formaten' },
+  toegang: { label: 'Toegang', alles: 'Alle' },
+  frequentie: { label: 'Meetfrequentie', alles: 'Alle frequenties' },
+};
+
+interface Keuze {
+  waarde: string;
+  label: string;
+  kleur?: string | undefined;
+}
+
+function keuzes(groep: Filtergroep): Keuze[] {
+  if (groep === 'thema') {
+    return THEMA_SLUGS.filter((thema) => datasets.some((item) => item.data.thema === thema)).map(
+      (thema) => ({ waarde: thema, label: themaNaam(thema), kleur: themaKleur(thema) }),
+    );
+  }
+  if (groep === 'formaat') {
+    return FORMATEN.filter((formaat) => datasets.some((item) => item.data.formaat === formaat)).map(
+      (formaat) => ({ waarde: formaat, label: formaat }),
+    );
+  }
+  if (groep === 'toegang') {
+    return TOEGANGEN.filter((toegang) => datasets.some((item) => item.data.toegang === toegang)).map(
+      (toegang) => ({ waarde: toegang, label: toegangLabel(toegang) }),
+    );
+  }
+  return FREQUENTIES.filter((frequentie) =>
+    datasets.some((item) => item.data.frequentie === frequentie),
+  ).map((frequentie) => ({ waarde: frequentie, label: frequentieLabel(frequentie) }));
+}
+
+// Een enkele groep staat zonder opschrift, zoals de themachips in het prototype.
+const toonOpschrift = groepen.length > 1;
+const toonFilters = groepen.length > 0;
+---
+
+{
+  (toonFilters || weergaveschakelaar) && (
+    <div class="toolbar" data-bediening hidden>
+      {toonFilters && (
+        <div class:list={['filters', { gestapeld: toonOpschrift }]}>
+          {groepen.map((groep) => (
+            <div class="filtergroep" role="group" aria-label={OPSCHRIFT[groep].label}>
+              {toonOpschrift && (
+                <span class="label" aria-hidden="true">
+                  {OPSCHRIFT[groep].label}
+                </span>
+              )}
+              <button type="button" class="chip" data-groep={groep} data-waarde="" aria-pressed="true">
+                {OPSCHRIFT[groep].alles}
+              </button>
+              {keuzes(groep).map((keuze) => (
+                <button
+                  type="button"
+                  class="chip"
+                  data-groep={groep}
+                  data-waarde={keuze.waarde}
+                  aria-pressed="false"
+                >
+                  {keuze.kleur !== undefined && (
+                    <i style={`background:${keuze.kleur}`} aria-hidden="true" />
+                  )}
+                  {keuze.label}
+                </button>
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
+      {weergaveschakelaar && (
+        <div class="view" role="group" aria-label="Weergave">
+          <button
+            type="button"
+            data-weergaveknop="lijst"
+            aria-pressed={weergave === 'lijst' ? 'true' : 'false'}
+          >
+            Lijst
+          </button>
+          <button
+            type="button"
+            data-weergaveknop="kaarten"
+            aria-pressed={weergave === 'kaarten' ? 'true' : 'false'}
+          >
+            Kaarten
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}
+
+<style>
+  /* Vier filtergroepen passen niet op één regel; elke groep krijgt een regel met
+     zijn opschrift ervoor. Alleen indeling, geen kleuren of maten. */
+  .filters.gestapeld {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .filtergroep {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .filtergroep .label {
+    flex: none;
+    min-width: 8.5rem;
+  }
+</style>

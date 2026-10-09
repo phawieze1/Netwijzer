@@ -1,0 +1,9 @@
+# Tekstbestanden in de repository altijd met LF, ongeacht het besturingssysteem
+# van de ontwikkelaar. De GitHub Actions-runner is Linux.
+* text=auto eol=lf
+
+# Binaire bestanden niet aanraken
+*.png binary
+*.woff binary
+*.woff2 binary
+*.ico binary

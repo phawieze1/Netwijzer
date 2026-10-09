@@ -140,3 +140,39 @@ Technisch: canvas, pauzeert buiten beeld, tekent altijd eerst een volledig stils
 - Zichtbare focusring in `--needle`.
 - Grafieken hebben een tekstalternatief (`aria-label` of tabel).
 - Alle beweging stopt bij `prefers-reduced-motion`.
+
+### Themakleuren zijn markeringen, geen tekst
+
+Vastgesteld 9 okt 2026, na meting tijdens de bouw van fase 1.
+
+De themakleuren halen in de **lichte** modus op `--paper` niet allemaal 4,5:1.
+Gemeten volgens WCAG 2.2:
+
+| Token | Op `--paper` (licht) | Als kleine tekst |
+|---|---|---|
+| `--ink` | 15,72:1 | ja |
+| `--verbruik` | 5,84:1 | ja |
+| `--ink-2` | 5,75:1 | ja |
+| `--needle` | 4,49:1 | nee |
+| `--wind` | 4,39:1 | nee |
+| `--geo` | 3,96:1 | nee |
+| `--sun` | 2,20:1 | nee |
+
+In de **donkere** modus haalt elk van deze kleuren ruim 6:1; daar speelt het niet.
+
+De kleuren zelf veranderen niet. Geel kan op licht papier geen 4,5:1 halen zonder
+op te houden geel te zijn, en de themakleuren moeten juist van elkaar te
+onderscheiden blijven. In plaats daarvan geldt deze regel:
+
+- **Tekst staat in `--ink` of `--ink-2`.** Ook een themalabel, een kop of een
+  datum. Nooit in een themakleur, hoe verleidelijk ook.
+- **De themakleur zit in de markering ernaast:** de stip, de streep, de staaf, de
+  lijn in een grafiek, of de achtergrond van een geselecteerde chip. Voor
+  niet-tekstelementen geldt 3:1, en dat halen alle themakleuren ruim.
+- `--verbruik` haalt als enige wél 4,5:1, maar gebruik ook die niet als tekst:
+  één regel is duidelijker dan vier uitzonderingen.
+- Een chip met een themakleur als **achtergrond** mag, mits de tekst erop
+  voldoende contrast heeft. Controleer dat per geval.
+
+Dit is bewust een beperking op de vorm, niet op de betekenis: het thema blijft
+overal herkenbaar aan dezelfde kleur, alleen niet meer in de letters zelf.

@@ -1,0 +1,8 @@
+{
+  "slug": "cbs-statline",
+  "naam": "CBS StatLine",
+  "type": "overheid",
+  "website": "https://www.cbs.nl/",
+  "beschrijving": "Databank met statistieken van het Centraal Bureau voor de Statistiek. Type en beschrijving te controleren.",
+  "voorbeeld": true
+}

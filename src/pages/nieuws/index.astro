@@ -1,0 +1,107 @@
+---
+/**
+ * /nieuws/ — de rivier over 90 dagen (bouwspecificatie §4) plus de volledige
+ * lijst, met een filter op thema.
+ *
+ * Het filter is een klein island: zonder JavaScript staat de filterbalk op
+ * `hidden` en zijn alle berichten zichtbaar.
+ */
+
+import Base from '../../layouts/Base.astro';
+import Nieuwsrivier from '../../components/nieuws/Nieuwsrivier.astro';
+import Nieuwslijst from '../../components/nieuws/Nieuwslijst.astro';
+import { alleNieuws, peildatum } from '../../lib/inhoud.ts';
+import { datum, kalenderdatum } from '../../lib/format.ts';
+import { paden } from '../../lib/paden.ts';
+import { THEMA_SLUGS, themaKleur, themaNaam } from '../../lib/themas.ts';
+
+const DAGEN = 90;
+
+const berichten = await alleNieuws();
+const peil = peildatum();
+const vandaag = datum(kalenderdatum(peil));
+
+const themas = THEMA_SLUGS.map((thema) => ({
+  thema,
+  aantal: berichten.filter((bericht) => bericht.data.thema === thema).length,
+})).filter((rij) => rij.aantal > 0);
+
+const voorbeeldAantal = berichten.filter((bericht) => bericht.data.voorbeeld === true).length;
+const voorbeeldregels =
+  voorbeeldAantal > 0
+    ? [`${voorbeeldAantal} van ${berichten.length} nieuwsberichten zijn voorbeeld`]
+    : [];
+---
+
+<Base
+  titel="Nieuws"
+  beschrijving="Nieuws over data in de Nederlandse energiesector, met bron en publicatiedatum. Elke samenvatting verwijst naar het origineel."
+  actief="nieuws"
+  voorbeeldregels={voorbeeldregels}
+>
+  <nav class="crumbs" aria-label="Kruimelpad">
+    <a href={paden.home()}>Netwijzer</a>
+    <span>›</span>
+    <span aria-current="page">Nieuws</span>
+  </nav>
+
+  <div class="dhead">
+    <span class="label">Nieuws</span>
+    <h1>Nieuws over <em>energiedata</em></h1>
+    <p class="lede">
+      Samenvattingen in eigen woorden, met bron en publicatiedatum. Elk bericht verwijst naar het
+      origineel.
+    </p>
+  </div>
+
+  <section class="block" aria-labelledby="h-rivier">
+    <div class="sec-head">
+      <h2 id="h-rivier">De afgelopen {DAGEN} dagen</h2>
+      <p>
+        Elke stip is een bericht op de dag van publicatie, de kleur is het thema. De lijst eronder
+        is dezelfde informatie als tekst.
+      </p>
+    </div>
+    <Nieuwsrivier berichten={berichten} dagen={DAGEN} peil={peil} />
+  </section>
+
+  <section class="block" aria-labelledby="h-berichten">
+    <div class="sec-head">
+      <h2 id="h-berichten">Alle berichten</h2>
+      <p>Nieuwste eerst. Peildatum {vandaag}.</p>
+    </div>
+
+    <div class="toolbar" data-nieuws-filter hidden>
+      <div class="filters" role="group" aria-label="Filter de berichten op thema">
+        <button type="button" class="chip" data-thema-keuze="alle" aria-pressed="true">
+          Alle thema’s <span class="mono">{berichten.length}</span>
+        </button>
+        {
+          themas.map((rij) => (
+            <button
+              type="button"
+              class="chip"
+              data-thema-keuze={rij.thema}
+              data-thema-naam={themaNaam(rij.thema)}
+              aria-pressed="false"
+            >
+              <i style={`background:${themaKleur(rij.thema)}`} />
+              {themaNaam(rij.thema)} <span class="mono">{rij.aantal}</span>
+            </button>
+          ))
+        }
+      </div>
+      <p class="label" data-nieuws-aantal aria-live="polite">
+        {berichten.length} berichten
+      </p>
+    </div>
+
+    <Nieuwslijst berichten={berichten} filterbaar={true} />
+  </section>
+</Base>
+
+<script>
+  import { startThemaFilter } from '../../scripts/nieuws/thema-filter.ts';
+
+  startThemaFilter();
+</script>

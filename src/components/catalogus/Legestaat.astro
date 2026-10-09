@@ -1,0 +1,37 @@
+---
+/**
+ * Eerlijke lege staat.
+ *
+ * Harde regel: elk getal en elke visualisatie heeft een bron en peildatum in
+ * beeld, en ontbrekende voorbeelddata wordt gemeld in plaats van verzonnen
+ * (docs/02-bouwspecificatie.md §7.2). Dit blokje staat op de plek waar straks
+ * echte data komt.
+ */
+
+interface Props {
+  /** Korte kop, bijvoorbeeld "Nog geen voorbeelddata". */
+  kop: string;
+}
+
+const { kop } = Astro.props;
+---
+
+<div class="tbl">
+  <div class="empty">
+    <p class="label">{kop}</p>
+    <p><slot /></p>
+  </div>
+</div>
+
+<style>
+  /* Alleen indeling: twee regels onder elkaar en een leesbare regellengte. */
+  .empty {
+    display: grid;
+    gap: 6px;
+    justify-items: center;
+  }
+
+  .empty p {
+    max-width: 56ch;
+  }
+</style>

@@ -1,0 +1,43 @@
+{
+  "slug": "openbare-laadpunten",
+  "naam": "Openbare laadpunten",
+  "leverancier": "voorbeeldbron",
+  "thema": "geo",
+  "beschrijving": "Voorbeeld: dagelijks overzicht van openbare laadpunten met locatie en vermogen. Deze dataset hoort bij een fictieve bron en staat er alleen om de weergave te tonen.",
+  "frequentie": "dag",
+  "formaat": "Bestand",
+  "toegang": "open",
+  "sinds": 2021,
+  "eenheid": "aantal",
+  "laatstBijgewerkt": "2026-10-08",
+  "bronUrl": "https://example.org/",
+  "licentie": {
+    "naam": "Te controleren"
+  },
+  "velden": [
+    {
+      "naam": "id",
+      "type": "tekst",
+      "betekenis": "Unieke sleutel van het laadpunt"
+    },
+    {
+      "naam": "geometrie",
+      "type": "GeoJSON",
+      "betekenis": "Punt in WGS84"
+    },
+    {
+      "naam": "waarde",
+      "type": "getal",
+      "betekenis": "Aantal laadpunten op de locatie"
+    }
+  ],
+  "beperkingen": [
+    "Voorbeeld: fictieve dataset, niet geschikt om mee te rekenen."
+  ],
+  "preview": {
+    "enabled": true,
+    "weergave": "punten"
+  },
+  "zekerheid": "laag",
+  "voorbeeld": true
+}

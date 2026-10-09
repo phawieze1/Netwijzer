@@ -1,0 +1,44 @@
+---
+/**
+ * De lijst met nieuwsberichten (`.news` in het prototype), twee kolommen op
+ * desktop. Met `maximum` kort je de lijst in, bijvoorbeeld tot vier berichten
+ * op de homepage.
+ *
+ * Met `filterbaar` komen de hooks voor het themafilter op /nieuws/ mee: het
+ * filterscript zoekt `[data-nieuws-lijst]` en `[data-nieuws-leeg]`. Zonder
+ * JavaScript blijft alles zichtbaar; de lege melding staat dan op `hidden`.
+ */
+
+import Nieuwsitem from './Nieuwsitem.astro';
+import type { Nieuwsbericht } from '../../lib/inhoud.ts';
+
+interface Props {
+  berichten: Nieuwsbericht[];
+  /** Maximaal aantal berichten. Zonder waarde komen ze allemaal in beeld. */
+  maximum?: number;
+  /** Zet de hooks voor het themafilter aan. Alleen op /nieuws/. */
+  filterbaar?: boolean;
+}
+
+const { berichten, maximum, filterbaar = false } = Astro.props;
+const zichtbaar = maximum === undefined ? berichten : berichten.slice(0, maximum);
+---
+
+{
+  zichtbaar.length === 0 ? (
+    <p class="empty">Nog geen nieuwsberichten.</p>
+  ) : (
+    <div class="news" data-nieuws-lijst={filterbaar ? '' : undefined}>
+      {zichtbaar.map((bericht) => (
+        <Nieuwsitem bericht={bericht} />
+      ))}
+    </div>
+  )
+}
+{
+  filterbaar && zichtbaar.length > 0 && (
+    <p class="empty" data-nieuws-leeg hidden>
+      Geen bericht in dit thema. Kies een ander thema of “Alle thema’s”.
+    </p>
+  )
+}

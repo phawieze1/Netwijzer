@@ -1,0 +1,15 @@
+{
+  "slug": "2026-08-19-congestiegebied-uitgebreid",
+  "titel": "Congestiegebied uitgebreid in voorbeeldregio",
+  "samenvatting": "Voorbeeld. Placeholder over een uitbreiding van een congestiegebied. Hier komt in eigen woorden om welk gebied het gaat, welke datum geldt en in welke dataset de wijziging terug te zien is.",
+  "thema": "net",
+  "bron": "Voorbeeldbron",
+  "bronUrl": "https://example.org/congestiegebied",
+  "gepubliceerd": "2026-08-19",
+  "toegevoegd": "2026-08-19T07:00:00+02:00",
+  "datasets": [
+    "capaciteitskaart-elektriciteitsnet"
+  ],
+  "zekerheid": "laag",
+  "voorbeeld": true
+}

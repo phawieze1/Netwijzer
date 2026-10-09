@@ -1,0 +1,53 @@
+---
+/**
+ * /bronnen/ — overzicht van alle bronnen met per bron een stip per dataset
+ * (bouwspecificatie §4).
+ */
+
+import Base from '../../layouts/Base.astro';
+import Bronnenlijst from '../../components/bronnen/Bronnenlijst.astro';
+import { alleBronnen, alleDatasets, peildatum } from '../../lib/inhoud.ts';
+import { datum, kalenderdatum } from '../../lib/format.ts';
+import { paden } from '../../lib/paden.ts';
+
+const [bronnen, datasets] = await Promise.all([alleBronnen(), alleDatasets()]);
+const vandaag = datum(kalenderdatum(peildatum()));
+
+const voorbeeldAantal = bronnen.filter((bron) => bron.data.voorbeeld === true).length;
+const voorbeeldregels =
+  voorbeeldAantal > 0 ? [`${voorbeeldAantal} van ${bronnen.length} bronnen zijn voorbeeld`] : [];
+---
+
+<Base
+  titel="Bronnen"
+  beschrijving="De organisaties die de datasets in Netwijzer leveren: netbeheerders, overheid, onderzoek en markt."
+  actief="bronnen"
+  voorbeeldregels={voorbeeldregels}
+>
+  <nav class="crumbs" aria-label="Kruimelpad">
+    <a href={paden.home()}>Netwijzer</a>
+    <span>›</span>
+    <span aria-current="page">Bronnen</span>
+  </nav>
+
+  <div class="dhead">
+    <span class="label">Bronnen</span>
+    <h1>Wie levert de <em>data</em></h1>
+    <p class="lede">
+      Elke dataset in Netwijzer komt van een organisatie. Hier staan ze bij elkaar, met per bron
+      hoeveel datasets er in de catalogus staan.
+    </p>
+  </div>
+
+  <section class="block" aria-labelledby="h-bronnen">
+    <div class="sec-head">
+      <h2 id="h-bronnen">Alle bronnen</h2>
+      <p>Alfabetisch. Elke stip is een dataset van die bron, in de kleur van het thema.</p>
+    </div>
+    <Bronnenlijst bronnen={bronnen} datasets={datasets} />
+    <p class="bronregel" style="margin-top:14px">
+      {bronnen.length} bronnen, {datasets.length} datasets · Bron: de contentbestanden van Netwijzer
+      (content/bronnen en content/datasets) · Peildatum {vandaag}
+    </p>
+  </section>
+</Base>

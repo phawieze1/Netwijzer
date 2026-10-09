@@ -1,0 +1,15 @@
+{
+  "slug": "2026-09-11-overzicht-onbalansprijzen-augustus",
+  "titel": "Overzicht onbalansprijzen augustus",
+  "samenvatting": "Voorbeeld. Placeholder voor een maandoverzicht van de onbalansprijzen. Hier komt in eigen woorden welke reeks is gebruikt, hoe de prijzen zijn samengevat en welke dagen opvielen.",
+  "thema": "markt",
+  "bron": "Voorbeeldbron",
+  "bronUrl": "https://example.org/onbalansprijzen-augustus",
+  "gepubliceerd": "2026-09-11",
+  "toegevoegd": "2026-09-11T07:00:00+02:00",
+  "datasets": [
+    "balansdelta"
+  ],
+  "zekerheid": "laag",
+  "voorbeeld": true
+}

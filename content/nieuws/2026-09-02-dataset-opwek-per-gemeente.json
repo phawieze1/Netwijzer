@@ -1,0 +1,15 @@
+{
+  "slug": "2026-09-02-dataset-opwek-per-gemeente",
+  "titel": "Nieuwe dataset met opwek per gemeente gepubliceerd",
+  "samenvatting": "Voorbeeld. Placeholder over een dataset met hernieuwbare opwek per gemeente. Hier komt in eigen woorden welke jaren erin zitten, welke eenheid wordt gebruikt en waarom gemeentelijke herindelingen het vergelijken lastig maken.",
+  "thema": "opwek",
+  "bron": "Voorbeeldbron",
+  "bronUrl": "https://example.org/opwek-per-gemeente",
+  "gepubliceerd": "2026-09-02",
+  "toegevoegd": "2026-09-02T07:00:00+02:00",
+  "datasets": [
+    "hernieuwbare-elektriciteit-per-gemeente"
+  ],
+  "zekerheid": "laag",
+  "voorbeeld": true
+}

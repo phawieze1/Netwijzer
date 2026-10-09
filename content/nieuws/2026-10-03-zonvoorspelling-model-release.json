@@ -1,0 +1,15 @@
+{
+  "slug": "2026-10-03-zonvoorspelling-model-release",
+  "titel": "Open source model voor zonvoorspelling krijgt nieuwe release",
+  "samenvatting": "Voorbeeld. Placeholder over een nieuwe versie van een openbaar voorspelmodel voor zonopwek. Interessant voor wie prognoses bouwt op open data. Hier komt in eigen woorden wat er is veranderd en onder welke licentie het model beschikbaar is.",
+  "thema": "opwek",
+  "bron": "Voorbeeldbron",
+  "bronUrl": "https://example.org/zonvoorspelling-release",
+  "gepubliceerd": "2026-10-03",
+  "toegevoegd": "2026-10-03T07:00:00+02:00",
+  "datasets": [
+    "opwek-zon-landelijk"
+  ],
+  "zekerheid": "laag",
+  "voorbeeld": true
+}

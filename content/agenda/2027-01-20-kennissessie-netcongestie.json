@@ -1,0 +1,14 @@
+{
+  "slug": "2027-01-20-kennissessie-netcongestie",
+  "titel": "Kennissessie netcongestie",
+  "start": "2027-01-20T13:30:00+01:00",
+  "eind": "2027-01-20T17:00:00+01:00",
+  "plaats": "Arnhem",
+  "online": false,
+  "organisator": "Voorbeeldorganisator",
+  "url": "https://example.org/kennissessie-netcongestie",
+  "thema": "net",
+  "beschrijving": "Voorbeeld-evenement, middagprogramma. Plaats, tijd en organisator zijn placeholders.",
+  "zekerheid": "laag",
+  "voorbeeld": true
+}

@@ -1,0 +1,15 @@
+{
+  "slug": "2026-09-24-wachtrij-aansluitingen-herberekend",
+  "titel": "Wachtrij voor aansluitingen opnieuw berekend",
+  "samenvatting": "Voorbeeld. Placeholder over een herberekening van de wachtrij voor nieuwe aansluitingen. Hier komt in eigen woorden welke methode is gewijzigd en waarom cijfers daardoor niet zonder meer te vergelijken zijn met eerdere publicaties.",
+  "thema": "net",
+  "bron": "Voorbeeldbron",
+  "bronUrl": "https://example.org/wachtrij-aansluitingen",
+  "gepubliceerd": "2026-09-24",
+  "toegevoegd": "2026-09-24T07:00:00+02:00",
+  "datasets": [
+    "capaciteitskaart-elektriciteitsnet"
+  ],
+  "zekerheid": "laag",
+  "voorbeeld": true
+}

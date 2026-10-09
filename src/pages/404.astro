@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro';
+import { paden } from '../lib/paden.ts';
+---
+
+<Base titel="Pagina niet gevonden" beschrijving="Deze pagina bestaat niet of is verplaatst.">
+  <header class="hero-top">
+    <div>
+      <span class="label">404</span>
+      <h1 style="margin-top:14px">Deze pagina bestaat <em>niet</em>.</h1>
+      <p class="lede">
+        De link is mogelijk verouderd of er staat een typefout in het adres. Je kunt verder via de
+        catalogus of het nieuws.
+      </p>
+      <div class="quick">
+        <a class="chip" href={paden.datasets()}>Naar de datasets</a>
+        <a class="chip" href={paden.nieuws()}>Naar het nieuws</a>
+        <a class="chip" href={paden.home()}>Naar de homepage</a>
+      </div>
+    </div>
+  </header>
+</Base>

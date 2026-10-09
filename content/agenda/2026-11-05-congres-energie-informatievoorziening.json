@@ -1,0 +1,14 @@
+{
+  "slug": "2026-11-05-congres-energie-informatievoorziening",
+  "titel": "Congres energie-informatievoorziening",
+  "start": "2026-11-05T09:30:00+01:00",
+  "eind": "2026-11-05T17:00:00+01:00",
+  "plaats": "Den Haag",
+  "online": false,
+  "organisator": "Voorbeeldorganisator",
+  "url": "https://example.org/congres-energie-informatievoorziening",
+  "thema": "markt",
+  "beschrijving": "Voorbeeld-evenement, hele dag. Plaats, tijd en organisator zijn placeholders.",
+  "zekerheid": "laag",
+  "voorbeeld": true
+}

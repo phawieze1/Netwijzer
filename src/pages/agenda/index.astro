@@ -1,0 +1,78 @@
+---
+/**
+ * /agenda/ — komende en afgelopen evenementen, met de jaarring
+ * (bouwspecificatie §4).
+ *
+ * De ring beslaat het kalenderjaar van de peildatum. Evenementen uit een ander
+ * jaar staan wel in de lijst; de bronregel onder de ring zegt hoeveel dat zijn.
+ */
+
+import Base from '../../layouts/Base.astro';
+import Jaarring from '../../components/agenda/Jaarring.astro';
+import Agendalijst from '../../components/agenda/Agendalijst.astro';
+import {
+  afgelopenEvenementen,
+  alleEvenementen,
+  komendeEvenementen,
+  peildatum,
+} from '../../lib/inhoud.ts';
+import { datum, kalenderdatum } from '../../lib/format.ts';
+import { paden } from '../../lib/paden.ts';
+
+const peil = peildatum();
+const [alle, komend, afgelopen] = await Promise.all([
+  alleEvenementen(),
+  komendeEvenementen(peil),
+  afgelopenEvenementen(peil),
+]);
+
+const vandaag = datum(kalenderdatum(peil));
+const voorbeeldAantal = alle.filter((evenement) => evenement.data.voorbeeld === true).length;
+const voorbeeldregels =
+  voorbeeldAantal > 0 ? [`${voorbeeldAantal} van ${alle.length} evenementen zijn voorbeeld`] : [];
+---
+
+<Base
+  titel="Agenda"
+  beschrijving="Bijeenkomsten over data in de Nederlandse energiesector: komend en afgelopen, met plaats, tijd en organisator."
+  actief="agenda"
+  voorbeeldregels={voorbeeldregels}
+>
+  <nav class="crumbs" aria-label="Kruimelpad">
+    <a href={paden.home()}>Netwijzer</a>
+    <span>›</span>
+    <span aria-current="page">Agenda</span>
+  </nav>
+
+  <div class="dhead">
+    <span class="label">Agenda</span>
+    <h1>Het jaar als <em>ring</em></h1>
+    <p class="lede">
+      Bijeenkomsten over data in de energiesector. Elke stip op de ring is een evenement; de wijzer
+      staat op vandaag. Peildatum {vandaag}.
+    </p>
+  </div>
+
+  <section class="block" aria-labelledby="h-komend">
+    <div class="sec-head">
+      <h2 id="h-komend">Komend</h2>
+      <p>Eerstvolgende eerst. De kop linkt naar de aankondiging van de organisator.</p>
+    </div>
+    <div class="agenda">
+      <Jaarring evenementen={alle} peil={peil} />
+      <Agendalijst
+        evenementen={komend}
+        peil={peil}
+        leeg="Geen komende evenementen in de agenda."
+      />
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="h-afgelopen">
+    <div class="sec-head">
+      <h2 id="h-afgelopen">Afgelopen</h2>
+      <p>Meest recente eerst. We laten ze staan, zodat je terug kunt zoeken.</p>
+    </div>
+    <Agendalijst evenementen={afgelopen} peil={peil} leeg="Nog geen afgelopen evenementen." />
+  </section>
+</Base>

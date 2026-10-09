@@ -39,8 +39,25 @@
   /* Beweging */
   --ease-out: cubic-bezier(.2, .7, .2, 1);
   --logo-cycle: 6s;
+  --hero-loop: 36s;
+
+  /* Schaduw: identiteit §5 staat er precies één toe, bij de geselecteerde schakelaar. */
+  --shadow-switch: 0 1px 2px rgba(0, 0, 0, .14);
 
   color-scheme: light;
+}
+
+/* Landschap (hero) — vast palet, wisselt NIET met licht/donker: het landschap is
+   een eigen wereld (identiteit §3). Dit zijn de waarden uit design/tokens.json
+   onder `landscape`, alleen de tekstkleuren die CSS nodig heeft voor het
+   waardenvak. Het canvas leest de volledige set rechtstreeks uit tokens.json.
+   Deze tokens worden nergens anders opnieuw gedeclareerd, dus ze blijven in
+   beide thema's gelijk. */
+:root {
+  --ls-paper: #F2F3EF;
+  --ls-ink: #121A24;
+  --ls-ink-2: #55606C;
+  --ls-mist: #E2E7E7;
 }
 
 @media (prefers-color-scheme: dark) {

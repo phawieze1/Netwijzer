@@ -1,0 +1,16 @@
+---
+/**
+ * Toegang als badge. "Account nodig" krijgt een stippellijn (`.badge.key`),
+ * precies zoals in het prototype.
+ */
+
+import { toegangLabel } from '../../lib/format.ts';
+
+interface Props {
+  toegang: 'open' | 'account';
+}
+
+const { toegang } = Astro.props;
+---
+
+<span class:list={['badge', { key: toegang === 'account' }]}>{toegangLabel(toegang)}</span>

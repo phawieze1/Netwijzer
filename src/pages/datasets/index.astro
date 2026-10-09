@@ -1,0 +1,48 @@
+---
+/**
+ * /datasets/ — de volledige catalogus met filters op thema, formaat, toegang en
+ * meetfrequentie (docs/02-bouwspecificatie.md §4).
+ *
+ * Zoeken over alle pagina's gaat via Pagefind; deze pagina filtert op metadata.
+ */
+
+import Catalogus from '../../components/catalogus/Catalogus.astro';
+import Zoeken from '../../components/Zoeken.astro';
+import Base from '../../layouts/Base.astro';
+import { geheel } from '../../lib/format.ts';
+import { alleDatasets, alleBronnen } from '../../lib/inhoud.ts';
+
+const datasets = await alleDatasets();
+const bronnen = await alleBronnen();
+
+const leveranciers = new Set(datasets.map((dataset) => dataset.data.leverancier));
+const aantalVoorbeeld = datasets.filter((dataset) => dataset.data.voorbeeld === true).length;
+---
+
+<Base
+  titel="Datasets"
+  beschrijving="De volledige catalogus met datasets over het Nederlandse energienet: wie levert hem, hoe vaak wordt er gemeten, hoe kom je erbij en hoe ver gaat hij terug."
+  actief="datasets"
+  voorbeeldregels={[`${geheel(aantalVoorbeeld)} van ${geheel(datasets.length)} datasets nog niet gecontroleerd`]}
+>
+  <header class="dhead">
+    <span class="label">Catalogus</span>
+    <h1>Datasets</h1>
+    <p class="lede">
+      Alles wat je wilt weten voordat je een dataset opent: wie levert hem, hoe vaak wordt er
+      gemeten, hoe kom je erbij en hoe ver gaat hij terug.
+    </p>
+    <p class="bronregel">
+      {geheel(datasets.length)} datasets van {geheel(leveranciers.size)} leveranciers, uit een
+      bronnenlijst van {geheel(bronnen.length)}. Metadata is overgenomen van de bron en in dit
+      voorbeeld nog niet gecontroleerd.
+    </p>
+  </header>
+
+  <div class="dsec">
+    {/* Zoeken over de hele site via Pagefind; de filters eronder werken op
+        metadata. De zoekactie uit de hero landt hier met ?q= in de URL. */}
+    <Zoeken label="Zoek in alle datasets, nieuws en bronnen" />
+    <Catalogus datasets={datasets} />
+  </div>
+</Base>

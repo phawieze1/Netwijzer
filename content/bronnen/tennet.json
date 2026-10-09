@@ -1,0 +1,8 @@
+{
+  "slug": "tennet",
+  "naam": "TenneT",
+  "type": "netbeheerder",
+  "website": "https://www.tennet.eu/",
+  "beschrijving": "Beheerder van het landelijke hoogspanningsnet. Beschrijving te controleren.",
+  "voorbeeld": true
+}

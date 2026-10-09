@@ -1,0 +1,8 @@
+{
+  "slug": "openstreetmap",
+  "naam": "OpenStreetMap",
+  "type": "community",
+  "website": "https://www.openstreetmap.org/",
+  "beschrijving": "Door vrijwilligers onderhouden geodatabase, met onder meer netinfrastructuur. Type en beschrijving te controleren.",
+  "voorbeeld": true
+}

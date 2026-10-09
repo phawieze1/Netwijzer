@@ -1,0 +1,379 @@
+---
+/**
+ * /datasets/[slug]/ — de detailpagina van één dataset.
+ *
+ * De negen blokken staan in de volgorde van docs/02-bouwspecificatie.md §6.
+ *
+ * Wat hier staat komt uit de content. Er is nog geen voorbeelddata per dataset:
+ * `data/voorbeelden/` wordt pas in fase 2 gevuld (§7.2). De blokken die daarop
+ * wachten — het voorbeeld, de eerste vijf rijen en de dekking per jaar — tonen
+ * daarom een lege staat. Het prototype verzint daar getallen; dat mag hier niet.
+ */
+
+import type { GetStaticPaths } from 'astro';
+
+import Legestaat from '../../components/catalogus/Legestaat.astro';
+import Startprompt from '../../components/catalogus/Startprompt.astro';
+import Themalabel from '../../components/catalogus/Themalabel.astro';
+import Base from '../../layouts/Base.astro';
+import {
+  datum,
+  datumTijd,
+  frequentieLabel,
+  isPeriode,
+  isTijdreeks,
+  kalenderdatum,
+  toegangLabel,
+} from '../../lib/format.ts';
+import {
+  alleDatasets,
+  bronnenPerSlug,
+  nieuwsVoorDataset,
+  peildatum,
+  vergelijkbareDatasets,
+  type Dataset,
+} from '../../lib/inhoud.ts';
+import { paden } from '../../lib/paden.ts';
+import { themaNaam } from '../../lib/themas.ts';
+
+export const getStaticPaths = (async () => {
+  const datasets = await alleDatasets();
+  return datasets.map((dataset) => ({
+    params: { slug: dataset.data.slug },
+    props: { dataset },
+  }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  dataset: Dataset;
+}
+
+const { dataset } = Astro.props;
+const d = dataset.data;
+
+const nu = peildatum();
+const bronnen = await bronnenPerSlug();
+const bron = bronnen.get(d.leverancier);
+const bronnaam = bron?.data.naam ?? d.leverancier;
+
+const vergelijkbaar = await vergelijkbareDatasets(dataset);
+const berichten = await nieuwsVoorDataset(d.slug);
+
+const NIET_VERMELD = 'Niet vermeld bij de bron';
+
+// ---------- blok 3: welke weergave het voorbeeld zou worden ----------
+// `preview.weergave` uit de content gaat voor; staat die er niet, dan leiden we
+// hem af uit formaat en frequentie (§6, punt 3).
+type Weergave = 'weefsel' | 'staven' | 'punten';
+
+function kiesWeergave(): Weergave {
+  const uitContent = d.preview?.weergave;
+  if (uitContent !== undefined) return uitContent;
+  if (d.formaat === 'Kaart') return 'punten';
+  if (isTijdreeks(d.frequentie)) return 'weefsel';
+  if (isPeriode(d.frequentie)) return 'staven';
+  return 'punten';
+}
+
+const weergave = kiesWeergave();
+const periodeNaam = d.frequentie === 'jaar' ? 'jaar' : d.frequentie === 'maand' ? 'maand' : 'periode';
+
+const VOORBEELD_KOP: Record<Weergave, string> = {
+  weefsel: 'Afgelopen zeven dagen',
+  staven: `Verloop per ${periodeNaam}`,
+  punten: 'Ruimtelijke spreiding',
+};
+
+const VOORBEELD_UITLEG: Record<Weergave, string> = {
+  weefsel:
+    'Hier komt een weefsel van zeven dagen × 24 uur: elke rij is een dag, elk vakje een uur, donkerder is een hogere waarde.',
+  staven: `Hier komt een staaf per ${periodeNaam}, naast elkaar in de tijd.`,
+  punten:
+    'Hier komt een puntenpatroon van de objecten in de dataset. De kaart zelf komt later, in een eigen ontwerp.',
+};
+
+// ---------- blok 9: agent-stempel ----------
+// Alleen tonen als de controle korter dan 48 uur geleden is (§5). De peildatum is
+// het moment van de build, dus de stempel verdwijnt bij de eerstvolgende build
+// erna van zichzelf.
+function agentStempel(): string | null {
+  if (d.laatstGecontroleerd === undefined) return null;
+  const moment = new Date(d.laatstGecontroleerd);
+  if (Number.isNaN(moment.getTime())) return null;
+  const uren = (nu.getTime() - moment.getTime()) / 3_600_000;
+  if (uren < 0 || uren > 48) return null;
+  return `Gecontroleerd door de Netwijzer-agent op ${datumTijd(d.laatstGecontroleerd)}.`;
+}
+
+const stempel = agentStempel();
+
+// Expliciet getypeerd: zo blijft deze pagina kloppen ook als `astro:content` zijn
+// gegenereerde typen (nog) niet geladen heeft. Zie het rapport bij deze fase.
+const beperkingen: readonly string[] = d.beperkingen ?? [];
+const velden: ReadonlyArray<{ naam: string; type: string; betekenis: string }> = d.velden ?? [];
+---
+
+<Base
+  titel={d.naam}
+  beschrijving={d.beschrijving}
+  actief="datasets"
+  voorbeeldregels={d.voorbeeld === true ? ['Deze datasetbeschrijving is nog niet gecontroleerd'] : []}
+>
+  {/* 1. Kruimelpad, thema, naam, leverancier, beschrijving */}
+  <nav class="crumbs" aria-label="Kruimelpad">
+    <a href={paden.datasets()}>Datasets</a>
+    <span aria-hidden="true">›</span>
+    <span>{themaNaam(d.thema)}</span>
+    <span aria-hidden="true">›</span>
+    <span aria-current="page">{d.naam}</span>
+  </nav>
+
+  <div class="dhead">
+    <Themalabel thema={d.thema} />
+    <h1>{d.naam}</h1>
+    <span class="prov">{bronnaam}</span>
+    <p class="lede">{d.beschrijving}</p>
+    {
+      d.voorbeeld === true && (
+        <p class="voorbeeldmelding">
+          <span class="badge key">Voorbeeld</span>
+          <span>De metadata van deze dataset is nog niet gecontroleerd.</span>
+        </p>
+      )
+    }
+  </div>
+
+  <div class="dgrid">
+    <div>
+      {/* 2. Zes kerngegevens */}
+      <div class="facts6">
+        <div>
+          <span class="label">Meetfrequentie</span>
+          <b>{frequentieLabel(d.frequentie, d.frequentieLabel)}</b>
+        </div>
+        <div><span class="label">Formaat</span><b>{d.formaat}</b></div>
+        <div><span class="label">Toegang</span><b>{toegangLabel(d.toegang)}</b></div>
+        <div><span class="label">Beschikbaar sinds</span><b>{d.sinds}</b></div>
+        <div>
+          <span class="label">Laatst bijgewerkt</span>
+          <b>{d.laatstBijgewerkt !== undefined ? datum(d.laatstBijgewerkt) : NIET_VERMELD}</b>
+        </div>
+        <div><span class="label">Eenheid</span><b>{d.eenheid ?? NIET_VERMELD}</b></div>
+      </div>
+      <p class="bronregel kerngegevens-bron">
+        Bron: {bronnaam}. {
+          d.laatstBijgewerkt !== undefined
+            ? `Bij de bron bijgewerkt op ${datum(d.laatstBijgewerkt)}.`
+            : 'De bron vermeldt geen datum van de laatste bijwerking.'
+        } Peildatum van deze pagina: {datum(kalenderdatum(nu))}.
+      </p>
+
+      {/* 3. Voorbeeld */}
+      <section class="dsec" aria-labelledby="kop-voorbeeld">
+        <h2 id="kop-voorbeeld">{VOORBEELD_KOP[weergave]}</h2>
+        <p>{VOORBEELD_UITLEG[weergave]}</p>
+        <Legestaat kop="Nog geen voorbeelddata">
+          Netwijzer haalt straks wekelijks een kleine uitsnede bij de bron op en zet die hier. Dat
+          werkt nog niet. Tot die tijd staat hier niets: verzonnen cijfers horen niet op deze
+          pagina.
+        </Legestaat>
+      </section>
+
+      {/* 4. Zo ziet de data eruit */}
+      <section class="dsec" aria-labelledby="kop-rijen">
+        <h2 id="kop-rijen">Zo ziet de data eruit</h2>
+        <p>De eerste vijf rijen, zodra de voorbeelddata er is.</p>
+        <Legestaat kop="Nog geen voorbeeldrijen">
+          De rijen komen uit dezelfde uitsnede als het voorbeeld hierboven. De velden en hun
+          betekenis staan hieronder wel.
+        </Legestaat>
+      </section>
+
+      {/* 5. Velden */}
+      <section class="dsec" aria-labelledby="kop-velden">
+        <h2 id="kop-velden">Velden</h2>
+        {
+          velden.length > 0 ? (
+            <div class="tbl">
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Veld</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Betekenis</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {velden.map((veld) => (
+                    <tr>
+                      <td class="m">{veld.naam}</td>
+                      <td>{veld.type}</td>
+                      <td>{veld.betekenis}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <Legestaat kop="Velden nog niet gedocumenteerd">
+              De veldnamen, types en betekenis komen uit de documentatie van {bronnaam}. Voor deze
+              dataset zijn ze nog niet overgenomen.
+            </Legestaat>
+          )
+        }
+      </section>
+
+      {/* 6. Begin met een prompt */}
+      <section class="dsec" aria-labelledby="kop-prompt">
+        <h2 id="kop-prompt">Begin met een prompt</h2>
+        <p>
+          Plak deze prompt in Claude of een andere AI-assistent en vul je eigen doel in. De
+          gegevens van de dataset staan er al in. {
+            d.toegang === 'open'
+              ? 'Voor deze dataset heb je geen account nodig.'
+              : 'Voor deze dataset heb je een account en een sleutel bij de bron nodig.'
+          }
+        </p>
+        <Startprompt dataset={dataset} bronnaam={bronnaam} />
+      </section>
+
+      {/* 7. Dekking per jaar */}
+      <section class="dsec" aria-labelledby="kop-dekking">
+        <h2 id="kop-dekking">Dekking per jaar</h2>
+        <p>Het aandeel van de verwachte metingen dat per jaar aanwezig is.</p>
+        <Legestaat kop="Nog geen dekkingscijfers">
+          De dekking wordt geteld in de opgehaalde data. Zolang die er niet is, is er niets te
+          tellen en vullen we hier geen percentages in.
+        </Legestaat>
+      </section>
+
+      {/* 8. Let op */}
+      {
+        beperkingen.length > 0 && (
+          <section class="dsec" aria-labelledby="kop-letop">
+            <h2 id="kop-letop">Let op</h2>
+            <ul class="notes">
+              {beperkingen.map((beperking) => (
+                <li>{beperking}</li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
+    </div>
+
+    {/* 9. Zijkolom */}
+    <aside class="aside" aria-label="Over deze dataset">
+      <a class="cta" href={d.bronUrl} target="_blank" rel="noopener">
+        Naar de bron <span aria-hidden="true">↗</span>
+        <span class="sr">(opent in een nieuw tabblad)</span>
+      </a>
+      <dl>
+        <div>
+          <dt>Leverancier</dt>
+          <dd><a href={paden.bron(d.leverancier)}>{bronnaam}</a></dd>
+        </div>
+        <div>
+          <dt>Licentie</dt>
+          <dd>
+            {
+              d.licentie === undefined ? (
+                NIET_VERMELD
+              ) : d.licentie.url !== undefined ? (
+                <a href={d.licentie.url} target="_blank" rel="noopener">
+                  {d.licentie.naam}
+                </a>
+              ) : (
+                d.licentie.naam
+              )
+            }
+          </dd>
+        </div>
+        <div>
+          <dt>Thema</dt>
+          <dd><Themalabel thema={d.thema} /></dd>
+        </div>
+        <div>
+          <dt>Zekerheid van deze metadata</dt>
+          <dd>{d.zekerheid}</dd>
+        </div>
+        {
+          d.documentatieUrl !== undefined && (
+            <div>
+              <dt>Documentatie</dt>
+              <dd>
+                <a href={d.documentatieUrl} target="_blank" rel="noopener">
+                  Bij de bron
+                </a>
+              </dd>
+            </div>
+          )
+        }
+      </dl>
+
+      {
+        stempel !== null && (
+          <p class="agent">
+            <i aria-hidden="true" />
+            <span>{stempel}</span>
+          </p>
+        )
+      }
+
+      {
+        vergelijkbaar.length > 0 && (
+          <div>
+            <span class="label">Vergelijkbare datasets</span>
+            <div class="related">
+              {vergelijkbaar.map((kandidaat) => (
+                <a href={paden.dataset(kandidaat.data.slug)}>
+                  <span>{kandidaat.data.naam}</span>
+                  <span>
+                    {bronnen.get(kandidaat.data.leverancier)?.data.naam ??
+                      kandidaat.data.leverancier}
+                  </span>
+                </a>
+              ))}
+            </div>
+          </div>
+        )
+      }
+
+      {
+        berichten.length > 0 && (
+          <div>
+            <span class="label">In het nieuws</span>
+            <div class="related">
+              {berichten.map((bericht) => (
+                <a href={paden.nieuwsbericht(bericht.data.slug)}>
+                  <span>{bericht.data.titel}</span>
+                  <span>{datum(bericht.data.gepubliceerd)}</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        )
+      }
+    </aside>
+  </div>
+</Base>
+
+<style>
+  /* Alleen indeling; alle kleuren en maten komen uit de bestaande klassen. */
+  .voorbeeldmelding {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: .9rem;
+    color: var(--ink-2);
+  }
+
+  .kerngegevens-bron {
+    margin-top: 10px;
+  }
+
+  .related {
+    margin-top: 6px;
+  }
+</style>

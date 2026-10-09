@@ -1,0 +1,138 @@
+---
+/**
+ * Homepage.
+ *
+ * Volgorde volgens docs/02-bouwspecificatie.md §4: hero (kop, zoeken,
+ * thema-chips, kerncijfers, landschap), catalogus, nieuwsrivier met de laatste
+ * berichten, agenda met de jaarring, en de bronnen.
+ *
+ * Deze pagina stelt alleen samen. De onderdelen zitten in componenten en de
+ * gegevens komen uit src/lib/inhoud.ts.
+ */
+
+import Base from '../layouts/Base.astro';
+import PolderLandscape from '../components/PolderLandscape.astro';
+import Zoeken from '../components/Zoeken.astro';
+import Catalogus from '../components/catalogus/Catalogus.astro';
+import Nieuwsrivier from '../components/nieuws/Nieuwsrivier.astro';
+import Nieuwslijst from '../components/nieuws/Nieuwslijst.astro';
+import Jaarring from '../components/agenda/Jaarring.astro';
+import Agendalijst from '../components/agenda/Agendalijst.astro';
+import Bronnenlijst from '../components/bronnen/Bronnenlijst.astro';
+
+import { paden } from '../lib/paden.ts';
+import { geheel } from '../lib/format.ts';
+import { themaKleur, themaNaam } from '../lib/themas.ts';
+import {
+  alleBronnen,
+  alleDatasets,
+  alleEvenementen,
+  alleNieuws,
+  kerncijfers,
+  komendeEvenementen,
+  peildatum,
+} from '../lib/inhoud.ts';
+
+const peil = peildatum();
+
+const datasets = await alleDatasets();
+const bronnen = await alleBronnen();
+const berichten = await alleNieuws();
+const evenementen = await alleEvenementen();
+const komend = await komendeEvenementen(peil);
+const cijfers = await kerncijfers(peil);
+
+/* De snelle chips uit het prototype. Ze sturen naar de catalogus met het thema
+   al gekozen; het filter-island leest ?thema= uit de URL. Zonder JavaScript kom
+   je gewoon op de volledige catalogus uit. */
+const SNELLE_THEMAS = ['net', 'opwek', 'verbruik', 'markt'] as const;
+---
+
+<Base
+  titel="Netwijzer — Elke dataset over het Nederlandse net, op één plek."
+  beschrijving="Datasets, nieuws en agenda voor iedereen die met energiedata werkt. Dagelijks bijgehouden, altijd met bron."
+  titelIsVolledig={true}
+  voorbeeldregels={['Hero: gisteren tot nu']}
+>
+  <header id="top">
+    <div class="hero-top">
+      <div>
+        <span class="label">Onafhankelijk · Nederlandstalig</span>
+        <h1 style="margin-top:14px">Elke dataset over het <em>Nederlandse net</em>, op één plek.</h1>
+        <p class="lede">
+          Datasets, nieuws en agenda voor iedereen die met energiedata werkt. Dagelijks
+          bijgehouden, altijd met bron.
+        </p>
+      </div>
+      <div>
+        <Zoeken />
+        <div class="quick">
+          {
+            SNELLE_THEMAS.map((thema) => (
+              <a class="chip" href={paden.datasets() + '?thema=' + thema}>
+                <i style={'background:' + themaKleur(thema)} />
+                {themaNaam(thema)}
+              </a>
+            ))
+          }
+        </div>
+        <div class="stats">
+          <div><b>{geheel(cijfers.datasets)}</b><span>datasets</span></div>
+          <div><b>{geheel(cijfers.bronnen)}</b><span>bronnen</span></div>
+          <div><b>{geheel(cijfers.nieuwDezeWeek)}</b><span>nieuw deze week</span></div>
+        </div>
+      </div>
+    </div>
+
+    <PolderLandscape />
+  </header>
+
+  <section class="block" id="datasets" aria-labelledby="kop-datasets">
+    <div class="sec-head">
+      <h2 id="kop-datasets">Datasets</h2>
+      <p>
+        Alles wat je wilt weten voordat je een dataset opent: wie levert hem, hoe vaak wordt er
+        gemeten, hoe kom je erbij en hoe ver gaat hij terug.
+      </p>
+      <a href={paden.datasets()}>Naar de volledige catalogus</a>
+    </div>
+    <Catalogus datasets={datasets} />
+  </section>
+
+  <section class="block" id="nieuws" aria-labelledby="kop-nieuws">
+    <div class="sec-head">
+      <h2 id="kop-nieuws">Nieuws</h2>
+      <p>
+        De afgelopen 30 dagen als rivier. Elke stip is een bericht, de kleur is het thema. De
+        berichten eronder zijn de leesbare versie.
+      </p>
+      <a href={paden.nieuws()}>Al het nieuws</a>
+    </div>
+    <Nieuwsrivier berichten={berichten} dagen={30} peil={peil} />
+    <Nieuwslijst berichten={berichten} maximum={4} />
+  </section>
+
+  <section class="block" aria-label="Agenda en bronnen">
+    <div class="duo">
+      <div id="agenda">
+        <div class="sec-head">
+          <h2>Agenda</h2>
+          <p>Het jaar als ring.</p>
+          <a href={paden.agenda()}>Hele agenda</a>
+        </div>
+        <div class="agenda">
+          <Jaarring evenementen={evenementen} peil={peil} />
+          <Agendalijst evenementen={komend} maximum={4} peil={peil} />
+        </div>
+      </div>
+      <div id="bronnen">
+        <div class="sec-head">
+          <h2>Bronnen</h2>
+          <p>Elke stip is een dataset van die bron.</p>
+          <a href={paden.bronnen()}>Alle bronnen</a>
+        </div>
+        <Bronnenlijst bronnen={bronnen} datasets={datasets} />
+      </div>
+    </div>
+  </section>
+</Base>

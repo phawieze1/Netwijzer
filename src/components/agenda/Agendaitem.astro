@@ -1,0 +1,61 @@
+---
+/**
+ * Eén evenement in de agenda (`.ag` in het prototype): dag en maand links, de
+ * kop en een regel met plaats, tijd en organisator rechts.
+ *
+ * Er is geen detailpagina per evenement, dus de kop linkt naar het evenement
+ * zelf. Dat is een externe link: `target="_blank"` met `rel="noopener"`.
+ *
+ * Valt het evenement in een ander jaar dan de peildatum, dan staat het jaar in
+ * de regel eronder. Anders is "20 JAN" zonder jaar verwarrend.
+ */
+
+import { datum, kalenderdatum, nlDelen, tijd } from '../../lib/format.ts';
+import { themaNaam } from '../../lib/themas.ts';
+import { peildatum, type Evenement } from '../../lib/inhoud.ts';
+
+interface Props {
+  evenement: Evenement;
+  /** Peildatum om te bepalen of het jaar erbij moet. Standaard de build-dag. */
+  peil?: Date;
+}
+
+const { evenement, peil = peildatum() } = Astro.props;
+const item = evenement.data;
+
+const start = new Date(item.start);
+const delen = nlDelen(start);
+const anderJaar = delen.jaar !== nlDelen(peil).jaar;
+
+// Eén dag: "14:00–16:00". Meerdere dagen: tot en met de einddatum.
+let tijdregel = tijd(item.start);
+const eindWaarde = item.eind;
+if (eindWaarde !== undefined) {
+  tijdregel =
+    kalenderdatum(new Date(eindWaarde)) === kalenderdatum(start)
+      ? `${tijd(item.start)}–${tijd(eindWaarde)}`
+      : `${tijd(item.start)} tot ${datum(eindWaarde)}, ${tijd(eindWaarde)}`;
+}
+
+const regel = [
+  anderJaar ? datum(item.start) : '',
+  item.online === true ? 'Online' : item.plaats,
+  tijdregel,
+  item.organisator,
+  themaNaam(item.thema),
+  item.voorbeeld === true ? 'voorbeeld' : '',
+].filter((deel) => deel.length > 0);
+---
+
+<div class="ag" data-thema={item.thema}>
+  <div class="d">
+    <b>{String(delen.dag).padStart(2, '0')}</b>
+    <span>{delen.maand.toUpperCase()}</span>
+  </div>
+  <div>
+    <h3>
+      <a href={item.url} target="_blank" rel="noopener">{item.titel}</a>
+    </h3>
+    <p>{regel.join(' · ')}</p>
+  </div>
+</div>

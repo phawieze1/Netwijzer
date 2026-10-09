@@ -1,0 +1,46 @@
+---
+import Logo from './Logo.astro';
+import { paden } from '../lib/paden.ts';
+
+interface Props {
+  /** Welk menu-item als huidige pagina is gemarkeerd. */
+  actief?: 'datasets' | 'nieuws' | 'agenda' | 'bronnen' | 'over' | null;
+}
+
+const { actief = null } = Astro.props;
+
+const menu = [
+  { sleutel: 'datasets', label: 'Datasets', href: paden.datasets() },
+  { sleutel: 'nieuws', label: 'Nieuws', href: paden.nieuws() },
+  { sleutel: 'agenda', label: 'Agenda', href: paden.agenda() },
+  { sleutel: 'bronnen', label: 'Bronnen', href: paden.bronnen() },
+] as const;
+---
+
+<nav class="nav" aria-label="Hoofdmenu">
+  <a class="brand" href={paden.home()} aria-label="Netwijzer, naar de homepage">
+    <Logo />
+    <span class="word">NETWIJZER</span>
+  </a>
+  <ul>
+    {
+      menu.map((item) => (
+        <li>
+          <a href={item.href} aria-current={actief === item.sleutel ? 'page' : undefined}>
+            {item.label}
+          </a>
+        </li>
+      ))
+    }
+    <li>
+      {/* De kaart komt in fase 4; nog geen pagina, dus geen link. */}
+      <span class="nav-later">Kaart<span class="soon">later</span></span>
+    </li>
+  </ul>
+</nav>
+
+<style>
+  .nav-later {
+    color: var(--ink-2);
+  }
+</style>

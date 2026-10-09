@@ -1,0 +1,181 @@
+---
+/**
+ * Het polderlandschap in de hero: een datakunstwerk dat volledig uit
+ * `data/reeksen/latest.json` wordt getekend. Regels in docs/01-identiteit.md §7.
+ *
+ * Wat hier server-side staat is bewust compleet: het waardenvak met de laatste
+ * meting, de annotaties in het canvas-label, de bron met peildatum en een
+ * tekstalternatief met alle uurwaarden. Zonder JavaScript, zonder canvas en
+ * zonder interactie is alles wat gelezen moet worden dus leesbaar.
+ *
+ * "nu" komt uit het veld `tot` van de reeks, niet uit de klok van de bezoeker.
+ * Na "nu" komt mist: nog niet gemeten, en nooit verzonnen data.
+ */
+
+import { bronRegel, heroUitBestand, maakHero, zonderEenheid } from '../lib/reeks';
+import type { Energiereeks } from '../lib/reeks';
+import { uid } from '../lib/uid';
+import { MIST_LIJN, PALET, rgb } from '../scripts/hero/palet';
+
+interface Props {
+  /**
+   * De reeks om te tekenen. Laat weg om `data/reeksen/latest.json` te gebruiken;
+   * geef `null` om de melding te forceren (handig om die te bekijken).
+   */
+  reeks?: Energiereeks | null;
+  /** Melding als er geen bruikbare reeks is. */
+  melding?: string;
+}
+
+const {
+  reeks,
+  melding = 'Nog geen energiereeks beschikbaar. Zodra de meting is bijgewerkt staat het landschap hier weer.',
+} = Astro.props;
+
+const hero = reeks === undefined ? heroUitBestand() : maakHero(reeks);
+
+/** Eigen id, zodat twee landschappen op één pagina elkaar niet in de weg zitten. */
+const tabelId = uid('landschap-tabel');
+
+/** Kleuren van de stippen en de legenda, uit het landschapspalet (tokens.json). */
+const kleur = {
+  zon: rgb(PALET.sun),
+  land: rgb(PALET.land),
+  licht: rgb(PALET.window),
+  mist: rgb(PALET.mist),
+  mistLijn: rgb(MIST_LIJN),
+};
+
+/** De data voor het canvas; `<` ontsnappen zodat het script-blok niet kan sluiten. */
+const heroJson =
+  hero === null
+    ? ''
+    : JSON.stringify({
+        ...hero.data,
+        zon: hero.data.zon.map(afronden),
+        wind: hero.data.wind.map(afronden),
+        verbruik: hero.data.verbruik.map(afronden),
+      }).replace(/</g, '\\u003c');
+
+function afronden(v: number | null): number | null {
+  return v === null ? null : Math.round(v * 1000) / 1000;
+}
+---
+
+{
+  hero === null ? (
+    <p class="empty">{melding}</p>
+  ) : (
+    <>
+      <div class="scene" data-hero>
+        <canvas
+          data-hero-canvas
+          role="img"
+          tabindex="0"
+          aria-label={hero.tekst.ariaLabel}
+          aria-describedby={tabelId}
+        />
+        <div class="readout" aria-live="off">
+          <span class="t">
+            <span data-hero-waarde="tijd">{hero.tekst.nu.tijd}</span>
+            <small data-hero-waarde="dag">{hero.tekst.nu.dag}</small>
+          </span>
+          <dl>
+            <dt><i style={`background:${kleur.zon}`} />Zon</dt>
+            <dd data-hero-waarde="zon">{hero.tekst.nu.zon}</dd>
+            <dt><i style="background:var(--wind)" />Wind</dt>
+            <dd data-hero-waarde="wind">{hero.tekst.nu.wind}</dd>
+            <dt><i style={`background:${kleur.land}`} />Verbruik</dt>
+            <dd data-hero-waarde="verbruik">{hero.tekst.nu.verbruik}</dd>
+            <dt>Zon + wind dekt</dt>
+            <dd data-hero-waarde="dekking">{hero.tekst.nu.dekking}</dd>
+          </dl>
+        </div>
+        <script type="application/json" data-hero-data set:html={heroJson} />
+      </div>
+
+      <div class="legend">
+        <div class="keys">
+          <span class="k">
+            <svg width="26" height="16" viewBox="0 0 26 16" aria-hidden="true">
+              <path d="M1 15 Q13 -6 25 15" fill="none" stroke={kleur.zon} stroke-width="2" />
+              <circle cx="13" cy="5" r="3.5" fill={kleur.zon} />
+            </svg>
+            <span><b>Hoogte van de zon</b> = zonopwek</span>
+          </span>
+          <span class="k">
+            <svg width="16" height="18" viewBox="0 0 16 18" aria-hidden="true">
+              <line x1="8" y1="7" x2="8" y2="18" style="stroke:var(--ink)" stroke-width="1.5" />
+              <g style="stroke:var(--ink)" stroke-width="1.5" stroke-linecap="round">
+                <line x1="8" y1="7" x2="8" y2="1" />
+                <line x1="8" y1="7" x2="13" y2="10" />
+                <line x1="8" y1="7" x2="3" y2="10" />
+              </g>
+            </svg>
+            <span><b>Draaisnelheid molen</b> = windopwek op dat moment</span>
+          </span>
+          <span class="k">
+            <svg width="26" height="14" viewBox="0 0 26 14" aria-hidden="true">
+              <path d="M0 9 Q6 5 10 7 T20 4 L26 6 L26 14 L0 14 Z" fill={kleur.land} />
+              <circle cx="8" cy="11" r="1.2" fill={kleur.licht} />
+              <circle cx="18" cy="10" r="1.2" fill={kleur.licht} />
+            </svg>
+            <span><b>Landlijn en lichtjes</b> = verbruik</span>
+          </span>
+          <span class="k">
+            <svg width="22" height="14" viewBox="0 0 22 14" aria-hidden="true">
+              <rect width="22" height="14" rx="2" fill={kleur.mist} />
+              <line x1="4" y1="7" x2="18" y2="7" stroke={kleur.mistLijn} stroke-dasharray="2 2" />
+            </svg>
+            <span><b>Mist</b> = nog niet gemeten</span>
+          </span>
+        </div>
+        <span>
+          {hero.tekst.voorbeeld && <b>Voorbeeld</b>}
+          {hero.tekst.voorbeeld && ' · '}
+          {bronRegel(hero.tekst)} · sleep over het landschap of gebruik de pijltjestoetsen om door de
+          tijd te gaan
+        </span>
+      </div>
+
+      <div class="sr" id={tabelId}>
+        <table>
+          <caption>
+            Zonopwek, windopwek en verbruik per uur in GW, van gisteren 00:00 tot {hero.tekst.nu.tijd}.
+            {' '}
+            {bronRegel(hero.tekst)}.
+            {hero.tekst.voorbeeld && ' Voorbeelddata.'}
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Tijd</th>
+              <th scope="col">Dag</th>
+              <th scope="col">Zon (GW)</th>
+              <th scope="col">Wind (GW)</th>
+              <th scope="col">Verbruik (GW)</th>
+              <th scope="col">Zon + wind dekt</th>
+            </tr>
+          </thead>
+          <tbody>
+            {hero.tekst.uren.map((uur) => (
+              <tr>
+                <th scope="row">{uur.tijd}</th>
+                <td>{uur.dag}</td>
+                <td>{zonderEenheid(uur.zon)}</td>
+                <td>{zonderEenheid(uur.wind)}</td>
+                <td>{zonderEenheid(uur.verbruik)}</td>
+                <td>{uur.dekking}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
+  )
+}
+
+<script>
+  import { startLandschap } from '../scripts/hero/index';
+
+  startLandschap();
+</script>

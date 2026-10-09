@@ -1,0 +1,14 @@
+{
+  "slug": "2026-09-03-seminar-prijsvorming-day-ahead",
+  "titel": "Seminar prijsvorming op de day-ahead markt",
+  "start": "2026-09-03T15:00:00+02:00",
+  "eind": "2026-09-03T17:00:00+02:00",
+  "plaats": "Online",
+  "online": true,
+  "organisator": "Voorbeeldorganisator",
+  "url": "https://example.org/seminar-prijsvorming",
+  "thema": "markt",
+  "beschrijving": "Voorbeeld-evenement dat al is geweest. Tijd en organisator zijn placeholders.",
+  "zekerheid": "laag",
+  "voorbeeld": true
+}

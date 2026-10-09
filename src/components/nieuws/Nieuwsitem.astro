@@ -1,0 +1,35 @@
+---
+/**
+ * Eén nieuwsbericht in de lijst (`.ni` in het prototype): themastreep, kop,
+ * samenvatting, bron en datum. De hele regel is een link naar de detailpagina;
+ * de link naar het origineel staat daar.
+ *
+ * `data-thema` is de hook voor het themafilter op /nieuws/.
+ */
+
+import { datum } from '../../lib/format.ts';
+import { paden } from '../../lib/paden.ts';
+import { themaKleur, themaNaam } from '../../lib/themas.ts';
+import type { Nieuwsbericht } from '../../lib/inhoud.ts';
+
+interface Props {
+  bericht: Nieuwsbericht;
+}
+
+const { bericht } = Astro.props;
+const bericht_ = bericht.data;
+---
+
+<a class="ni" href={paden.nieuwsbericht(bericht_.slug)} data-thema={bericht_.thema}>
+  <span class="stripe" style={`background:${themaKleur(bericht_.thema)}`}></span>
+  <div>
+    <span class="label">{themaNaam(bericht_.thema)}</span>
+    <h3 style="margin-top:4px">{bericht_.titel}</h3>
+    <p>{bericht_.samenvatting}</p>
+    <div class="src">
+      {bericht_.bron} · {datum(bericht_.gepubliceerd)}{
+        bericht_.voorbeeld === true ? ' · voorbeeld' : ''
+      }
+    </div>
+  </div>
+</a>
