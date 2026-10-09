@@ -153,9 +153,25 @@ svg {
   padding-inline: var(--gutter);
 }
 
+/* Het woord "Voorbeeld" stond in het prototype in --needle. Op --paper haalt dat
+   rood 4,49:1 en de eis voor tekst is 4,5:1 (identiteit §10); axe faalde hierop.
+   De tekst staat nu in --ink en het rood blijft als stip ernaast: voor een
+   niet-tekstelement geldt 3:1, en dat wordt ruim gehaald. */
 .demo b {
-  color: var(--needle);
+  color: var(--ink);
   font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.demo b::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--needle);
+  flex: none;
 }
 
 /* ---------- navigatie ---------- */
