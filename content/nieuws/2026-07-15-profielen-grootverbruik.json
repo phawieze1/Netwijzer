@@ -1,0 +1,15 @@
+{
+  "slug": "2026-07-15-profielen-grootverbruik",
+  "titel": "Nieuwe profielen voor grootverbruik gepubliceerd",
+  "samenvatting": "Voorbeeld. Placeholder over nieuwe verbruiksprofielen voor grootverbruikaansluitingen. Hier komt in eigen woorden hoe de profielen zijn opgebouwd, voor welke periode ze gelden en waarvoor ze wel en niet bedoeld zijn.",
+  "thema": "verbruik",
+  "bron": "Voorbeeldbron",
+  "bronUrl": "https://example.org/profielen-grootverbruik",
+  "gepubliceerd": "2026-07-15",
+  "toegevoegd": "2026-07-15T07:00:00+02:00",
+  "datasets": [
+    "elektriciteitsbalans-cbs"
+  ],
+  "zekerheid": "laag",
+  "voorbeeld": true
+}

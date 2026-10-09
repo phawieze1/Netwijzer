@@ -1,0 +1,33 @@
+---
+/**
+ * Tijdbalk "beschikbaar sinds" in de lijstweergave (`.tl` uit het prototype).
+ *
+ * Dit is echte metadata: het jaartal komt uit `sinds`. De balk loopt van dat
+ * jaar tot nu; de rode streep rechts is "nu".
+ */
+
+import { themaKleur, type Thema } from '../../lib/themas.ts';
+
+interface Props {
+  /** Het jaar uit `dataset.sinds`. */
+  sinds: number;
+  /** Linkergrens van de schaal (jaar). */
+  van: number;
+  /** Rechtergrens van de schaal: nu, als jaar met maandbreuk. */
+  tot: number;
+  thema: Thema;
+}
+
+const { sinds, van, tot, thema } = Astro.props;
+
+const breedte = tot - van;
+const deel = breedte > 0 ? (sinds - van) / breedte : 0;
+const links = Math.min(100, Math.max(0, deel * 100));
+---
+
+<div class="tl" role="img" aria-label={`Beschikbaar sinds ${sinds}`}>
+  <div class="axis"></div>
+  <div class="span" style={`left:${links.toFixed(1)}%;right:0;background:${themaKleur(thema)}`}></div>
+  <div class="now"></div>
+  <span class="yr" style={`left:${links.toFixed(1)}%;top:-9px`}>{sinds}</span>
+</div>

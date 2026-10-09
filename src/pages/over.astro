@@ -1,0 +1,159 @@
+---
+/**
+ * /over/ — wat Netwijzer is, hoe de content tot stand komt en hoe je een fout
+ * meldt (docs/02-bouwspecificatie.md §4).
+ *
+ * Alles op deze pagina staat ook ergens in de repo: de werkwijze van de agents
+ * komt uit docs/03-content-en-agents.md, de kwaliteitseisen uit docs/02 §8.
+ * Er staan met opzet geen namen, e-mailadressen of cijfers op deze pagina die
+ * we niet kunnen naslaan.
+ */
+import Base from '../layouts/Base.astro';
+import { paden } from '../lib/paden.ts';
+
+const repo = 'https://github.com/phawieze1/Netwijzer';
+---
+
+<Base
+  titel="Over Netwijzer"
+  beschrijving="Wat Netwijzer is, hoe de content tot stand komt en hoe je een fout meldt."
+  actief="over"
+>
+  <header class="hero-top">
+    <div>
+      <span class="label">Over</span>
+      <h1 style="margin-top:14px">Een wegwijzer door de <em>energiedata</em>.</h1>
+      <p class="lede">
+        Netwijzer brengt datasets, nieuws en agenda over data in de Nederlandse energiesector bij
+        elkaar. Deze pagina legt uit wie erachter zit, hoe de inhoud tot stand komt en wat je doet
+        als er iets niet klopt.
+      </p>
+    </div>
+  </header>
+
+  <section class="dsec">
+    <div class="sec-head">
+      <h2>Wat Netwijzer is</h2>
+    </div>
+    <div class="prose">
+      <p>
+        Netwijzer is een catalogus. Per dataset staat er één pagina met de leverancier, de
+        meetfrequentie, het formaat, de voorwaarden voor toegang, de periode waarover de data gaat
+        en een link naar de bron. Daarnaast houdt de site bij wat er in het vakgebied gebeurt:
+        nieuws over data en duiding, en een agenda met bijeenkomsten.
+      </p>
+      <p>
+        De site is een onafhankelijk initiatief. Netwijzer hoort niet bij een netbeheerder, een
+        leverancier of een werkgever, en gebruikt geen interne data of huisstijl van een
+        organisatie. Alles wat je ziet komt uit openbare bronnen.
+      </p>
+      <p>
+        De inhoud is verdeeld over vijf vaste thema's: opwek, verbruik, net en congestie, markt, en
+        geo en infrastructuur. Netcongestie en netbeheer zijn de kern; Nederland staat vooraan,
+        buitenland komt alleen in beeld als voorbeeld.
+      </p>
+      <p>
+        Netwijzer is een statische site. Er is geen inlog, geen reactiemogelijkheid en geen
+        tracker. Er worden geen cookies gezet en er gaat geen verzoek naar een advertentie- of
+        statistiekdienst.
+      </p>
+    </div>
+  </section>
+
+  <section class="dsec">
+    <div class="sec-head">
+      <h2>Hoe de inhoud tot stand komt</h2>
+    </div>
+    <div class="prose">
+      <p>
+        Een deel van het werk doen agents: taken die een AI-assistent op een vast moment uitvoert.
+        Een agent voor nieuws draait op werkdagen, een agent voor de agenda en een agent voor
+        datasetbeschrijvingen draaien wekelijks. De cijfers voor het landschap in de hero komen
+        niet van een agent maar van een script dat de meetreeksen bij de bron ophaalt.
+      </p>
+      <h3>De stappen van een agent</h3>
+      <ol>
+        <li>
+          De agent leest eerst de bestaande inhoud van de site, zodat hij niets dubbel aanlevert.
+        </li>
+        <li>De agent zoekt in de bronnenlijst en op het web naar nieuwe items.</li>
+        <li>
+          Per item schrijft de agent één bestand volgens een vast schema: samenvatting in eigen
+          woorden, link naar het origineel, naam van de bron en de publicatiedatum.
+        </li>
+        <li>
+          De agent opent een pull request met de toegevoegde items, per item hoe zeker hij is en
+          waarom, en wat hij heeft overgeslagen en waarom.
+        </li>
+        <li>
+          Die pull request wordt gecontroleerd en met de hand goedgekeurd. Pas daarna staat het op
+          de site.
+        </li>
+      </ol>
+      <h3>Wat een agent niet mag</h3>
+      <ul>
+        <li>Tekst overnemen uit het origineel, behalve één citaat van maximaal één zin.</li>
+        <li>Een item opnemen zonder link, bronnaam en datum.</li>
+        <li>Bronnen gebruiken die achter een login of een besloten omgeving zitten.</li>
+        <li>Gokken. Bij twijfel geeft de agent een lage zekerheid of slaat hij het item over.</li>
+      </ul>
+      <p>
+        Daarnaast controleert de build elk bestand tegen het schema. Een item met een ontbrekend
+        veld, een onbekend thema of een datum in het verkeerde formaat komt niet door de build en
+        dus niet op de site. Dat is de reden dat de schema's en niet de agents de maat bepalen.
+      </p>
+      <p>
+        Op een datasetpagina staat wanneer een agent de gegevens voor het laatst heeft nagelopen.
+        Staat die vermelding er niet, dan is de laatste controle te lang geleden om er iets over te
+        beloven.
+      </p>
+    </div>
+  </section>
+
+  <section class="dsec">
+    <div class="sec-head">
+      <h2>Wat er nu op de site staat</h2>
+    </div>
+    <div class="prose">
+      <p>
+        Netwijzer is in opbouw. Alle datasets, nieuwsberichten, agenda-items en bronnen die je nu
+        ziet zijn voorbeeldcontent: ze hebben de vorm van echte items en voldoen aan de schema's,
+        maar de namen, cijfers, links en teksten zijn verzonnen om het ontwerp te kunnen bouwen en
+        testen. Daarom staat bovenaan elke pagina een balk die dat meldt.
+      </p>
+      <p>
+        Gebruik deze cijfers dus nog niet in je werk. De balk verdwijnt zodra er gecontroleerde
+        inhoud staat en de agents echt draaien.
+      </p>
+    </div>
+  </section>
+
+  <section class="dsec">
+    <div class="sec-head">
+      <h2>Een fout melden</h2>
+    </div>
+    <div class="prose">
+      <p>
+        Klopt een beschrijving niet, is een link dood, is een licentie veranderd of ontbreekt er
+        een dataset? Meld het als issue in de repository van de site:
+      </p>
+      <p>
+        <a href={repo} rel="noopener">github.com/phawieze1/Netwijzer</a>
+      </p>
+      <p>
+        Zet er in elk geval bij over welke pagina het gaat en wat er volgens jou mis is. Een link
+        naar de juiste bron helpt het meest. Correcties op dataset- en bronpagina's gaan dezelfde
+        weg als het werk van de agents: een wijziging in de repository, een controle, en daarna
+        live.
+      </p>
+      <p>
+        De site zelf staat ook in die repository. Je kunt er nalezen welke schema's gelden, hoe de
+        agents zijn ingericht en welke keuzes zijn gemaakt.
+      </p>
+      <p>
+        <a href={paden.datasets()}>Naar de datasets</a> ·
+        <a href={paden.bronnen()}>Naar de bronnen</a>
+      </p>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,15 @@
+{
+  "slug": "2026-09-07-geodata-stations-aangevuld",
+  "titel": "Nieuwe geodata voor stations beschikbaar",
+  "samenvatting": "Voorbeeld. Placeholder over geodata van onderstations die is aangevuld. Hier komt in eigen woorden welke velden zijn toegevoegd, hoe de dekking per regio verschilt en onder welke licentie de data valt.",
+  "thema": "geo",
+  "bron": "Voorbeeldbron",
+  "bronUrl": "https://example.org/geodata-stations",
+  "gepubliceerd": "2026-09-07",
+  "toegevoegd": "2026-09-07T07:00:00+02:00",
+  "datasets": [
+    "hoogspanningsnet"
+  ],
+  "zekerheid": "laag",
+  "voorbeeld": true
+}

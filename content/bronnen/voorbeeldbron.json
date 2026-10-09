@@ -1,0 +1,8 @@
+{
+  "slug": "voorbeeldbron",
+  "naam": "Voorbeeldbron",
+  "type": "overig",
+  "website": "https://example.org/",
+  "beschrijving": "Voorbeeld: geen echte organisatie. Deze bron staat er alleen om de weergave te tonen.",
+  "voorbeeld": true
+}

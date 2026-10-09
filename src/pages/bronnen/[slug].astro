@@ -1,0 +1,151 @@
+---
+/**
+ * /bronnen/<slug>/ — de bron met zijn datasets, type, website en beschrijving
+ * (bouwspecificatie §4).
+ *
+ * Alleen wat in content/bronnen/<slug>.json staat komt in beeld. Ontbreekt de
+ * beschrijving, dan zeggen we dat; we vullen niets aan.
+ */
+
+import Base from '../../layouts/Base.astro';
+import { alleBronnen, datasetsVanBron, peildatum } from '../../lib/inhoud.ts';
+import { datum, frequentieLabel, kalenderdatum, toegangLabel } from '../../lib/format.ts';
+import { paden } from '../../lib/paden.ts';
+import { themaKleur, themaNaam } from '../../lib/themas.ts';
+
+export async function getStaticPaths() {
+  const bronnen = await alleBronnen();
+  return bronnen.map((bron) => ({
+    params: { slug: bron.data.slug },
+    props: { bron },
+  }));
+}
+
+const { bron } = Astro.props;
+const item = bron.data;
+
+const datasets = await datasetsVanBron(item.slug);
+const vandaag = datum(kalenderdatum(peildatum()));
+
+/** De typen in het schema zijn gewone Nederlandse woorden; alleen de hoofdletter. */
+const typeLabel = `${item.type.charAt(0).toUpperCase()}${item.type.slice(1)}`;
+const isVoorbeeld = item.voorbeeld === true;
+const beschrijving = item.beschrijving;
+---
+
+<Base
+  titel={item.naam}
+  beschrijving={beschrijving ?? `${item.naam}: ${typeLabel} met ${datasets.length} datasets in Netwijzer.`}
+  actief="bronnen"
+  voorbeeldregels={isVoorbeeld ? ['Deze bron is voorbeeldcontent'] : []}
+>
+  <nav class="crumbs" aria-label="Kruimelpad">
+    <a href={paden.bronnen()}>Bronnen</a>
+    <span>›</span>
+    <span aria-current="page">{item.naam}</span>
+  </nav>
+
+  <div class="dhead">
+    <span class="th">
+      <span class="label">{typeLabel}</span>
+      {isVoorbeeld && <span class="badge key">voorbeeld</span>}
+    </span>
+    <h1>{item.naam}</h1>
+    <span class="prov">
+      {datasets.length === 1 ? '1 dataset' : `${datasets.length} datasets`} in Netwijzer
+    </span>
+    {
+      beschrijving === undefined ? (
+        <p class="lede">Nog geen beschrijving in eigen woorden voor deze bron.</p>
+      ) : (
+        <p class="lede">{beschrijving}</p>
+      )
+    }
+  </div>
+
+  <div class="dgrid">
+    <div>
+      <div class="dsec">
+        <h2>Datasets van deze bron</h2>
+        {
+          datasets.length === 0 ? (
+            <p>Er staat nog geen dataset van deze bron in de catalogus.</p>
+          ) : (
+            <Fragment>
+              <p>Peildatum {vandaag}. Elke dataset heeft een eigen pagina met de kerngegevens.</p>
+              <div class="list">
+                {datasets.map((dataset) => (
+                  <a class="row" href={paden.dataset(dataset.data.slug)}>
+                    <span class="nm">
+                      <b>{dataset.data.naam}</b>
+                      <span>{dataset.data.beschrijving}</span>
+                    </span>
+                    <span class="th">
+                      <i style={`background:${themaKleur(dataset.data.thema)}`} />
+                      {themaNaam(dataset.data.thema)}
+                    </span>
+                    <span class="cell">
+                      {frequentieLabel(dataset.data.frequentie, dataset.data.frequentieLabel)}
+                    </span>
+                    <span class="cell">{dataset.data.formaat}</span>
+                    <span class="cell">{toegangLabel(dataset.data.toegang)}</span>
+                    <span class="cell">
+                      <small>beschikbaar sinds</small>
+                      {dataset.data.sinds}
+                    </span>
+                  </a>
+                ))}
+              </div>
+            </Fragment>
+          )
+        }
+      </div>
+
+      {
+        item.feeds !== undefined && item.feeds.length > 0 && (
+          <div class="dsec">
+            <h2>Feeds</h2>
+            <p>De kanalen waar de nieuws-agent van Netwijzer deze bron op volgt.</p>
+            <ul class="notes">
+              {item.feeds.map((feed: string) => (
+                <li>
+                  <a href={feed} target="_blank" rel="noopener">
+                    {feed}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+    </div>
+
+    <aside class="aside" aria-label="Gegevens van deze bron">
+      <a class="cta" href={item.website} target="_blank" rel="noopener">Naar de website ↗</a>
+      <dl>
+        <div>
+          <dt>Type</dt>
+          <dd>{typeLabel}</dd>
+        </div>
+        <div>
+          <dt>Website</dt>
+          <dd>
+            <a href={item.website} target="_blank" rel="noopener">{item.website}</a>
+          </dd>
+        </div>
+        <div>
+          <dt>Datasets in Netwijzer</dt>
+          <dd>{datasets.length}</dd>
+        </div>
+        {
+          isVoorbeeld && (
+            <div>
+              <dt>Status</dt>
+              <dd>Voorbeeldcontent. Naam, type en beschrijving zijn nog niet gecontroleerd.</dd>
+            </div>
+          )
+        }
+      </dl>
+    </aside>
+  </div>
+</Base>

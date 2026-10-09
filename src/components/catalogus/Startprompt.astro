@@ -1,0 +1,47 @@
+---
+/**
+ * "Begin met een prompt" (docs/02-bouwspecificatie.md §6, punt 6).
+ *
+ * De tekst komt uit `lib/startprompt.ts`, dat het sjabloon uit
+ * `agents/startprompt-dataset.md` vult. Hier staat dus geen eigen sjabloon.
+ */
+
+import type { Dataset } from '../../lib/inhoud.ts';
+import { startprompt } from '../../lib/startprompt.ts';
+
+interface Props {
+  dataset: Dataset;
+  /** Weergavenaam van de leverancier, niet de slug. */
+  bronnaam: string;
+}
+
+const { dataset, bronnaam } = Astro.props;
+const d = dataset.data;
+
+const tekst = startprompt({
+  naam: d.naam,
+  leverancier: bronnaam,
+  frequentie: d.frequentie,
+  frequentieLabel: d.frequentieLabel,
+  eenheid: d.eenheid,
+  sinds: d.sinds,
+  formaat: d.formaat,
+  toegang: d.toegang,
+  velden: d.velden,
+  prompt: d.prompt,
+});
+
+const codeId = `prompt-${d.slug}`;
+---
+
+<div class="code">
+  <pre id={codeId}>{tekst}</pre>
+  <button type="button" data-kopieer={codeId} hidden>Kopieer</button>
+</div>
+<p class="label" role="status" data-kopieermelding={codeId}></p>
+
+<script>
+  import { startKopieerknoppen } from '../../scripts/catalogus/kopieer.ts';
+
+  startKopieerknoppen();
+</script>

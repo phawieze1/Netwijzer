@@ -1,0 +1,59 @@
+{
+  "slug": "day-ahead-prijzen-nl",
+  "naam": "Day-ahead prijzen NL",
+  "leverancier": "entsoe-transparency",
+  "thema": "markt",
+  "beschrijving": "Voorbeeld: uurprijzen van de Nederlandse day-ahead markt voor elektriciteit. Geschikt om prijsverloop en negatieve prijzen te volgen. Metadata nog niet gecontroleerd.",
+  "frequentie": "uur",
+  "formaat": "API",
+  "toegang": "account",
+  "sinds": 2015,
+  "eenheid": "EUR/MWh",
+  "laatstBijgewerkt": "2026-10-08",
+  "bronUrl": "https://transparency.entsoe.eu/",
+  "licentie": {
+    "naam": "Te controleren"
+  },
+  "velden": [
+    {
+      "naam": "tijdstip_start",
+      "type": "datum-tijd (UTC)",
+      "betekenis": "Begin van het prijsinterval"
+    },
+    {
+      "naam": "tijdstip_eind",
+      "type": "datum-tijd (UTC)",
+      "betekenis": "Einde van het prijsinterval"
+    },
+    {
+      "naam": "waarde",
+      "type": "getal",
+      "betekenis": "Prijs in EUR/MWh"
+    },
+    {
+      "naam": "eenheid",
+      "type": "tekst",
+      "betekenis": "EUR/MWh"
+    },
+    {
+      "naam": "status",
+      "type": "tekst",
+      "betekenis": "definitief of voorlopig"
+    }
+  ],
+  "beperkingen": [
+    "Voorbeeld: toegang vraagt een account; voorwaarden niet gecontroleerd."
+  ],
+  "preview": {
+    "enabled": true,
+    "weergave": "weefsel"
+  },
+  "prompt": {
+    "valkuilen": [
+      "Tijdstippen zijn in UTC; zet om naar Nederlandse tijd.",
+      "Prijzen kunnen negatief zijn; filter die niet weg."
+    ]
+  },
+  "zekerheid": "laag",
+  "voorbeeld": true
+}

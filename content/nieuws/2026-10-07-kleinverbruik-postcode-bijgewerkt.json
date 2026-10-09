@@ -1,0 +1,16 @@
+{
+  "slug": "2026-10-07-kleinverbruik-postcode-bijgewerkt",
+  "titel": "Kleinverbruikdata per postcode bijgewerkt met cijfers over 2025",
+  "samenvatting": "Voorbeeld. Twee netbeheerders publiceren de jaarcijfers over 2025 per postcodegebied. Hier komt een samenvatting in eigen woorden: wat is er nieuw, welke velden zijn veranderd en waar let je op bij vergelijken met eerdere jaren.",
+  "thema": "verbruik",
+  "bron": "Voorbeeldbron",
+  "bronUrl": "https://example.org/kleinverbruik-2025",
+  "gepubliceerd": "2026-10-07",
+  "toegevoegd": "2026-10-07T07:00:00+02:00",
+  "datasets": [
+    "kleinverbruik-postcode-liander",
+    "kleinverbruik-postcode-enexis"
+  ],
+  "zekerheid": "laag",
+  "voorbeeld": true
+}

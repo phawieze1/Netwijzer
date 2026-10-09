@@ -26,6 +26,8 @@
     "@types/node": "26.6.4",
     "ajv": "8.20.0",
     "ajv-formats": "3.0.1",
+    "astro-pagefind": "2.0.1",
+    "pagefind": "1.5.2",
     "typescript": "6.0.3"
   }
 }

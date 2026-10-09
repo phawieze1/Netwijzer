@@ -1,0 +1,76 @@
+---
+/**
+ * De catalogus: filters, weergaveschakelaar, lijstweergave en kaartweergave.
+ *
+ * Bruikbaar op de homepage en op /datasets/. Geef mee welke datasets erin staan
+ * en welke filtergroepen je wilt; de leveranciersnamen worden hier zelf opgezocht.
+ *
+ * Twee catalogussen op één pagina kunnen: het island koppelt elke `[data-catalogus]`
+ * apart en gebruikt geen vaste id's.
+ */
+
+import { bronnenPerSlug, peildatum, type Dataset } from '../../lib/inhoud.ts';
+import { FILTERGROEPEN, type Filtergroep } from '../../scripts/catalogus/velden.ts';
+import CatalogusFilters from './CatalogusFilters.astro';
+import CatalogusKaarten from './CatalogusKaarten.astro';
+import CatalogusLijst from './CatalogusLijst.astro';
+
+interface Props {
+  /** De datasets die in deze catalogus staan, in de volgorde waarin ze komen. */
+  datasets: Dataset[];
+  /** Welke filtergroepen er boven staan. Een lege lijst betekent: geen filters. */
+  filters?: readonly Filtergroep[] | undefined;
+  /** Welke weergave open staat bij het laden. */
+  weergave?: 'lijst' | 'kaarten' | undefined;
+  /** Of de schakelaar lijst/kaarten er staat. */
+  weergaveschakelaar?: boolean | undefined;
+}
+
+const {
+  datasets,
+  filters = FILTERGROEPEN,
+  weergave = 'lijst',
+  weergaveschakelaar = true,
+} = Astro.props;
+
+const bronnen = await bronnenPerSlug();
+const items = datasets.map((dataset) => ({
+  dataset,
+  bronnaam: bronnen.get(dataset.data.leverancier)?.data.naam ?? dataset.data.leverancier,
+}));
+
+// De schaal van de tijdbalk: van het oudste jaar in déze catalogus tot nu. Twee
+// jaar marge links, zodat het jaartal onder de balk niet buiten beeld valt.
+const nu = peildatum();
+const jaren = datasets.map((dataset) => dataset.data.sinds);
+const van = jaren.length > 0 ? Math.min(...jaren) - 2 : nu.getFullYear() - 20;
+const tot = nu.getFullYear() + (nu.getMonth() + 0.5) / 12;
+---
+
+<div data-catalogus>
+  <CatalogusFilters
+    datasets={datasets}
+    groepen={filters}
+    weergaveschakelaar={weergaveschakelaar}
+    weergave={weergave}
+  />
+
+  <div data-weergave="lijst" hidden={weergave !== 'lijst'}>
+    <CatalogusLijst items={items} van={van} tot={tot} />
+  </div>
+
+  <div data-weergave="kaarten" hidden={weergave !== 'kaarten'}>
+    <CatalogusKaarten items={items} />
+  </div>
+
+  <p class="empty" data-leeg hidden>
+    Geen dataset gevonden. Kies een ander filter of bekijk alle datasets.
+  </p>
+  <p class="sr" role="status" data-telling></p>
+</div>
+
+<script>
+  import { startCatalogus } from '../../scripts/catalogus/filters.ts';
+
+  startCatalogus();
+</script>

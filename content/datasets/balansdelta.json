@@ -1,0 +1,59 @@
+{
+  "slug": "balansdelta",
+  "naam": "Balansdelta",
+  "leverancier": "tennet",
+  "thema": "net",
+  "beschrijving": "Voorbeeld: het verschil tussen vraag en aanbod op het landelijke net, per minuut. Geschikt om onbalans en het regelvermogen te volgen. Metadata nog niet gecontroleerd.",
+  "frequentie": "minuut",
+  "formaat": "API",
+  "toegang": "open",
+  "sinds": 2018,
+  "eenheid": "MW",
+  "laatstBijgewerkt": "2026-10-09",
+  "bronUrl": "https://www.tennet.eu/",
+  "licentie": {
+    "naam": "Te controleren"
+  },
+  "velden": [
+    {
+      "naam": "tijdstip_start",
+      "type": "datum-tijd (UTC)",
+      "betekenis": "Begin van het meetinterval"
+    },
+    {
+      "naam": "tijdstip_eind",
+      "type": "datum-tijd (UTC)",
+      "betekenis": "Einde van het meetinterval"
+    },
+    {
+      "naam": "waarde",
+      "type": "getal",
+      "betekenis": "Gemeten waarde in MW"
+    },
+    {
+      "naam": "eenheid",
+      "type": "tekst",
+      "betekenis": "MW"
+    },
+    {
+      "naam": "status",
+      "type": "tekst",
+      "betekenis": "definitief of voorlopig"
+    }
+  ],
+  "beperkingen": [
+    "Voorbeeld: waarden per minuut zijn voorlopig en worden later vastgesteld."
+  ],
+  "preview": {
+    "enabled": true,
+    "weergave": "weefsel"
+  },
+  "prompt": {
+    "valkuilen": [
+      "Tijdstippen zijn in UTC; zet om naar Nederlandse tijd.",
+      "Een negatieve waarde betekent een ander tekort dan een positieve; let op het teken."
+    ]
+  },
+  "zekerheid": "laag",
+  "voorbeeld": true
+}

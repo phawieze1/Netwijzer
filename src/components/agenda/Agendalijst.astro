@@ -1,0 +1,39 @@
+---
+/**
+ * Een rij agenda-items onder elkaar. Met `maximum` kort je de lijst in,
+ * bijvoorbeeld tot vier evenementen op de homepage.
+ */
+
+import Agendaitem from './Agendaitem.astro';
+import { peildatum, type Evenement } from '../../lib/inhoud.ts';
+
+interface Props {
+  evenementen: Evenement[];
+  /** Maximaal aantal evenementen. Zonder waarde komen ze allemaal in beeld. */
+  maximum?: number;
+  /** Tekst als er niets is. Nooit iets verzinnen om de lijst te vullen. */
+  leeg?: string;
+  peil?: Date;
+}
+
+const {
+  evenementen,
+  maximum,
+  leeg = 'Nog geen evenementen in de agenda.',
+  peil = peildatum(),
+} = Astro.props;
+
+const zichtbaar = maximum === undefined ? evenementen : evenementen.slice(0, maximum);
+---
+
+{
+  zichtbaar.length === 0 ? (
+    <p class="empty">{leeg}</p>
+  ) : (
+    <div>
+      {zichtbaar.map((evenement) => (
+        <Agendaitem evenement={evenement} peil={peil} />
+      ))}
+    </div>
+  )
+}

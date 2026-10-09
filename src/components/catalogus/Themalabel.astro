@@ -1,0 +1,16 @@
+---
+/**
+ * Thema met zijn vaste kleurstip (`.th` uit het prototype). Eén kleur per thema,
+ * altijd via `themas.ts` — nooit een losse kleurwaarde.
+ */
+
+import { themaKleur, themaNaam, type Thema } from '../../lib/themas.ts';
+
+interface Props {
+  thema: Thema;
+}
+
+const { thema } = Astro.props;
+---
+
+<span class="th"><i style={`background:${themaKleur(thema)}`} aria-hidden="true"></i>{themaNaam(thema)}</span>

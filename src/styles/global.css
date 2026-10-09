@@ -91,6 +91,19 @@ svg {
   font-variant-numeric: tabular-nums;
 }
 
+/* Identiteit §4: getallen altijd met tabular-nums. De elementen in de datafont
+   zetten dat zelf al; dit dekt de overige plekken waar jaartallen, aantallen of
+   datums staan, zodat cijfers onder elkaar uitlijnen. */
+.badge,
+.cell,
+.facts6 b,
+.card .facts span,
+.cov,
+.ni .src,
+.src-row {
+  font-variant-numeric: tabular-nums;
+}
+
 .sr {
   position: absolute;
   width: 1px;

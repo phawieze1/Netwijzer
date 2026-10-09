@@ -1,0 +1,44 @@
+{
+  "slug": "hernieuwbare-elektriciteit-per-gemeente",
+  "naam": "Hernieuwbare elektriciteit per gemeente",
+  "leverancier": "klimaatmonitor",
+  "thema": "opwek",
+  "beschrijving": "Voorbeeld: jaarcijfers over hernieuwbaar opgewekte elektriciteit per gemeente. Geschikt om gemeenten te vergelijken over meerdere jaren. Metadata nog niet gecontroleerd.",
+  "frequentie": "jaar",
+  "formaat": "Bestand",
+  "toegang": "open",
+  "sinds": 2010,
+  "eenheid": "TJ",
+  "laatstBijgewerkt": "2026-08-01",
+  "bronUrl": "https://example.org/",
+  "licentie": {
+    "naam": "Te controleren"
+  },
+  "velden": [
+    {
+      "naam": "periode",
+      "type": "tekst",
+      "betekenis": "Jaar, bijvoorbeeld 2025"
+    },
+    {
+      "naam": "gebied",
+      "type": "tekst",
+      "betekenis": "Gemeente"
+    },
+    {
+      "naam": "waarde",
+      "type": "getal",
+      "betekenis": "Waarde in TJ"
+    }
+  ],
+  "beperkingen": [
+    "Voorbeeld: de bronurl is nog een voorbeeldadres en moet worden gecontroleerd.",
+    "Voorbeeld: gemeentelijke herindelingen maken reeksen over lange perioden lastig te vergelijken."
+  ],
+  "preview": {
+    "enabled": true,
+    "weergave": "staven"
+  },
+  "zekerheid": "laag",
+  "voorbeeld": true
+}

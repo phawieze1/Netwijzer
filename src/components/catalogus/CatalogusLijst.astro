@@ -1,0 +1,35 @@
+---
+/**
+ * Lijstweergave van de catalogus: de kolomkoppen en de rijen.
+ *
+ * De kolomkoppen zijn een visuele hulp (ze verdwijnen onder 1000 px) en staan
+ * daarom op `aria-hidden`; de betekenis zit in de rij zelf.
+ */
+
+import type { Dataset } from '../../lib/inhoud.ts';
+import CatalogusRij from './CatalogusRij.astro';
+
+interface Props {
+  items: ReadonlyArray<{ dataset: Dataset; bronnaam: string }>;
+  van: number;
+  tot: number;
+}
+
+const { items, van, tot } = Astro.props;
+---
+
+<div class="list-head" aria-hidden="true">
+  <span>Dataset</span>
+  <span>Thema</span>
+  <span>Meetfrequentie</span>
+  <span>Formaat</span>
+  <span>Toegang</span>
+  <span class="yrs"><span>Beschikbaar sinds</span><span class="mono">{van} – nu</span></span>
+</div>
+<div class="list">
+  {
+    items.map((item) => (
+      <CatalogusRij dataset={item.dataset} bronnaam={item.bronnaam} van={van} tot={tot} />
+    ))
+  }
+</div>

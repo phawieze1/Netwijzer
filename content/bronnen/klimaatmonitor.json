@@ -1,0 +1,8 @@
+{
+  "slug": "klimaatmonitor",
+  "naam": "Klimaatmonitor",
+  "type": "overheid",
+  "website": "https://example.org/",
+  "beschrijving": "Databank met energie- en klimaatcijfers per gemeente. Website, type en beschrijving te controleren; de website is hier nog een voorbeeldadres.",
+  "voorbeeld": true
+}

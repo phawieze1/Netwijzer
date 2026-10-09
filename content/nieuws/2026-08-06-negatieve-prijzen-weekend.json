@@ -1,0 +1,15 @@
+{
+  "slug": "2026-08-06-negatieve-prijzen-weekend",
+  "titel": "Negatieve prijzen vaker in het weekend",
+  "samenvatting": "Voorbeeld. Placeholder over het patroon van negatieve day-ahead prijzen. Hier komt in eigen woorden over welke periode is gekeken, hoe de uren zijn geteld en welke voorbehouden daarbij horen.",
+  "thema": "markt",
+  "bron": "Voorbeeldbron",
+  "bronUrl": "https://example.org/negatieve-prijzen",
+  "gepubliceerd": "2026-08-06",
+  "toegevoegd": "2026-08-06T07:00:00+02:00",
+  "datasets": [
+    "day-ahead-prijzen-nl"
+  ],
+  "zekerheid": "laag",
+  "voorbeeld": true
+}

@@ -1,0 +1,185 @@
+---
+/**
+ * De nieuwsrivier (`#river` in het prototype).
+ *
+ * Per dag één stip per bericht, gestapeld, in de kleur van het thema. Rechts
+ * staat de rode markering voor vandaag. De hele SVG wordt hier server-side
+ * berekend en uitgeschreven; er gaat geen JavaScript naar de browser.
+ *
+ * De stippen zijn een beeld, niet de enige drager van de informatie: de lijst
+ * met berichten eronder is de leesbare versie. Daarom is de SVG een
+ * `role="img"` met een `aria-label` dat zegt wat er te zien is, en zijn er geen
+ * focusbare elementen in de tekening.
+ *
+ * Harde regel: elke visualisatie heeft een bron en peildatum in beeld. Die
+ * staan in de `figcaption` onder de tekening.
+ */
+
+import { datum, kalenderdatum, naarSorteerDatum, nlDelen } from '../../lib/format.ts';
+import { themaKleur, themaNaam } from '../../lib/themas.ts';
+import { peildatum, type Nieuwsbericht } from '../../lib/inhoud.ts';
+
+interface Props {
+  /** De berichten waaruit gekozen wordt; buiten het venster vallen ze weg. */
+  berichten: Nieuwsbericht[];
+  /** Lengte van het venster in dagen. 30 op de homepage, 90 op /nieuws/. */
+  dagen?: number;
+  /** De laatste dag van het venster. Standaard de dag van de build. */
+  peil?: Date;
+}
+
+const { berichten, dagen = 30, peil = peildatum() } = Astro.props;
+
+const DAG_MS = 86_400_000;
+const aantalDagen = Math.max(1, Math.round(dagen));
+
+/** De kalenderdag (UTC-middernacht) waarop een datum- of datum-tijdveld valt. */
+function dagSleutel(waarde: string): number {
+  return Date.parse(`${kalenderdatum(new Date(naarSorteerDatum(waarde)))}T00:00:00Z`);
+}
+
+const laatsteMs = Date.parse(`${kalenderdatum(peil)}T00:00:00Z`);
+const eersteMs = laatsteMs - (aantalDagen - 1) * DAG_MS;
+
+// Berichten groeperen per dag. Alleen wat in het venster valt komt in beeld.
+const perDag = new Map<number, Nieuwsbericht[]>();
+for (const bericht of berichten) {
+  const sleutel = dagSleutel(bericht.data.gepubliceerd);
+  if (sleutel < eersteMs || sleutel > laatsteMs) continue;
+  const bestaand = perDag.get(sleutel);
+  if (bestaand === undefined) perDag.set(sleutel, [bericht]);
+  else bestaand.push(bericht);
+}
+
+type Stip = { bericht: Nieuwsbericht; dagIndex: number; rij: number };
+
+const stippen: Stip[] = [];
+let maxStapel = 1;
+for (const [sleutel, lijst] of perDag) {
+  const dagIndex = Math.round((sleutel - eersteMs) / DAG_MS);
+  maxStapel = Math.max(maxStapel, lijst.length);
+  lijst.forEach((bericht, rij) => {
+    stippen.push({ bericht, dagIndex, rij });
+  });
+}
+
+// Maatvoering, overgenomen uit het prototype (viewBox 1000 breed, stippen op
+// een basislijn, dagnamen eronder). De hoogte en de straal volgen uit het
+// aantal dagen, zodat 90 dagen net zo leesbaar blijft als 30.
+const BREEDTE = 1000;
+const MARGE_X = 20;
+const MARGE_BOVEN = 40;
+const stapX = aantalDagen > 1 ? (BREEDTE - 2 * MARGE_X) / (aantalDagen - 1) : 0;
+const straal = Math.max(2.6, Math.min(6.5, stapX * 0.42));
+const rijHoogte = straal * 2 + 4;
+const basis = Math.max(78, MARGE_BOVEN + (maxStapel - 1) * rijHoogte);
+const HOOGTE = basis + 32;
+const xVan = (index: number): number => MARGE_X + index * stapX;
+
+// Dagnamen: altijd één op vandaag en vanaf daar terug met een vaste stap.
+const labelStap = aantalDagen <= 35 ? 7 : 14;
+const dagLabels: Array<{ x: number; tekst: string }> = [];
+for (let i = 0; i < aantalDagen; i += 1) {
+  if ((aantalDagen - 1 - i) % labelStap !== 0) continue;
+  const delen = nlDelen(new Date(eersteMs + i * DAG_MS));
+  dagLabels.push({ x: xVan(i), tekst: `${delen.dag} ${delen.maand}` });
+}
+
+const eersteDatum = datum(kalenderdatum(new Date(eersteMs)));
+const laatsteDatum = datum(kalenderdatum(peil));
+const isVoorbeeld = stippen.some((stip) => stip.bericht.data.voorbeeld === true);
+
+const aantalTekst = stippen.length === 1 ? '1 bericht' : `${stippen.length} berichten`;
+const ariaLabel = [
+  `Nieuwsrivier over ${aantalDagen} dagen, van ${eersteDatum} tot ${laatsteDatum}.`,
+  `${aantalTekst}, elk als stip op de dag van publicatie in de kleur van het thema.`,
+  'De rode markering rechts is vandaag.',
+  'Dezelfde berichten staan als leesbare lijst onder deze afbeelding.',
+  isVoorbeeld ? 'Voorbeeldcontent.' : '',
+]
+  .filter((deel) => deel.length > 0)
+  .join(' ');
+
+const vandaagX = xVan(aantalDagen - 1) + 12;
+---
+
+<figure class="viz">
+  <div class="river-wrap">
+    <svg
+      class="river"
+      viewBox={`0 0 ${BREEDTE} ${HOOGTE}`}
+      role="img"
+      aria-label={ariaLabel}
+      data-nieuws-rivier
+    >
+      <line
+        x1={MARGE_X - 10}
+        x2={BREEDTE - MARGE_X + 10}
+        y1={basis + 10}
+        y2={basis + 10}
+        style="stroke:var(--rule)"
+        stroke-width="1"></line>
+
+      {
+        dagLabels.map((label) => (
+          <text
+            x={label.x.toFixed(1)}
+            y={basis + 28}
+            text-anchor="middle"
+            font-size="11"
+            style="font-family:var(--f-data);fill:var(--ink-2)"
+          >
+            {label.tekst}
+          </text>
+        ))
+      }
+
+      {
+        stippen.map((stip) => (
+          <circle
+            cx={xVan(stip.dagIndex).toFixed(1)}
+            cy={(basis - stip.rij * rijHoogte).toFixed(1)}
+            r={straal.toFixed(1)}
+            style={`fill:${themaKleur(stip.bericht.data.thema)}`}
+            data-thema={stip.bericht.data.thema}
+          >
+            <title>
+              {datum(stip.bericht.data.gepubliceerd)} · {themaNaam(stip.bericht.data.thema)}:{' '}
+              {stip.bericht.data.titel}
+              {stip.bericht.data.voorbeeld === true ? ' (voorbeeld)' : ''}
+            </title>
+          </circle>
+        ))
+      }
+
+      <line
+        x1={vandaagX.toFixed(1)}
+        x2={vandaagX.toFixed(1)}
+        y1={MARGE_BOVEN}
+        y2={basis + 12}
+        style="stroke:var(--needle)"
+        stroke-width="1.5"></line>
+      <text
+        x={(vandaagX - 4).toFixed(1)}
+        y={MARGE_BOVEN - 6}
+        text-anchor="end"
+        font-size="11"
+        style="font-family:var(--f-data);fill:var(--needle)">vandaag</text>
+    </svg>
+  </div>
+  <figcaption class="bronregel">
+    Eén stip per bericht, op de dag van publicatie, in de kleur van het thema. Periode {eersteDatum} tot
+    {' '}{laatsteDatum} ({aantalDagen} dagen) · {aantalTekst} · Bron: de nieuwsberichten op deze site,
+    elk met zijn eigen bron · Peildatum {laatsteDatum}{isVoorbeeld ? ' · Voorbeeldcontent' : ''}
+  </figcaption>
+</figure>
+
+<style>
+  /* Alleen plaatsing: de tekening en de bronregel onder elkaar. Geen kleur,
+     maat of lettertype — die staan in global.css en tokens.css. */
+  .viz {
+    margin: 0;
+    display: grid;
+    gap: 10px;
+  }
+</style>

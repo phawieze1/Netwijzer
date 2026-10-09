@@ -1,0 +1,178 @@
+---
+/**
+ * De jaarring (`#ring` in het prototype): twaalf maanden rondom, de maand van
+ * vandaag dik, de wijzer in `--needle` op vandaag en per evenement een stip in
+ * de kleur van het thema.
+ *
+ * De ring beslaat precies één kalenderjaar. Evenementen uit een ander jaar
+ * worden niet verzonnen op de ring geplakt; die melden we in de bronregel en
+ * ze staan in de lijst ernaast.
+ *
+ * Volledig server-side berekend. De SVG is een `role="img"`: de leesbare
+ * versie is de lijst met evenementen ernaast.
+ */
+
+import { datum, kalenderdatum, MAANDEN, nlDelen } from '../../lib/format.ts';
+import { themaKleur, themaNaam } from '../../lib/themas.ts';
+import { peildatum, type Evenement } from '../../lib/inhoud.ts';
+
+interface Props {
+  evenementen: Evenement[];
+  /** Het jaar dat de ring beslaat. Standaard het jaar van de peildatum. */
+  jaar?: number;
+  /** Waar de wijzer staat. Standaard de dag van de build. */
+  peil?: Date;
+}
+
+const { evenementen, jaar, peil = peildatum() } = Astro.props;
+
+const MIDDEN = 110;
+const RADIUS = 84;
+
+const delenPeil = nlDelen(peil);
+const ringJaar = jaar ?? delenPeil.jaar;
+
+/** Hoek op de ring: 1 januari staat boven, het jaar loopt met de klok mee. */
+function hoekVan(maandNr: number, dag: number): number {
+  return -Math.PI / 2 + ((maandNr - 1 + (dag - 1) / 31) / 12) * Math.PI * 2;
+}
+
+function punt(hoek: number, straal: number): { x: string; y: string } {
+  return {
+    x: (MIDDEN + Math.cos(hoek) * straal).toFixed(1),
+    y: (MIDDEN + Math.sin(hoek) * straal).toFixed(1),
+  };
+}
+
+/** Hetzelfde punt als `x y`, voor gebruik in een `d`-attribuut. */
+function padPunt(hoek: number, straal: number): string {
+  const { x, y } = punt(hoek, straal);
+  return `${x} ${y}`;
+}
+
+const inRing = evenementen
+  .map((evenement) => ({ evenement, delen: nlDelen(new Date(evenement.data.start)) }))
+  .filter((item) => item.delen.jaar === ringJaar);
+const buitenRing = evenementen.length - inRing.length;
+
+// Vallen twee evenementen op dezelfde dag, dan schuift de tweede naar binnen
+// zodat er geen stippen onder elkaar verdwijnen.
+const bezet = new Map<string, number>();
+const stippen = inRing.map(({ evenement, delen }) => {
+  const sleutel = `${delen.maandNr}-${delen.dag}`;
+  const rang = bezet.get(sleutel) ?? 0;
+  bezet.set(sleutel, rang + 1);
+  return {
+    evenement,
+    plek: punt(hoekVan(delen.maandNr, delen.dag), Math.max(14, RADIUS - 12 - rang * 11)),
+  };
+});
+
+const maanden = MAANDEN.map((naam, index) => {
+  const hoekBegin = -Math.PI / 2 + (index / 12) * Math.PI * 2 + 0.03;
+  const hoekEind = -Math.PI / 2 + ((index + 1) / 12) * Math.PI * 2 - 0.03;
+  const label = punt((hoekBegin + hoekEind) / 2, RADIUS + 16);
+  return {
+    naam,
+    isHuidig: ringJaar === delenPeil.jaar && index + 1 === delenPeil.maandNr,
+    pad: `M${padPunt(hoekBegin, RADIUS)} A${RADIUS} ${RADIUS} 0 0 1 ${padPunt(hoekEind, RADIUS)}`,
+    labelX: label.x,
+    // De tekst staat iets lager dan het midden van de maandboog, zodat hij
+    // optisch op de lijn staat.
+    labelY: (Number(label.y) + 3.5).toFixed(1),
+  };
+});
+
+const wijzerHoek = ringJaar === delenPeil.jaar ? hoekVan(delenPeil.maandNr, delenPeil.dag) : null;
+const wijzer = wijzerHoek === null ? null : punt(wijzerHoek, RADIUS - 6);
+const vandaag = datum(kalenderdatum(peil));
+const isVoorbeeld = inRing.some((item) => item.evenement.data.voorbeeld === true);
+
+const aantalTekst = stippen.length === 1 ? '1 evenement' : `${stippen.length} evenementen`;
+const ariaLabel = [
+  `Jaarring ${ringJaar}: de twaalf maanden rondom, met de klok mee vanaf januari bovenaan.`,
+  wijzer === null ? '' : `De rode wijzer staat op vandaag, ${vandaag}.`,
+  `${aantalTekst} als stip op hun datum, in de kleur van het thema.`,
+  'Dezelfde evenementen staan als leesbare lijst naast deze afbeelding.',
+  isVoorbeeld ? 'Voorbeeldcontent.' : '',
+]
+  .filter((deel) => deel.length > 0)
+  .join(' ');
+---
+
+<figure class="viz">
+  <svg class="ring" viewBox="0 0 220 220" role="img" aria-label={ariaLabel}>
+    {
+      maanden.map((maand) => (
+        <Fragment>
+          <path
+            d={maand.pad}
+            fill="none"
+            style={`stroke:var(${maand.isHuidig ? '--ink' : '--rule'})`}
+            stroke-width={maand.isHuidig ? 3 : 2}
+          />
+          <text
+            x={maand.labelX}
+            y={maand.labelY}
+            text-anchor="middle"
+            font-size="9"
+            style="font-family:var(--f-data);fill:var(--ink-2)"
+          >
+            {maand.naam}
+          </text>
+        </Fragment>
+      ))
+    }
+
+    {
+      wijzer !== null && (
+        <line
+          x1={MIDDEN}
+          y1={MIDDEN}
+          x2={wijzer.x}
+          y2={wijzer.y}
+          style="stroke:var(--needle)"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+      )
+    }
+    <circle cx={MIDDEN} cy={MIDDEN} r="4" style="fill:var(--ink)"></circle>
+
+    {
+      stippen.map((stip) => (
+        <circle
+          cx={stip.plek.x}
+          cy={stip.plek.y}
+          r="5"
+          style={`fill:${themaKleur(stip.evenement.data.thema)}`}
+        >
+          <title>
+            {datum(stip.evenement.data.start)} · {themaNaam(stip.evenement.data.thema)}:{' '}
+            {stip.evenement.data.titel}
+            {stip.evenement.data.voorbeeld === true ? ' (voorbeeld)' : ''}
+          </title>
+        </circle>
+      ))
+    }
+  </svg>
+  <figcaption class="bronregel">
+    De twaalf maanden van {ringJaar}; elke stip is een evenement op zijn datum, in de kleur van het
+    thema{wijzer === null ? '' : '; de wijzer staat op vandaag'}. {aantalTekst} op de ring{
+      buitenRing > 0
+        ? `, ${buitenRing} buiten ${ringJaar} en dus alleen in de lijst`
+        : ''
+    } · Bron: de agenda op deze site, elk evenement met zijn eigen organisator · Peildatum {vandaag}{
+      isVoorbeeld ? ' · Voorbeeldcontent' : ''
+    }
+  </figcaption>
+</figure>
+
+<style>
+  /* Alleen plaatsing: de ring en de bronregel onder elkaar. */
+  .viz {
+    margin: 0;
+    display: grid;
+    gap: 10px;
+  }
+</style>

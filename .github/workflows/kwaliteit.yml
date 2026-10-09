@@ -1,0 +1,249 @@
+name: Kwaliteit
+
+# Automatische kwaliteitscontrole op de gebouwde site, los van de deploy.
+#
+# docs/02-bouwspecificatie.md §8 vraagt twee dingen:
+#   - Toegankelijkheid: WCAG 2.2 AA, automatische check (axe) op de homepage en
+#     op één detailpagina.
+#   - Prestaties: Lighthouse >= 90 op mobiel voor prestaties en toegankelijkheid.
+#
+# Werkwijze: de site wordt net zo gebouwd als bij de deploy, daarna lokaal
+# geserveerd met `npm run preview` en vanaf localhost getest. Dat is de enige
+# manier om de echte pagina's te meten, inclusief client-side scripts.
+#
+# LET OP — base-pad. De site staat onder /Netwijzer/ (astro.config.mjs). De
+# previewserver mount `dist/` daar ook onder, dus elke URL in deze workflow
+# bevat dat pad. Zonder `/Netwijzer/` test je de 404 en krijg je een vals
+# geslaagde of vals gefaalde uitslag.
+#
+# Actie- en pakketversies zijn vastgezet op de actuele stabiele release
+# (gecontroleerd 9 okt 2026: actions/checkout 7.0.1, actions/setup-node 7.1.0,
+# actions/upload-artifact 7.0.2, @axe-core/cli 4.13.0, lighthouse 13.5.0).
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: kwaliteit-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Poort en base-pad van de previewserver. `npm run preview` = `astro preview`,
+  # en die mount dist/ onder `base` uit astro.config.mjs.
+  BASIS: http://localhost:4321/Netwijzer
+  # Chrome en ChromeDriver staan al op de runner (ubuntu-24.04). Door de
+  # meegeleverde versies te gebruiken hoeft npm geen browserbinary te
+  # downloaden; dat scheelt tijd en voorkomt versieverschil tussen de twee.
+  CHROME_PATH: /usr/bin/google-chrome
+  CHROMEDRIVER_SKIP_DOWNLOAD: 'true'
+
+jobs:
+  kwaliteit:
+    name: Toegankelijkheid en prestaties
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Code ophalen
+        uses: actions/checkout@v7.0.1
+
+      - name: Node installeren
+        uses: actions/setup-node@v7.1.0
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Dependencies installeren
+        run: npm ci
+
+      # Zelfde build als in deploy.yml: valideren, schema's vergelijken,
+      # typecontrole, statische site naar dist/. Pagefind maakt daarna de
+      # zoekindex in dist/pagefind/.
+      - name: Site bouwen
+        run: npm run build
+
+      # De detailpagina kiezen we uit de build in plaats van hem vast te zetten:
+      # zo blijft de workflow werken als een dataset-slug verandert. Alfabetisch
+      # eerste map, zodat twee runs dezelfde pagina meten.
+      # Zolang /datasets/ nog niet bestaat valt de controle terug op /over/.
+      - name: Detailpagina kiezen
+        id: paginas
+        run: |
+          # axe en Lighthouse schrijven hier hun rapporten; geen van beide maakt
+          # de map zelf aan.
+          mkdir -p rapporten
+
+          detail=""
+          if [ -d dist/datasets ]; then
+            detail=$(find dist/datasets -mindepth 1 -maxdepth 1 -type d | sort | head -n 1)
+          fi
+          if [ -n "$detail" ]; then
+            url="${BASIS}/datasets/$(basename "$detail")/"
+          else
+            echo "::notice::Nog geen datasetpagina's in dist/; /over/ gebruikt als detailpagina."
+            url="${BASIS}/over/"
+          fi
+          echo "home=${BASIS}/" >> "$GITHUB_OUTPUT"
+          echo "detail=${url}" >> "$GITHUB_OUTPUT"
+          echo "Homepage:      ${BASIS}/"
+          echo "Detailpagina:  ${url}"
+
+      # Geen extra pakket om te wachten: gewoon pollen tot de pagina 200 geeft.
+      - name: Previewserver starten
+        run: |
+          npm run preview -- --port 4321 > preview.log 2>&1 &
+          for poging in $(seq 1 30); do
+            if curl -fsS -o /dev/null "${BASIS}/"; then
+              echo "Previewserver staat klaar na ${poging} poging(en)."
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "::error::Previewserver kwam niet op ${BASIS}/"
+          cat preview.log
+          exit 1
+
+      # ---------------------------------------------------------------------
+      # Toegankelijkheid — axe. BLOKKEREND.
+      #
+      # Een axe-overtreding is een reproduceerbare fout in de markup, niet een
+      # meting met spreiding: ontbrekend label, te laag contrast, verkeerde
+      # koppenstructuur. Dat moet de build rood maken, anders sluipt het erin.
+      # De tags dekken WCAG 2.2 niveau A en AA; `best-practice` zit er met opzet
+      # niet bij, want dat is advies en geen norm.
+      # ---------------------------------------------------------------------
+      - name: Toegankelijkheid homepage (axe)
+        run: |
+          npx --yes @axe-core/cli@4.13.0 "${{ steps.paginas.outputs.home }}" \
+            --chromedriver-path "$CHROMEWEBDRIVER/chromedriver" \
+            --chrome-options="no-sandbox,disable-dev-shm-usage,window-size=412x915" \
+            --tags wcag2a,wcag2aa,wcag21a,wcag21aa,wcag22a,wcag22aa \
+            --dir rapporten \
+            --save axe-home.json \
+            --exit
+
+      - name: Toegankelijkheid detailpagina (axe)
+        run: |
+          npx --yes @axe-core/cli@4.13.0 "${{ steps.paginas.outputs.detail }}" \
+            --chromedriver-path "$CHROMEWEBDRIVER/chromedriver" \
+            --chrome-options="no-sandbox,disable-dev-shm-usage,window-size=412x915" \
+            --tags wcag2a,wcag2aa,wcag21a,wcag21aa,wcag22a,wcag22aa \
+            --dir rapporten \
+            --save axe-detail.json \
+            --exit
+
+      # ---------------------------------------------------------------------
+      # Lighthouse op mobiel.
+      #
+      # De Lighthouse-CLI meet standaard mobiel: geëmuleerde Moto G Power met
+      # 4G-throttling. Dat is precies wat docs/02 §8 vraagt, dus we zetten er
+      # geen vlaggen over. We vragen alleen de twee categorieën die in de norm
+      # staan en schrijven JSON; dat bestand is in de Lighthouse-viewer te
+      # openen als je een run wilt nalezen.
+      #
+      # De score-controle staat in een eigen stap hieronder, zodat Lighthouse
+      # zelf nooit de build breekt en we per categorie kunnen kiezen.
+      # ---------------------------------------------------------------------
+      - name: Lighthouse homepage
+        run: |
+          npx --yes lighthouse@13.5.0 "${{ steps.paginas.outputs.home }}" \
+            --quiet \
+            --chrome-flags="--headless=new --no-sandbox --disable-dev-shm-usage" \
+            --only-categories=performance,accessibility \
+            --output=json \
+            --output-path=rapporten/lighthouse-home.json
+
+      - name: Lighthouse detailpagina
+        run: |
+          npx --yes lighthouse@13.5.0 "${{ steps.paginas.outputs.detail }}" \
+            --quiet \
+            --chrome-flags="--headless=new --no-sandbox --disable-dev-shm-usage" \
+            --only-categories=performance,accessibility \
+            --output=json \
+            --output-path=rapporten/lighthouse-detail.json
+
+      # ---------------------------------------------------------------------
+      # Scores beoordelen. Bewuste keuze, want de twee categorieën zijn niet
+      # even betrouwbaar op een gedeelde runner:
+      #
+      #   - Toegankelijkheid: BLOKKEREND onder 90. Deze score komt uit dezelfde
+      #     statische controles als axe; hij schommelt niet van run tot run.
+      #     Zakt hij, dan is er echt iets veranderd in de markup.
+      #
+      #   - Prestaties: NIET BLOKKEREND, alleen een waarschuwing. De score hangt
+      #     af van de CPU die GitHub die run toevallig geeft; dezelfde commit
+      #     levert makkelijk een paar punten verschil. Een build rood maken op
+      #     89 in plaats van 91 kost vertrouwen in de workflow en zegt niets
+      #     over de site. De eis van >= 90 uit docs/02 §8 blijft staan en wordt
+      #     per fase met de hand nagelopen op het bewaarde rapport; deze stap
+      #     maakt alleen zichtbaar wanneer dat nodig is.
+      #
+      # Wordt de prestatiescore ooit stabiel in CI (eigen runner, of meerdere
+      # runs met een mediaan), dan kan dit blokkerend worden.
+      # ---------------------------------------------------------------------
+      - name: Scores beoordelen
+        run: |
+          cat > "$RUNNER_TEMP/scores.mjs" <<'EOF'
+          import { readFileSync, appendFileSync } from 'node:fs';
+
+          const DREMPEL = 90;
+          const rapporten = [
+            ['Homepage', 'rapporten/lighthouse-home.json'],
+            ['Detailpagina', 'rapporten/lighthouse-detail.json'],
+          ];
+
+          const regels = [
+            '## Lighthouse (mobiel)',
+            '',
+            '| Pagina | Prestaties | Toegankelijkheid |',
+            '| --- | --- | --- |',
+          ];
+          let blokkerend = false;
+
+          for (const [naam, pad] of rapporten) {
+            const rapport = JSON.parse(readFileSync(pad, 'utf8'));
+            const score = (sleutel) => {
+              const waarde = rapport.categories?.[sleutel]?.score;
+              return typeof waarde === 'number' ? Math.round(waarde * 100) : null;
+            };
+            const prestaties = score('performance');
+            const toegankelijkheid = score('accessibility');
+            regels.push(`| ${naam} | ${prestaties ?? '—'} | ${toegankelijkheid ?? '—'} |`);
+
+            if (toegankelijkheid === null || toegankelijkheid < DREMPEL) {
+              console.log(
+                `::error title=Toegankelijkheid te laag::${naam}: ${toegankelijkheid ?? 'geen score'} (norm ${DREMPEL}). Zie het bewaarde rapport.`,
+              );
+              blokkerend = true;
+            }
+            if (prestaties === null || prestaties < DREMPEL) {
+              console.log(
+                `::warning title=Prestaties onder de norm::${naam}: ${prestaties ?? 'geen score'} (norm ${DREMPEL}). Niet blokkerend; zie het commentaar in .github/workflows/kwaliteit.yml.`,
+              );
+            }
+          }
+
+          regels.push('', `Norm: ${DREMPEL}. Toegankelijkheid is blokkerend, prestaties niet.`);
+          if (process.env.GITHUB_STEP_SUMMARY) {
+            appendFileSync(process.env.GITHUB_STEP_SUMMARY, `${regels.join('\n')}\n`);
+          }
+          console.log(regels.join('\n'));
+
+          process.exit(blokkerend ? 1 : 0);
+          EOF
+          node "$RUNNER_TEMP/scores.mjs"
+
+      # Ook bij een rode build bewaren; dan kun je nalezen wat er precies mis is.
+      - name: Rapporten bewaren
+        if: always()
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: kwaliteitsrapporten
+          path: rapporten/
+          if-no-files-found: warn
+          retention-days: 14

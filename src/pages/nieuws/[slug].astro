@@ -1,0 +1,152 @@
+---
+/**
+ * /nieuws/<slug>/ — samenvatting, link naar het origineel en de gekoppelde
+ * datasets (bouwspecificatie §4).
+ *
+ * Redactieregel (docs/03 §4): altijd een link naar het origineel, de naam van
+ * de bron en de publicatiedatum. Niets wat niet in de content staat wordt hier
+ * aangevuld; ontbreekt een veld, dan zeggen we dat of laten we het weg.
+ */
+
+import Base from '../../layouts/Base.astro';
+import { alleBronnen, alleNieuws, datasetsVoorNieuws } from '../../lib/inhoud.ts';
+import { datum, datumTijd } from '../../lib/format.ts';
+import { paden } from '../../lib/paden.ts';
+import { themaKleur, themaNaam } from '../../lib/themas.ts';
+
+export async function getStaticPaths() {
+  const berichten = await alleNieuws();
+  return berichten.map((bericht) => ({
+    params: { slug: bericht.data.slug },
+    props: { bericht },
+  }));
+}
+
+const { bericht } = Astro.props;
+const item = bericht.data;
+
+const datasets = await datasetsVoorNieuws(bericht);
+
+// De `bron` in een nieuwsbericht is een naam, geen slug. Staat die naam
+// letterlijk in content/bronnen/, dan linken we door naar die bronpagina.
+const bronnen = await alleBronnen();
+const bronpagina = bronnen.find((bron) => bron.data.naam === item.bron);
+
+const isVoorbeeld = item.voorbeeld === true;
+---
+
+<Base
+  titel={item.titel}
+  beschrijving={item.samenvatting.slice(0, 200)}
+  actief="nieuws"
+  voorbeeldregels={isVoorbeeld ? ['Dit bericht is voorbeeldcontent'] : []}
+>
+  <nav class="crumbs" aria-label="Kruimelpad">
+    <a href={paden.nieuws()}>Nieuws</a>
+    <span>›</span>
+    <span>{themaNaam(item.thema)}</span>
+    <span>›</span>
+    <span aria-current="page">{item.titel}</span>
+  </nav>
+
+  <div class="dhead">
+    <span class="th">
+      <i style={`background:${themaKleur(item.thema)}`}></i>
+      {themaNaam(item.thema)}
+      {isVoorbeeld && <span class="badge key">voorbeeld</span>}
+    </span>
+    <h1>{item.titel}</h1>
+    <span class="prov">{item.bron} · {datum(item.gepubliceerd)}</span>
+  </div>
+
+  <div class="dgrid">
+    <div>
+      <div class="dsec">
+        <h2>Samenvatting</h2>
+        <p>
+          In eigen woorden, geschreven voor Netwijzer. Het volledige bericht staat bij de bron.
+        </p>
+        <div class="prose">
+          <p>{item.samenvatting}</p>
+          <p>
+            <a href={item.bronUrl} target="_blank" rel="noopener">
+              Lees het origineel bij {item.bron} ↗
+            </a>
+          </p>
+        </div>
+      </div>
+
+      <div class="dsec">
+        <h2>Gekoppelde datasets</h2>
+        {
+          datasets.length === 0 ? (
+            <p>Aan dit bericht is nog geen dataset uit de catalogus gekoppeld.</p>
+          ) : (
+            <Fragment>
+              <p>De datasets in de catalogus waar dit bericht over gaat.</p>
+              <div class="related">
+                {datasets.map((dataset) => (
+                  <a href={paden.dataset(dataset.data.slug)}>
+                    <span>{dataset.data.naam}</span>
+                    <span>{themaNaam(dataset.data.thema)}</span>
+                  </a>
+                ))}
+              </div>
+            </Fragment>
+          )
+        }
+      </div>
+    </div>
+
+    <aside class="aside" aria-label="Gegevens van dit bericht">
+      <a class="cta" href={item.bronUrl} target="_blank" rel="noopener">Naar het origineel ↗</a>
+      <dl>
+        <div>
+          <dt>Bron</dt>
+          <dd>
+            {
+              bronpagina === undefined ? (
+                item.bron
+              ) : (
+                <a href={paden.bron(bronpagina.data.slug)}>{item.bron}</a>
+              )
+            }
+          </dd>
+        </div>
+        <div>
+          <dt>Gepubliceerd</dt>
+          <dd>{datum(item.gepubliceerd)}</dd>
+        </div>
+        {
+          item.toegevoegd !== undefined && (
+            <div>
+              <dt>Toegevoegd aan Netwijzer</dt>
+              <dd>{datumTijd(item.toegevoegd)}</dd>
+            </div>
+          )
+        }
+        <div>
+          <dt>Thema</dt>
+          <dd>
+            <span class="th">
+              <i style={`background:${themaKleur(item.thema)}`}></i>
+              {themaNaam(item.thema)}
+            </span>
+          </dd>
+        </div>
+        <div>
+          <dt>Zekerheid</dt>
+          <dd>{item.zekerheid}</dd>
+        </div>
+        {
+          isVoorbeeld && (
+            <div>
+              <dt>Status</dt>
+              <dd>Voorbeeldcontent. Titel, samenvatting en link zijn placeholders.</dd>
+            </div>
+          )
+        }
+      </dl>
+    </aside>
+  </div>
+</Base>

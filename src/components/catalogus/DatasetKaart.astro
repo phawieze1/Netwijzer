@@ -1,0 +1,53 @@
+---
+/**
+ * Eén kaart in de kaartweergave (`.card` uit het prototype).
+ *
+ * Het prototype zet hier een mini-grafiek, maar die is in het prototype
+ * verzonnen. Echte voorbeelddata komt pas in fase 2 uit `data/voorbeelden/`
+ * (docs/02-bouwspecificatie.md §7.2). Zolang die er niet is, laten we het
+ * grafiekje weg: een lege-staat-blokje twaalf keer herhaald is ruis.
+ */
+
+import { frequentieLabel } from '../../lib/format.ts';
+import type { Dataset } from '../../lib/inhoud.ts';
+import { paden } from '../../lib/paden.ts';
+import { themaNaam } from '../../lib/themas.ts';
+import { itemAttributen } from '../../scripts/catalogus/velden.ts';
+import Themalabel from './Themalabel.astro';
+import Toegangbadge from './Toegangbadge.astro';
+
+interface Props {
+  dataset: Dataset;
+  bronnaam: string;
+}
+
+const { dataset, bronnaam } = Astro.props;
+const d = dataset.data;
+
+const attributen = itemAttributen({
+  slug: d.slug,
+  naam: d.naam,
+  bronnaam,
+  thema: d.thema,
+  themaNaam: themaNaam(d.thema),
+  formaat: d.formaat,
+  toegang: d.toegang,
+  frequentie: d.frequentie,
+});
+---
+
+<a class="card" href={paden.dataset(d.slug)} {...attributen}>
+  <div class="top">
+    <Themalabel thema={d.thema} />
+    <Toegangbadge toegang={d.toegang} />
+  </div>
+  <div>
+    <h3>{d.naam}</h3>
+    <span class="prov">{bronnaam}</span>
+  </div>
+  <div class="facts">
+    <span><small>Frequentie</small>{frequentieLabel(d.frequentie, d.frequentieLabel)}</span>
+    <span><small>Formaat</small>{d.formaat}</span>
+    <span><small>Sinds</small>{d.sinds}</span>
+  </div>
+</a>

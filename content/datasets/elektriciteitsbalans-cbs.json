@@ -1,0 +1,43 @@
+{
+  "slug": "elektriciteitsbalans-cbs",
+  "naam": "Elektriciteitsbalans",
+  "leverancier": "cbs-statline",
+  "thema": "verbruik",
+  "beschrijving": "Voorbeeld: maandcijfers over productie, invoer, uitvoer en verbruik van elektriciteit in Nederland. Geschikt voor trends over meerdere jaren. Metadata nog niet gecontroleerd.",
+  "frequentie": "maand",
+  "formaat": "API",
+  "toegang": "open",
+  "sinds": 2008,
+  "eenheid": "GWh",
+  "laatstBijgewerkt": "2026-09-18",
+  "bronUrl": "https://www.cbs.nl/",
+  "licentie": {
+    "naam": "Te controleren"
+  },
+  "velden": [
+    {
+      "naam": "periode",
+      "type": "tekst",
+      "betekenis": "Maand, bijvoorbeeld 2026-09"
+    },
+    {
+      "naam": "gebied",
+      "type": "tekst",
+      "betekenis": "Gebied, hier Nederland"
+    },
+    {
+      "naam": "waarde",
+      "type": "getal",
+      "betekenis": "Waarde in GWh"
+    }
+  ],
+  "beperkingen": [
+    "Voorbeeld: recente maanden kunnen voorlopig zijn en later worden bijgesteld."
+  ],
+  "preview": {
+    "enabled": true,
+    "weergave": "weefsel"
+  },
+  "zekerheid": "laag",
+  "voorbeeld": true
+}

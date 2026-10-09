@@ -1,0 +1,108 @@
+---
+/**
+ * Zoekveld. Markup 1-op-1 uit het prototype (`.search` in `.hero-top`):
+ * loepje, verborgen label, invoerveld, knop "Zoeken".
+ *
+ * Twee lagen, in deze volgorde gebouwd:
+ *
+ *  1. Zonder JavaScript is dit een gewoon GET-formulier naar de catalogus:
+ *     /Netwijzer/datasets/?q=… . Er gaat niets kapot en de bezoeker komt op een
+ *     pagina waar alle datasets staan. Dat is de harde eis uit CLAUDE.md:
+ *     geen client-side framework, bruikbaar zonder JS.
+ *  2. Met JavaScript onderschept src/scripts/zoeken.ts het formulier en zet de
+ *     treffers uit de statische Pagefind-index onder het veld. Lukt het laden
+ *     van die index niet, dan verstuurt het script het formulier gewoon alsnog.
+ *
+ * Stijl komt uit src/styles/global.css (`.search`, `.sr`, `.label`, `.related`).
+ * Hieronder staan alleen twee regels voor de resultatenlijst, die het prototype
+ * niet heeft. Geen eigen kleuren of maten buiten de tokens.
+ */
+import { paden } from '../lib/paden.ts';
+import { uid } from '../lib/uid.ts';
+
+interface Props {
+  /** Label bij het veld. Alleen voor schermlezers (class `sr`). */
+  label?: string;
+  /** Tekst in het lege veld. */
+  plaatshouder?: string;
+  /** Beginwaarde van het veld, bijvoorbeeld de `q` uit de URL. */
+  waarde?: string;
+}
+
+const {
+  label = 'Zoek datasets',
+  plaatshouder = 'Zoek een dataset, bv. kleinverbruik',
+  waarde = '',
+} = Astro.props;
+
+// Het veld kan meer dan één keer op een pagina staan (hero en catalogus), dus
+// elk exemplaar krijgt eigen id's.
+const basis = uid('zoeken');
+const veldId = `${basis}-veld`;
+---
+
+<div class="zoeken" data-zoeken>
+  <form class="search" role="search" method="get" action={paden.datasets()}>
+    <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+      <circle
+        cx="10.5"
+        cy="10.5"
+        r="6.5"
+        fill="none"
+        style="stroke:var(--ink)"
+        stroke-width="2"></circle>
+      <line
+        x1="15.5"
+        y1="15.5"
+        x2="21"
+        y2="21"
+        style="stroke:var(--ink)"
+        stroke-width="2"
+        stroke-linecap="round"></line>
+    </svg>
+    <label for={veldId} class="sr">{label}</label>
+    <input
+      id={veldId}
+      name="q"
+      type="search"
+      value={waarde}
+      placeholder={plaatshouder}
+      autocomplete="off"
+      enterkeyhint="search"
+    />
+    <button type="submit">Zoeken</button>
+  </form>
+
+  {/*
+    Het meldingsgebied staat buiten de resultatenlijst en blijft altijd in de
+    DOM: een `role="status"` in een verborgen element wordt niet voorgelezen.
+    Leeg is het onzichtbaar.
+  */}
+  <p class="label" role="status" aria-live="polite" aria-atomic="true" data-zoekstatus></p>
+
+  <div class="related uitslag" data-zoeklijst hidden></div>
+
+  <p class="label" data-zoekmeer hidden>
+    <a href={paden.datasets()}>Alles in de catalogus</a>
+  </p>
+</div>
+
+<script>
+  import '../scripts/zoeken.ts';
+</script>
+
+<style>
+  .zoeken {
+    display: grid;
+    gap: 10px;
+  }
+
+  /* De resultaten worden door JavaScript aangemaakt en hebben daarom geen
+     scope-attribuut van Astro; vandaar :global voor de regels die ze raken.
+     `.related a` in global.css zet twee kolommen (naam links, meta rechts); een
+     zoekresultaat heeft naam en uitsnede onder elkaar, dus één kolom. */
+  .uitslag :global(a) {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 3px;
+  }
+</style>

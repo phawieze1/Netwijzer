@@ -2,7 +2,13 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "astro/tsconfigs/strictest",
   "compilerOptions": {
-    "types": ["astro/client", "node"]
+    // Let op: zet hier GEEN "astro/client" bij. Dat bestand laadt een
+    // fallback-declaratie van `astro:content` waarin getCollection `any`
+    // teruggeeft ("run astro sync to generate high fidelity types"). Die stub
+    // wint dan van de echte types in .astro/content.d.ts en dan is alle content
+    // ineens `any`, zonder dat er iets faalt. Astro laadt astro/client zelf al
+    // via .astro/types.d.ts, in de juiste volgorde.
+    "types": ["node"]
   },
   "include": [".astro/types.d.ts", "src/**/*", "scripts/**/*", "*.mjs", "*.ts"],
   "exclude": ["node_modules", "dist", ".astro", "prototype", ".claude"]

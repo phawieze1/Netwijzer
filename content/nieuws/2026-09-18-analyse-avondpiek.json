@@ -1,0 +1,16 @@
+{
+  "slug": "2026-09-18-analyse-avondpiek",
+  "titel": "Analyse: verschuiving van de avondpiek in het verbruik",
+  "samenvatting": "Voorbeeld. Placeholder voor een analyse van het moment waarop de avondpiek valt. Hier komt in eigen woorden welke reeksen zijn gebruikt, over welke periode, en welke voorbehouden de auteur zelf noemt.",
+  "thema": "verbruik",
+  "bron": "Voorbeeldbron",
+  "bronUrl": "https://example.org/analyse-avondpiek",
+  "gepubliceerd": "2026-09-18",
+  "toegevoegd": "2026-09-18T07:00:00+02:00",
+  "datasets": [
+    "totale-belasting-nederland",
+    "elektriciteitsbalans-cbs"
+  ],
+  "zekerheid": "laag",
+  "voorbeeld": true
+}

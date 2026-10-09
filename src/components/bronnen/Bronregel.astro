@@ -1,0 +1,46 @@
+---
+/**
+ * Eén bron in het overzicht (`.src-row` in het prototype): de naam links, en
+ * rechts één stip per dataset van die bron in de themakleur van die dataset.
+ *
+ * De stippen zijn een beeld; de aantallen en namen staan in de `aria-label` en
+ * in de tooltip per stip, en volledig uitgeschreven op /bronnen/<slug>/.
+ */
+
+import { paden } from '../../lib/paden.ts';
+import { themaKleur, themaNaam } from '../../lib/themas.ts';
+import type { Bron, Dataset } from '../../lib/inhoud.ts';
+
+interface Props {
+  bron: Bron;
+  /** De datasets van deze bron, al gefilterd. */
+  datasets: Dataset[];
+}
+
+const { bron, datasets } = Astro.props;
+const aantal = datasets.length;
+const stippenLabel =
+  aantal === 1
+    ? `1 dataset van ${bron.data.naam}: ${datasets.map((set) => set.data.naam).join(', ')}`
+    : `${aantal} datasets van ${bron.data.naam}: ${datasets.map((set) => set.data.naam).join(', ')}`;
+---
+
+<div class="src-row">
+  <span>
+    <a href={paden.bron(bron.data.slug)}>{bron.data.naam}</a>
+  </span>
+  {
+    aantal === 0 ? (
+      <span class="bronregel">nog geen dataset</span>
+    ) : (
+      <span class="dots" role="img" aria-label={stippenLabel}>
+        {datasets.map((set) => (
+          <i
+            style={`background:${themaKleur(set.data.thema)}`}
+            title={`${set.data.naam} · ${themaNaam(set.data.thema)}`}
+          />
+        ))}
+      </span>
+    )
+  }
+</div>

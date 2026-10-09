@@ -1,0 +1,15 @@
+{
+  "slug": "2026-09-30-laadpuntenkaart-vernieuwd",
+  "titel": "Laadpuntenkaart vernieuwd met dagelijkse actualisatie",
+  "samenvatting": "Voorbeeld. Placeholder over een vernieuwde kaart van openbare laadpunten. Hier komt in eigen woorden wat er is veranderd aan de actualisatie en de velden, en wat dat betekent voor wie de data in een eigen kaart gebruikt.",
+  "thema": "geo",
+  "bron": "Voorbeeldbron",
+  "bronUrl": "https://example.org/laadpuntenkaart",
+  "gepubliceerd": "2026-09-30",
+  "toegevoegd": "2026-09-30T07:00:00+02:00",
+  "datasets": [
+    "openbare-laadpunten"
+  ],
+  "zekerheid": "laag",
+  "voorbeeld": true
+}

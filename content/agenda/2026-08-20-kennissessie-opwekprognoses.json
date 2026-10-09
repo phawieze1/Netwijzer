@@ -1,0 +1,14 @@
+{
+  "slug": "2026-08-20-kennissessie-opwekprognoses",
+  "titel": "Kennissessie opwekprognoses",
+  "start": "2026-08-20T14:00:00+02:00",
+  "eind": "2026-08-20T16:00:00+02:00",
+  "plaats": "Online",
+  "online": true,
+  "organisator": "Voorbeeldorganisator",
+  "url": "https://example.org/kennissessie-opwekprognoses",
+  "thema": "opwek",
+  "beschrijving": "Voorbeeld-evenement dat al is geweest. Tijd en organisator zijn placeholders.",
+  "zekerheid": "laag",
+  "voorbeeld": true
+}

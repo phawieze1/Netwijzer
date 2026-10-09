@@ -1,0 +1,49 @@
+{
+  "slug": "capaciteitskaart-elektriciteitsnet",
+  "naam": "Capaciteitskaart elektriciteitsnet",
+  "leverancier": "netbeheer-nederland",
+  "thema": "net",
+  "beschrijving": "Voorbeeld: kaart met de beschikbare transportcapaciteit per station, voor afname en voor teruglevering. Actualisatiefrequentie en metadata nog niet gecontroleerd.",
+  "frequentie": "statisch",
+  "frequentieLabel": "per station",
+  "formaat": "Kaart",
+  "toegang": "open",
+  "sinds": 2022,
+  "eenheid": "MVA",
+  "laatstBijgewerkt": "2026-09-27",
+  "bronUrl": "https://www.netbeheernederland.nl/",
+  "licentie": {
+    "naam": "Te controleren"
+  },
+  "velden": [
+    {
+      "naam": "id",
+      "type": "tekst",
+      "betekenis": "Unieke sleutel van het object"
+    },
+    {
+      "naam": "naam",
+      "type": "tekst",
+      "betekenis": "Naam van het station"
+    },
+    {
+      "naam": "geometrie",
+      "type": "GeoJSON",
+      "betekenis": "Punt of vlak in WGS84"
+    },
+    {
+      "naam": "waarde",
+      "type": "getal",
+      "betekenis": "Capaciteit in MVA"
+    }
+  ],
+  "beperkingen": [
+    "Voorbeeld: een kaart is een momentopname; er is geen historische reeks."
+  ],
+  "preview": {
+    "enabled": true,
+    "weergave": "punten"
+  },
+  "zekerheid": "laag",
+  "voorbeeld": true
+}

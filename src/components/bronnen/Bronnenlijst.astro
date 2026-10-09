@@ -1,0 +1,41 @@
+---
+/**
+ * De bronnenlijst (`.sources` in het prototype). Krijgt de bronnen en álle
+ * datasets mee en koppelt ze zelf, zodat de pagina niet per bron een aparte
+ * query hoeft te doen.
+ */
+
+import Bronregel from './Bronregel.astro';
+import type { Bron, Dataset } from '../../lib/inhoud.ts';
+
+interface Props {
+  bronnen: Bron[];
+  /** Alle datasets; per bron worden ze hier gefilterd op `leverancier`. */
+  datasets: Dataset[];
+  /** Maximaal aantal bronnen. Zonder waarde komen ze allemaal in beeld. */
+  maximum?: number;
+}
+
+const { bronnen, datasets, maximum } = Astro.props;
+
+const perBron = new Map<string, Dataset[]>();
+for (const dataset of datasets) {
+  const bestaand = perBron.get(dataset.data.leverancier);
+  if (bestaand === undefined) perBron.set(dataset.data.leverancier, [dataset]);
+  else bestaand.push(dataset);
+}
+
+const zichtbaar = maximum === undefined ? bronnen : bronnen.slice(0, maximum);
+---
+
+{
+  zichtbaar.length === 0 ? (
+    <p class="empty">Nog geen bronnen.</p>
+  ) : (
+    <div class="sources">
+      {zichtbaar.map((bron) => (
+        <Bronregel bron={bron} datasets={perBron.get(bron.data.slug) ?? []} />
+      ))}
+    </div>
+  )
+}

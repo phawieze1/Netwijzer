@@ -1,0 +1,14 @@
+{
+  "slug": "2026-12-03-hackathon-open-energiedata",
+  "titel": "Hackathon open energiedata",
+  "start": "2026-12-03T10:00:00+01:00",
+  "eind": "2026-12-04T17:00:00+01:00",
+  "plaats": "Amsterdam",
+  "online": false,
+  "organisator": "Voorbeeldorganisator",
+  "url": "https://example.org/hackathon-open-energiedata",
+  "thema": "opwek",
+  "beschrijving": "Voorbeeld-evenement van twee dagen. Plaats, tijd en organisator zijn placeholders.",
+  "zekerheid": "laag",
+  "voorbeeld": true
+}

@@ -1,0 +1,16 @@
+---
+/** Kaartweergave van de catalogus (`.cards` uit het prototype). */
+
+import type { Dataset } from '../../lib/inhoud.ts';
+import DatasetKaart from './DatasetKaart.astro';
+
+interface Props {
+  items: ReadonlyArray<{ dataset: Dataset; bronnaam: string }>;
+}
+
+const { items } = Astro.props;
+---
+
+<div class="cards">
+  {items.map((item) => <DatasetKaart dataset={item.dataset} bronnaam={item.bronnaam} />)}
+</div>
