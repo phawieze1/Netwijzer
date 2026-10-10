@@ -4,25 +4,50 @@ name: Build en deploy
 # Bij een pull request wordt alleen gebouwd, niet gedeployed: dat is de
 # validatiestap voor content die een agent aanlevert (docs/03-content-en-agents.md).
 #
+# Deze workflow is ook herbruikbaar (`workflow_call`), zodat energy.yml hem elk
+# uur kan aanroepen met verse energiedata. Dat moet via workflow_call en niet via
+# een eigen kopie van de build: een aangeroepen workflow doet een eigen checkout,
+# dus het opgehaalde bestand moet in dezelfde job ontstaan als de build.
+#
 # Actieversies zijn vastgezet op de actuele stabiele release (gecontroleerd 9 okt 2026).
 
 on:
   push:
     branches: [main]
+    # Het archief wordt door archief.yml gecommit en verandert niets aan de
+    # gebouwde site. Zonder deze uitzondering zou elke archiefcommit een
+    # overbodige build en deploy starten.
+    paths-ignore:
+      - 'data/reeksen/archief/**'
   pull_request:
   workflow_dispatch:
+  workflow_call:
+    inputs:
+      energiedata:
+        description: 'Verse energiedata ophalen bij NED voor de build.'
+        type: boolean
+        default: false
+    secrets:
+      NED_API_KEY:
+        description: 'API-sleutel van NED. Alleen nodig als energiedata true is.'
+        required: false
 
 permissions:
   contents: read
 
+# Pages kan maar één deploy tegelijk aan, dus alle deploys delen één groep en
+# mogen elkaar niet afbreken: een halve deploy is erger dan een late deploy.
+# Pull requests deployen niet en mogen wel vervangen worden door een nieuwere
+# commit, dus die krijgen een eigen groep per branch.
 concurrency:
-  group: pages-${{ github.ref }}
-  cancel-in-progress: true
+  group: >-
+    ${{ github.event_name == 'pull_request' && format('netwijzer-pr-{0}', github.ref) || 'netwijzer-pages' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   build:
     name: Bouwen en valideren
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Code ophalen
         uses: actions/checkout@v7.0.1
@@ -35,6 +60,16 @@ jobs:
 
       - name: Dependencies installeren
         run: npm ci
+
+      # Alleen als de aanroeper daarom vraagt (energy.yml). Het bestand wordt
+      # niet gecommit: het bestaat alleen in deze job en gaat mee in de build.
+      # Faalt NED, dan valt het script terug op het laatste archiefbestand en
+      # gaat de build door met eerlijke, als verouderd gemarkeerde data.
+      - name: Energiedata ophalen
+        if: inputs.energiedata
+        env:
+          NED_API_KEY: ${{ secrets.NED_API_KEY }}
+        run: node scripts/fetch-energy.ts
 
       # `npm run build` draait achtereenvolgens:
       #   1. npm run validate       — content tegen content/schemas/ (Ajv)
@@ -58,7 +93,7 @@ jobs:
     name: Naar GitHub Pages
     if: github.event_name != 'pull_request'
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
