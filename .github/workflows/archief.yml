@@ -1,0 +1,81 @@
+name: Energiearchief
+
+# Legt één keer per dag de volledige dag van gisteren vast in
+# data/reeksen/archief/<datum>.json en commit die (docs/02-bouwspecificatie.md
+# §7.1). Dit is het enige wat wél gecommit wordt: de uurlijkse reeks in
+# latest.json blijft ongecommit om commit-ruis te voorkomen.
+#
+# Het archief heeft twee functies: een reeks bewaren die anders verdwijnt, en
+# dienen als vangnet wanneer NED onbereikbaar is (zie het vangnet in
+# scripts/fetch-energy.ts).
+#
+# Faalt het ophalen, dan faalt deze workflow. Dat is bedoeld: een dag met een
+# gat kan beter opnieuw opgehaald worden dan stil overgeslagen.
+
+on:
+  schedule:
+    # 01:30 UTC = 02:30 of 03:30 Nederlandse tijd. Ruim na middernacht in beide
+    # helften van het jaar, zodat "gisteren" in Nederland altijd een volledig
+    # afgesloten dag is.
+    - cron: '30 1 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: netwijzer-archief
+  cancel-in-progress: false
+
+jobs:
+  archiveren:
+    name: Dag van gisteren vastleggen
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Code ophalen
+        uses: actions/checkout@v7.0.1
+
+      - name: Node installeren
+        uses: actions/setup-node@v7.1.0
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Dependencies installeren
+        run: npm ci
+
+      - name: Dag van gisteren ophalen
+        env:
+          NED_API_KEY: ${{ secrets.NED_API_KEY }}
+        run: node scripts/fetch-energy.ts --archief
+
+      - name: Vastleggen
+        run: |
+          # -uall is nodig: zonder dat klapt git een nog niet getrackte map samen
+          # tot "?? data/reeksen/archief/" en is er geen bestandsnaam om de
+          # datum uit te halen. Dat is precies de eerste run.
+          gewijzigd="$(git status --porcelain -uall data/reeksen/archief)"
+          if [ -z "$gewijzigd" ]; then
+            echo "Geen nieuw archiefbestand — niets te committen."
+            exit 0
+          fi
+          # De datum in het commitbericht komt uit de bestandsnaam en niet uit de
+          # klok van de runner: het script bepaalt "gisteren" in Nederlandse tijd
+          # (Europe/Amsterdam), de runner loopt op UTC. Bij een handmatige run
+          # laat op de avond schelen die een dag.
+          datums="$(echo "$gewijzigd" | awk -F/ '{print $NF}' | cut -d. -f1 | sort -u | paste -sd, - | sed 's/,/, /g')"
+          echo "Vast te leggen: $datums"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/reeksen/archief
+          git commit -m "Archief: energiereeks van $datums"
+          # Een andere workflow kan ondertussen op main hebben gecommit.
+          for poging in 1 2 3; do
+            if git push; then
+              exit 0
+            fi
+            echo "Push mislukt (poging $poging), opnieuw proberen na rebase."
+            git pull --rebase origin main
+          done
+          echo "Push bleef mislukken."
+          exit 1

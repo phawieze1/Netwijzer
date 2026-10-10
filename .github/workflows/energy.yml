@@ -1,0 +1,35 @@
+name: Energiedata
+
+# Haalt elk uur zon, wind en verbruik op bij NED en zet de site opnieuw live met
+# die verse reeks. Zie docs/02-bouwspecificatie.md §7.1 en docs/bronnen-api.md.
+#
+# Het opgehaalde bestand wordt NIET gecommit: dat zou elk uur commit-ruis geven.
+# Het bestaat alleen in de job die de site bouwt. Daarom roept deze workflow
+# deploy.yml aan in plaats van zelf te bouwen — een aangeroepen workflow doet een
+# eigen checkout, dus het ophalen en het bouwen moeten in dezelfde job zitten.
+#
+# Het archief (de volledige dag van gisteren) gaat via archief.yml.
+
+on:
+  schedule:
+    # Minuut 7, elk uur. NED publiceert per kwartier; minuut 7 geeft het laatste
+    # kwartier de tijd om beschikbaar te komen en vermijdt het hele uur, waarop
+    # de wachtrij van GitHub Actions het drukst is.
+    - cron: '7 * * * *'
+  workflow_dispatch:
+
+# Moet hier staan en niet alleen in deploy.yml: een aangeroepen workflow kan de
+# rechten van het token van de aanroeper niet verhogen, alleen beperken.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  bouwen-met-verse-data:
+    name: Verse energiedata en deploy
+    uses: ./.github/workflows/deploy.yml
+    with:
+      energiedata: true
+    secrets:
+      NED_API_KEY: ${{ secrets.NED_API_KEY }}

@@ -60,7 +60,8 @@
     },
     "punten": {
       "type": "array",
-      "maxItems": 192,
+      "description": "Normaal 192 kwartieren (twee dagen). Op de dag na het einde van de zomertijd 196, want die dag heeft 25 uur: zie docs/bronnen-api.md paragraaf 6.1.",
+      "maxItems": 200,
       "items": {
         "type": "object",
         "additionalProperties": false,
