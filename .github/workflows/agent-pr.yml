@@ -1,0 +1,76 @@
+name: Agent-PR
+
+# Controleert en merget pull requests van de content-agents (docs/03-content-en-agents.md).
+#
+# Agent-PR's gaan automatisch naar main: er leest geen mens mee. Deze workflow is
+# daarmee het enige wat tussen een agent en de live site staat, dus hij draait de
+# volledige build plus de extra controles uit scripts/check-agent-content.ts voordat
+# hij merget.
+#
+# Alles in één job, bewust: een aparte mergejob die op andere workflows moet wachten
+# kan niet op zichzelf wachten zonder vast te lopen. Deze job draait dezelfde
+# `npm run build` als de PR-controle in deploy.yml, dus hij controleert niet minder.
+#
+# Na de merge start hij energy.yml expliciet. Dat is nodig én nuttig:
+#   - Nodig, omdat een push door GITHUB_TOKEN geen nieuwe workflows start. Zonder
+#     deze stap zou de merge stil blijven liggen en niets live zetten.
+#     `workflow_dispatch` via de API is wel toegestaan; dat is de uitzondering.
+#   - Nuttig, omdat energy.yml bouwt met verse NED-data in plaats van met de
+#     voorbeeldreeks die in de repo staat.
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+
+concurrency:
+  group: netwijzer-agent-pr-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  controleren-en-mergen:
+    name: Controleren en mergen
+    # Alleen branches van de agents, en alleen PR's die de agent zelf opende.
+    if: startsWith(github.head_ref, 'agent/')
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Code ophalen
+        uses: actions/checkout@v7.0.1
+        with:
+          # De volledige historie, want check-agent-content vergelijkt met de basis.
+          fetch-depth: 0
+
+      - name: Basisbranch ophalen
+        run: git fetch --no-tags origin ${{ github.base_ref }}
+
+      - name: Node installeren
+        uses: actions/setup-node@v7.1.0
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Dependencies installeren
+        run: npm ci
+
+      # Schema's, verbanden tussen bestanden, zod-spiegels, typecontrole en build.
+      - name: Bouwen en valideren
+        run: npm run build
+
+      # De controles die alleen voor agentcontent gelden: geen voorbeeldlabel,
+      # geen datum in de toekomst, geen dode links, niets verwijderd.
+      - name: Agentcontroles
+        run: node scripts/check-agent-content.ts --basis origin/${{ github.base_ref }}
+
+      - name: Mergen
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr merge ${{ github.event.pull_request.number }} --squash --delete-branch
+
+      - name: Site opnieuw bouwen met verse energiedata
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run energy.yml --ref ${{ github.base_ref }}

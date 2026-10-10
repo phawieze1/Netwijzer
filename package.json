@@ -13,7 +13,8 @@
     "check": "astro check",
     "check:schemas": "node scripts/check-schema-drift.ts",
     "preview": "astro preview",
-    "validate": "node scripts/validate-content.ts"
+    "validate": "node scripts/validate-content.ts",
+    "check:agent": "node scripts/check-agent-content.ts"
   },
   "dependencies": {
     "astro": "7.3.8"
