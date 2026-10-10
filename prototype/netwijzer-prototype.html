@@ -455,7 +455,7 @@ footer{margin-top:96px;padding-top:22px;border-top:1px solid var(--rule);display
     let ps=0,pl=0; for(let i=0;i<=nq;i++){ if(series[i].sun>series[ps].sun) ps=i; } for(let i=0;i<DAY;i++){ if(series[i].load>series[pl].load) pl=i; }
     const sx=S.x(ps), sy=S.ySun(series[ps].sun); ctx.strokeStyle=txt+'0.5)'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(sx,sy-8); ctx.lineTo(sx,sy-22); ctx.stroke();
     label(sx+6,sy-26,['Zonpiek '+gw(series[ps].sun),(ps<DAY?'gisteren ':'vandaag ')+hhmm(ps)],txt);
-    if(W>=640){ const lx=S.x(pl), ly=S.yLand(series[pl].load); ctx.beginPath(); ctx.moveTo(lx,ly-4); ctx.lineTo(lx-24,ly-14); ctx.stroke(); label(lx-28,ly-18,['Avondpiek verbruik',gw(series[pl].load)+' gisteren '+hhmm(pl)],txt,'right'); }
+    if(W>=640){ const lx=S.x(pl), ly=S.yLand(series[pl].load); ctx.beginPath(); ctx.moveTo(lx,ly-4); ctx.lineTo(lx-24,ly-14); ctx.stroke(); label(lx-28,ly-18,['Verbruikspiek',gw(series[pl].load)+' gisteren '+hhmm(pl)],txt,'right'); }
     if(!mills.length) return; let pw=0; mills.forEach((m,i)=>{ if(series[Math.round(m.q)].wind>series[Math.round(mills[pw].q)].wind) pw=i; });
     const mq=mills[pw].q, md=series[Math.round(mq)], mx=S.x(mq), towerH=Math.min(H*.17,120), my=S.yLand(md.load)+6-towerH-towerH*.45;
     if(mx<W*.22) return; label(mx,my-10,['Hardst draaiende molen',gw(md.wind)+' wind, '+(mq<DAY?'gisteren ':'vandaag ')+hhmm(mq)],txt,'center');

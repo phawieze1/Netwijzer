@@ -116,7 +116,7 @@ Het polderlandschap wordt volledig getekend uit data. Het is kunst, maar het moe
 | Lucht | tijd van de dag | Dag, schemer, nacht met sterren. |
 | Mist | na "nu" | "nog niet gemeten". Geen verzonnen data na nu. |
 | Rode lijn | afspeelkop | Speelt van gisteren 00:00 tot nu in ongeveer 36 seconden. Volgt de muis. |
-| Annotaties | zonpiek, avondpiek, hardste molen | Direct in beeld, met waarde en tijd. |
+| Annotaties | zonpiek, verbruikspiek, hardste molen | Direct in beeld, met waarde en tijd. De verbruikspiek noemt geen dagdeel: die valt niet altijd in de avond. |
 
 Waardenvak linksboven: tijd, gisteren/vandaag, zon, wind, verbruik en "zon + wind dekt %".
 

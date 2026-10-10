@@ -515,17 +515,17 @@ export function maakScene(cv: HTMLCanvasElement, data: HeroData): Scene {
       }
     }
 
-    const avondpiek = data.avondpiek;
-    if (avondpiek !== null && W >= MOBIEL) {
-      const v = bij(data.verbruik, avondpiek.q);
+    const verbruikspiek = data.verbruikspiek;
+    if (verbruikspiek !== null && W >= MOBIEL) {
+      const v = bij(data.verbruik, verbruikspiek.q);
       if (v !== null) {
-        const x = X(avondpiek.q);
+        const x = X(verbruikspiek.q);
         const y = yLand(v);
         tekenvlak.beginPath();
         tekenvlak.moveTo(x, y - 4);
         tekenvlak.lineTo(x - 24, y - 14);
         tekenvlak.stroke();
-        schrijf(x - 28, y - 18, avondpiek.regels, inkt, 'right');
+        schrijf(x - 28, y - 18, verbruikspiek.regels, inkt, 'right');
       }
     }
 

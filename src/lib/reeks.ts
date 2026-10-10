@@ -101,7 +101,8 @@ export interface HeroData {
   /** Labels op de tijdas, elke zes uur. */
   asLabels: HeroAslabel[];
   zonpiek: HeroAnnotatie | null;
-  avondpiek: HeroAnnotatie | null;
+  /** Hoogste verbruik van de laatste volledige dag; niet per se in de avond. */
+  verbruikspiek: HeroAnnotatie | null;
 }
 
 /** Eén moment als leesbare tekst, voor het waardenvak en de tabel. */
@@ -392,7 +393,7 @@ export function maakHero(reeks: Energiereeks | null): Hero | null {
     nuLabel: tijdBijQ(vanMs, nuQ),
     asLabels: [],
     zonpiek: null,
-    avondpiek: null,
+    verbruikspiek: null,
   };
 
   // Tijdas: elk zesde uur een label, het laatste als 24:00 (einde van vandaag).
@@ -418,16 +419,19 @@ export function maakHero(reeks: Energiereeks | null): Hero | null {
     }
   }
 
-  // Avondpiek: de hoogste verbruikswaarde van gisteren, de laatste volledige dag.
-  const avondpiekIndex = piek(verbruik, 0, Math.min(dagQ - 1, laatsteQ)) ?? piek(verbruik, 0, laatsteQ);
-  if (avondpiekIndex !== null) {
-    const v = waarde(verbruik, avondpiekIndex);
+  // De hoogste verbruikswaarde van gisteren, de laatste volledige dag. Het
+  // label noemt geen dagdeel: die piek valt niet altijd in de avond. Op
+  // 9 oktober 2026 viel hij om 11:45, en een label "Avondpiek" was dan
+  // onjuist terwijl het beeld klopte.
+  const verbruikspiekIndex = piek(verbruik, 0, Math.min(dagQ - 1, laatsteQ)) ?? piek(verbruik, 0, laatsteQ);
+  if (verbruikspiekIndex !== null) {
+    const v = waarde(verbruik, verbruikspiekIndex);
     if (v !== null) {
-      data.avondpiek = {
-        q: avondpiekIndex,
+      data.verbruikspiek = {
+        q: verbruikspiekIndex,
         regels: [
-          'Avondpiek verbruik',
-          `${gw(v)} ${avondpiekIndex >= dagQ ? 'vandaag' : 'gisteren'} ${tijdBijQ(vanMs, avondpiekIndex)}`,
+          'Verbruikspiek',
+          `${gw(v)} ${verbruikspiekIndex >= dagQ ? 'vandaag' : 'gisteren'} ${tijdBijQ(vanMs, verbruikspiekIndex)}`,
         ],
       };
     }
