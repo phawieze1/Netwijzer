@@ -36,6 +36,7 @@ Netwijzer is een onafhankelijke, Nederlandstalige website die toegang geeft tot 
 - `npm run validate` — content valideren tegen `content/schemas/` (Ajv) plus de verbanden tussen bestanden
 - `npm run check:schemas` — controleren of de zod-spiegels in `src/content.schemas.ts` nog gelijk zijn aan de JSON-schema's
 - `npm run check` — alleen de TypeScript-controle (`astro check`)
+- `npm run check:agent` — de extra controles op content uit een agent-PR (voorbeeldlabel, datums, links); vergelijkt met `origin/main` of met `--basis <ref>`
 
 Node 22.12 of nieuwer is vereist (Astro 7). De scripts in `scripts/` zijn TypeScript
 en draaien rechtstreeks met Node, zonder bouwstap.

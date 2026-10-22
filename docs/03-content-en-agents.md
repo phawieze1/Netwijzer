@@ -20,9 +20,9 @@ Voorbeelden die aan de schema's voldoen staan in `content/voorbeeld/`.
 |---|---|---|---|
 | Energiereeks hero | Script (GitHub Actions) | Elk uur | Nee, wel validatie |
 | Voorbeelddata datasets | Script (GitHub Actions) | Wekelijks | Nee, wel validatie |
-| Nieuws | Claude-agent | Dagelijks (werkdagen) | Ja, via PR |
-| Agenda | Claude-agent | Wekelijks | Ja, via PR |
-| Nieuwe datasets / beschrijvingen | Claude-agent | Wekelijks | Ja, via PR |
+| Nieuws | Claude-agent | Dagelijks (werkdagen) | Nee, auto-merge na controles |
+| Agenda | Claude-agent | Wekelijks | Nee, auto-merge na controles |
+| Nieuwe datasets / beschrijvingen | Claude-agent | Wekelijks | Nee, auto-merge na controles |
 | Controle bestaande datasets (links, metadata) | Claude-agent of script | Dagelijks | Alleen bij wijziging |
 
 ## 3. Werkwijze agents
@@ -35,9 +35,36 @@ Voorbeelden die aan de schema's voldoen staan in `content/voorbeeld/`.
    - een lijst van toegevoegde items met links;
    - per item een zekerheid (hoog/midden/laag) en waarom;
    - wat de agent heeft overgeslagen en waarom.
-6. De build in de PR valideert de schema's. Paul reviewt en merget.
+6. De build in de PR valideert de schema's en de extra agentcontroles uit paragraaf 6.
+   Slagen die, dan merget `agent-pr.yml` de PR automatisch. Er leest geen mens mee.
 
-**Toegang:** de scheduled task heeft schrijfrechten op de repository nodig (GitHub-koppeling of een fine-grained token met alleen `contents` en `pull requests` op deze repo).
+**Toegang:** de scheduled tasks draaien als cloud-routine in de omgeving van Claude,
+met een eigen checkout van deze repository. De schrijfrechten komen uit de
+GitHub-koppeling van het account; er staat geen token in de repo of in een secret.
+
+### De routines
+
+| Agent | Routine | Schema | Model | Staat |
+|---|---|---|---|---|
+| Nieuws | `Netwijzer nieuws-agent` (`trig_01HAkcutoRUz8YvR3x93rb5A`) | `0 6 * * 1-5` | `claude-opus-5` | zie claude.ai/code/routines |
+| Agenda | nog niet ingericht | wekelijks | | |
+| Datasets | nog niet ingericht | wekelijks | | |
+
+Het schema staat in UTC, dus de run schuift een uur mee met de zomertijd: 08:00
+Nederlandse tijd in de zomer, 07:00 in de winter. Dat is voor een nieuwsronde geen
+bezwaar en voorkomt twee schema's.
+
+De routine-prompt is kort en bewust niet de redactie-instructie zelf: hij verwijst
+naar `agents/nieuws-agent.md`. Dat bestand is de bron van waarheid en kan dus via een
+pull request verbeterd worden zonder de routine aan te raken. De routine draagt de
+agent daarnaast op om `npm run validate` en `scripts/check-agent-content.ts` zelf te
+draaien vóór het openen van de pull request, zodat een fout in de run wordt
+gerepareerd in plaats van in GitHub te stranden.
+
+Eerst nieuws, en pas na een bewezen run de agenda- en dataset-agent. De
+acceptatie-eis uit `docs/02-bouwspecificatie.md` §9 vraagt één volledige ronde:
+een run levert een pull request op met geldige JSON, eigen samenvattingen, werkende
+links en bronvermelding, en staat na de merge binnen tien minuten live.
 
 ## 4. Redactieregels voor agents
 
@@ -53,3 +80,30 @@ Voorbeelden die aan de schema's voldoen staan in `content/voorbeeld/`.
 ## 5. Startprompt op de detailpagina
 
 Elke datasetpagina toont een startprompt die bezoekers kunnen kopiëren naar een AI-assistent. Het sjabloon staat in `agents/startprompt-dataset.md`. De site vult de velden tussen `{{ }}` in bij de build.
+
+## 6. Auto-merge en wat de controles wel en niet vangen
+
+Agent-PR's worden automatisch gemerged. Paul controleert achteraf op de site en
+stuurt bij. De controles in de PR zijn daarmee het enige vangnet, dus staat er
+bewust meer in dan schema-validatie alleen.
+
+Wat `agent-pr.yml` controleert op elke agent-branch:
+
+| Controle | Waarom |
+|---|---|
+| Schema-validatie van alle content | Basis; faalt die, dan geen merge. |
+| `voorbeeld` mag niet voorkomen in nieuwe bestanden | Anders gaat echte content als voorbeeld live. |
+| `gepubliceerd` niet in de toekomst, `start` niet in het verleden | Vangt een verkeerd gelezen jaartal, en een evenement dat al geweest is. |
+| `bronUrl` en `url` geven HTTP 200 | Vangt een verzonnen of verplaatste link. |
+| Geen bestaande bestanden verwijderd | Een agent mag toevoegen en bijwerken, niet opruimen. |
+| `toegevoegd` aanwezig bij nieuws | Houdt de reeks consistent. |
+
+Wat geen enkele controle vangt, en waar de prompts dus op hameren: of een
+samenvatting feitelijk klopt, of een item echt over data in de energiesector gaat,
+of een bron deugt, en of een licentie of frequentie juist is overgenomen. Daarom
+geldt in alle drie de prompts: bij twijfel het item overslaan.
+
+Na de merge start `agent-pr.yml` zelf `energy.yml`. Dat moet, want een push door
+`GITHUB_TOKEN` start geen nieuwe workflows; zonder die stap zou de merge niets live
+zetten. Het heeft als bijkomend voordeel dat de site met verse energiedata wordt
+gebouwd in plaats van met de voorbeeldreeks uit de repo.
