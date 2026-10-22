@@ -1,0 +1,14 @@
+{
+  "slug": "2026-10-21-acm-congestiegebieden-bestand-vervangen",
+  "titel": "ACM vervangt databestand over congestiegebieden door een nieuwe versie",
+  "samenvatting": "De ACM verving op 21 oktober 2026 het Excel-bestand met de digitale gegevens die netbeheerders aanleveren bij vooraankondigingen, congestierapporten en congestie-uitgaven. De toezichthouder vult deze gegevens periodiek aan. Welke gebieden of perioden zijn toegevoegd, staat niet op de pagina; per netbeheerder zit een toelichting in het bestand die bij analyse nodig is.",
+  "thema": "net",
+  "bron": "Autoriteit Consument & Markt",
+  "bronUrl": "https://www.acm.nl/nl/publicaties/publicatie-digitale-gegevens-netbeheerders-over-congestiegebieden",
+  "gepubliceerd": "2026-10-21",
+  "toegevoegd": "2026-10-22T22:45:00+02:00",
+  "datasets": [
+    "capaciteitskaart-elektriciteitsnet"
+  ],
+  "zekerheid": "midden"
+}
