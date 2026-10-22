@@ -1,0 +1,14 @@
+{
+  "slug": "2026-10-19-klimaatmonitor-laadpunten-derde-kwartaal",
+  "titel": "Klimaatmonitor actualiseert de gegevens over (semi)publieke laadpunten",
+  "samenvatting": "De Regionale Klimaatmonitor werkte op 19 oktober de cijfers over (semi)publieke laadpunten bij, tot en met september 2026. Dezelfde dag zijn ook de gegevens over elektrische, waterstof- en aardgasvoertuigen geactualiseerd tot en met september. De databank toont deze indicatoren per gemeente, regio en provincie.",
+  "thema": "geo",
+  "bron": "Regionale Klimaatmonitor",
+  "bronUrl": "https://klimaatmonitor.databank.nl/nieuws/(semi)publieke-laadpunten-q3-2026/331",
+  "gepubliceerd": "2026-10-19",
+  "toegevoegd": "2026-10-22T23:05:00+02:00",
+  "datasets": [
+    "openbare-laadpunten"
+  ],
+  "zekerheid": "hoog"
+}

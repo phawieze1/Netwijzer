@@ -1,0 +1,14 @@
+{
+  "slug": "2026-10-19-capaciteitskaart-tennet-gegevens-vernieuwd",
+  "titel": "TenneT vernieuwde zijn gegevens in de landelijke capaciteitskaart",
+  "samenvatting": "De pagina met brongegevens van de capaciteitskaart noemt 19 oktober 2026 als laatste wijziging door TenneT, voor aanwezige en benodigde transportcapaciteit en voor de wachtrij. Liander staat op 25 september, Enexis op 1 augustus en Stedin op 25 juni. De pagina waarschuwt zelf dat de kaart niet altijd volledig is bijgewerkt.",
+  "thema": "net",
+  "bron": "Netbeheer Nederland",
+  "bronUrl": "https://capaciteitskaart.netbeheernederland.nl/info/laatst-vernieuwd",
+  "gepubliceerd": "2026-10-19",
+  "toegevoegd": "2026-10-22T23:05:00+02:00",
+  "datasets": [
+    "capaciteitskaart-elektriciteitsnet"
+  ],
+  "zekerheid": "midden"
+}

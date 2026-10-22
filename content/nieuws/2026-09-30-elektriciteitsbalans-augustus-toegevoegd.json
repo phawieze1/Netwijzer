@@ -1,0 +1,14 @@
+{
+  "slug": "2026-09-30-elektriciteitsbalans-augustus-toegevoegd",
+  "titel": "CBS voegt augustus 2026 toe aan de elektriciteitsbalans",
+  "samenvatting": "De StatLine-tabel Elektriciteitsbalans; aanbod en verbruik kreeg op 30 september de maandcijfers over augustus 2026. De tabel zet productie, invoer en uitvoer tegenover het verbruik, met maandreeksen vanaf 2015 en jaarcijfers die teruggaan tot 1936. Cijfers over 2026 zijn voorlopig; voorlopige maandcijfers verschijnen twee maanden na de verslagperiode.",
+  "thema": "verbruik",
+  "bron": "CBS StatLine",
+  "bronUrl": "https://www.cbs.nl/nl-nl/cijfers/detail/84575NED",
+  "gepubliceerd": "2026-09-30",
+  "toegevoegd": "2026-10-22T23:05:00+02:00",
+  "datasets": [
+    "elektriciteitsbalans-cbs"
+  ],
+  "zekerheid": "hoog"
+}
