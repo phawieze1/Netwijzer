@@ -38,7 +38,33 @@ Voorbeelden die aan de schema's voldoen staan in `content/voorbeeld/`.
 6. De build in de PR valideert de schema's en de extra agentcontroles uit paragraaf 6.
    Slagen die, dan merget `agent-pr.yml` de PR automatisch. Er leest geen mens mee.
 
-**Toegang:** de scheduled task heeft schrijfrechten op de repository nodig (GitHub-koppeling of een fine-grained token met alleen `contents` en `pull requests` op deze repo).
+**Toegang:** de scheduled tasks draaien als cloud-routine in de omgeving van Claude,
+met een eigen checkout van deze repository. De schrijfrechten komen uit de
+GitHub-koppeling van het account; er staat geen token in de repo of in een secret.
+
+### De routines
+
+| Agent | Routine | Schema | Model | Staat |
+|---|---|---|---|---|
+| Nieuws | `Netwijzer nieuws-agent` (`trig_01HAkcutoRUz8YvR3x93rb5A`) | `0 6 * * 1-5` | `claude-opus-5` | zie claude.ai/code/routines |
+| Agenda | nog niet ingericht | wekelijks | | |
+| Datasets | nog niet ingericht | wekelijks | | |
+
+Het schema staat in UTC, dus de run schuift een uur mee met de zomertijd: 08:00
+Nederlandse tijd in de zomer, 07:00 in de winter. Dat is voor een nieuwsronde geen
+bezwaar en voorkomt twee schema's.
+
+De routine-prompt is kort en bewust niet de redactie-instructie zelf: hij verwijst
+naar `agents/nieuws-agent.md`. Dat bestand is de bron van waarheid en kan dus via een
+pull request verbeterd worden zonder de routine aan te raken. De routine draagt de
+agent daarnaast op om `npm run validate` en `scripts/check-agent-content.ts` zelf te
+draaien vóór het openen van de pull request, zodat een fout in de run wordt
+gerepareerd in plaats van in GitHub te stranden.
+
+Eerst nieuws, en pas na een bewezen run de agenda- en dataset-agent. De
+acceptatie-eis uit `docs/02-bouwspecificatie.md` §9 vraagt één volledige ronde:
+een run levert een pull request op met geldige JSON, eigen samenvattingen, werkende
+links en bronvermelding, en staat na de merge binnen tien minuten live.
 
 ## 4. Redactieregels voor agents
 
