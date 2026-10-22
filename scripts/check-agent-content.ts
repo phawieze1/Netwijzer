@@ -236,8 +236,17 @@ async function hoofd(): Promise<void> {
     if (nu === null) continue;
     const oud = status === 'gewijzigd' ? basisVersie(basis, pad) : null;
 
-    // 1. Het voorbeeldlabel. Nieuwe content mag het niet hebben; bestaande content
-    //    mag het houden zoals het was, maar de waarde mag niet veranderen.
+    // 1. Het voorbeeldlabel. Het mag er alleen áf, nooit op.
+    //
+    //    Nieuwe content mag het nooit hebben: anders gaat echt nieuws live met het
+    //    label "(voorbeeld)" en lijkt het verzonnen.
+    //
+    //    Bestaande content mag het wél verliezen. De placeholders uit fase 1
+    //    beschrijven echte datasets en bronnen met ongecontroleerde metadata; ze
+    //    promoveren tot echte content zodra een agent alles bij de leverancier
+    //    heeft nagetrokken, en dan hoort het label eraf. Dat is de enige toegestane
+    //    overgang: true wordt weg. Het label erbij zetten of op false zetten blijft
+    //    geblokkeerd, want dat verandert wat de site over de herkomst beweert.
     if (status === 'toegevoegd') {
       if ('voorbeeld' in nu) {
         meld(
@@ -247,11 +256,19 @@ async function hoofd(): Promise<void> {
         );
       }
     } else if (oud !== null && nu['voorbeeld'] !== oud['voorbeeld']) {
-      meld(
-        pad,
-        `het veld "voorbeeld" ging van ${JSON.stringify(oud['voorbeeld'])} naar ` +
-          `${JSON.stringify(nu['voorbeeld'])}. Laat dat label ongemoeid.`,
-      );
+      const afgehaald = oud['voorbeeld'] === true && !('voorbeeld' in nu);
+      if (afgehaald) {
+        console.log(
+          `  ${pad}: het voorbeeldlabel is eraf. Dit bestand telt vanaf nu als echte content.`,
+        );
+      } else {
+        meld(
+          pad,
+          `het veld "voorbeeld" ging van ${JSON.stringify(oud['voorbeeld'])} naar ` +
+            `${JSON.stringify(nu['voorbeeld'])}. Het label mag er alleen áf ` +
+            '(true wordt weggelaten), nooit op.',
+        );
+      }
     }
 
     // 2. Verplichte velden die het schema optioneel laat.

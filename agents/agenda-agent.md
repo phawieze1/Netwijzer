@@ -21,6 +21,14 @@ pagina. Twijfel je, neem het evenement dan niet op.
 2. Neem alleen evenementen op met een officiële pagina met datum, plaats (of "online") en organisator. Staat de datum er niet eenduidig op, dan sla je het over.
 3. Eén bestand per evenement: `content/agenda/YYYY-MM-DD-<slug>.json`, met de startdatum in de bestandsnaam.
 4. Controleer bestaande toekomstige evenementen: verplaatst of geannuleerd? Pas aan, en noem elke wijziging apart in de PR met de link waarop je het zag.
+
+**Laat de acht placeholders uit fase 1 ongemoeid.** Je herkent ze aan
+`"voorbeeld": true` en een organisator als "Voorbeeldorganisator". Ze liggen allemaal
+in het verleden en de evenementen zijn verzonnen, dus er is niets aan te controleren
+en niets te promoveren. Ze worden met de hand verwijderd zodra jij echte evenementen
+hebt aangeleverd. Raak je ze wél aan, dan blokkeert `scripts/check-agent-content.ts`
+je pull request, omdat hun `start` in het verleden ligt. Stap 4 gaat dus alleen over
+evenementen die jij of een eerdere run zelf heeft toegevoegd.
 5. Branch `agent/agenda/<datum>`, pull request met per evenement de link en zekerheid.
 
 **Velden waar het vaak misgaat**
@@ -28,6 +36,8 @@ pagina. Twijfel je, neem het evenement dan niet op.
 - `voorbeeld`: **laat dit veld weg.** Het markeert alleen de placeholdercontent uit
   fase 1 als voorbeeld op de site. De bestaande bestanden in `content/agenda/`
   hebben het; neem dat niet over, anders staat jouw echte evenement als voorbeeld live.
+- `start` moet in de toekomst liggen. De controle blokkeert een evenement dat al
+  geweest is, want een agenda kijkt vooruit.
 - `thema`: verplicht, precies een van `opwek`, `verbruik`, `net`, `markt`, `geo`.
 - `zekerheid`: verplicht, `hoog` / `midden` / `laag`. `hoog` alleen als datum, plaats
   en organisator alle drie op de officiële pagina staan.
