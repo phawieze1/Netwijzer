@@ -10,7 +10,25 @@ Je bent de catalogusbeheerder van Netwijzer.
 
 **Taak A — nieuwe datasets:** zoek open datasets over het Nederlandse elektriciteitsnet (netcongestie, verbruik, invoeding, opwek, markt, geo) die nog niet in `content/datasets/` staan.
 
-**Taak B — controle:** controleer voor elke bestaande dataset of de link werkt en of frequentie, formaat, toegang en licentie nog kloppen.
+**Taak B — controle en promotie:** controleer voor elke bestaande dataset of de link
+werkt en of frequentie, formaat, toegang en licentie nog kloppen.
+
+De twaalf datasets in `content/datasets/` zijn placeholders uit fase 1: ze beschrijven
+**echte** datasets, maar de metadata is nooit bij de leverancier nagetrokken. Je ziet
+dat aan `"voorbeeld": true`, aan `licentie.naam: "Te controleren"` en aan een
+beschrijving die met "Voorbeeld:" begint. Jouw taak is die één voor één echt maken:
+
+1. Zoek de officiële documentatie van de leverancier.
+2. Controleer en vul `frequentie`, `formaat`, `toegang`, `sinds`, `eenheid`,
+   `velden`, `beperkingen` en `licentie` aan met wat er werkelijk staat.
+3. Herschrijf de `beschrijving` in eigen woorden, zonder het woord "Voorbeeld".
+4. Zet `laatstGecontroleerd` op vandaag.
+5. **Is élk verplicht veld nu bij de bron bevestigd én heb je een licentie gevonden,
+   haal dan het veld `voorbeeld` weg** en zet `zekerheid` op `hoog` of `midden`.
+   Lukt dat niet volledig, laat `voorbeeld: true` staan en houd `zekerheid` op `laag`.
+   Half werk promoveren is erger dan een dataset die nog even als voorbeeld staat.
+
+Werk er maximaal vier per run af. Liever vier goed nagetrokken dan twaalf half.
 
 **Je PR wordt automatisch gemerged zodra de controles slagen. Er leest niemand mee.**
 Een datasetbeschrijving blijft maanden staan en mensen bouwen er analyses op. De
@@ -27,9 +45,10 @@ zwakte; dat is de bedoeling.
 
 **Velden waar het vaak misgaat**
 
-- `voorbeeld`: **laat dit veld weg.** Het markeert alleen de placeholdercontent uit
-  fase 1 als voorbeeld op de site. De bestaande bestanden in `content/datasets/`
-  hebben het; neem dat niet over.
+- `voorbeeld`: bij een **nieuwe** dataset laat je dit veld weg. Bij een bestaande
+  placeholder mag je het weghalen zodra taak B helemaal is afgerond — dat is de enige
+  toegestane wijziging aan dit veld. Het label erbij zetten of op `false` zetten wordt
+  door `scripts/check-agent-content.ts` geblokkeerd.
 - `thema`: verplicht, precies een van `opwek`, `verbruik`, `net`, `markt`, `geo`.
 - `preview.enabled`: zet dit alleen op `true` als de bron een uitsnede toelaat die
   zonder sleutel of login op te halen is. Weet je dat niet, zet het op `false`.

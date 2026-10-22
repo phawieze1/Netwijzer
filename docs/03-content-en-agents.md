@@ -47,8 +47,8 @@ GitHub-koppeling van het account; er staat geen token in de repo of in een secre
 | Agent | Routine | Schema | Model | Staat |
 |---|---|---|---|---|
 | Nieuws | `Netwijzer nieuws-agent` (`trig_01HAkcutoRUz8YvR3x93rb5A`) | `0 6 * * 1-5` | `claude-opus-5` | zie claude.ai/code/routines |
-| Agenda | nog niet ingericht | wekelijks | | |
-| Datasets | nog niet ingericht | wekelijks | | |
+| Agenda | `Netwijzer agenda-agent` (`trig_01CDD88FUtY9BZ3MWkUZc35f`) | `0 7 * * 1` | `claude-opus-5` | zie claude.ai/code/routines |
+| Datasets | `Netwijzer dataset-agent` (`trig_019kDHa2eHerzF7vrPgStLTe`) | `0 7 * * 3` | `claude-opus-5` | zie claude.ai/code/routines |
 
 Het schema staat in UTC, dus de run schuift een uur mee met de zomertijd: 08:00
 Nederlandse tijd in de zomer, 07:00 in de winter. Dat is voor een nieuwsronde geen
@@ -61,10 +61,39 @@ agent daarnaast op om `npm run validate` en `scripts/check-agent-content.ts` zel
 draaien vóór het openen van de pull request, zodat een fout in de run wordt
 gerepareerd in plaats van in GitHub te stranden.
 
-Eerst nieuws, en pas na een bewezen run de agenda- en dataset-agent. De
-acceptatie-eis uit `docs/02-bouwspecificatie.md` §9 vraagt één volledige ronde:
-een run levert een pull request op met geldige JSON, eigen samenvattingen, werkende
-links en bronvermelding, en staat na de merge binnen tien minuten live.
+De drie routines staan op verschillende dagen en uren, zodat ze nooit tegelijk een
+pull request openen: het nieuws elke werkdag, de agenda op maandag en de datasets op
+woensdag.
+
+De acceptatie-eis uit `docs/02-bouwspecificatie.md` §9 is op 22 oktober 2026 gehaald
+met de nieuws-agent: de run opende een pull request met geldige JSON, eigen
+samenvattingen, werkende links en bronvermelding, en stond ongeveer drie minuten na
+de merge live.
+
+### Van placeholder naar echte content
+
+De content uit fase 1 staat met `"voorbeeld": true` in de repo en krijgt daardoor het
+label "(voorbeeld)" op de site. Dat is geen wegwerpdata: de datasets en bronnen
+beschrijven **echte** datasets en organisaties, alleen is de metadata nooit bij de
+leverancier nagetrokken. Je ziet dat aan `licentie.naam: "Te controleren"` en aan
+`zekerheid: "laag"`.
+
+Taak B van de dataset-agent is die bestanden één voor één echt maken: metadata
+controleren bij de officiële documentatie, de beschrijving herschrijven,
+`laatstGecontroleerd` bijwerken, en het veld `voorbeeld` weghalen zodra élk verplicht
+veld is bevestigd én er een licentie is gevonden. Lukt dat niet volledig, dan blijft
+het label staan en blijft `zekerheid` op `laag`. Half werk promoveren is erger dan een
+dataset die nog even als voorbeeld staat.
+
+`scripts/check-agent-content.ts` staat precies die ene overgang toe — `true` wordt
+weggelaten — en blijft het label erbij zetten of op `false` zetten blokkeren, want dat
+verandert wat de site over de herkomst van de gegevens beweert.
+
+De acht placeholders in `content/agenda/` werken anders: dat zijn verzonnen
+evenementen in het verleden, met "Voorbeeldorganisator" als organisator. Daar valt
+niets te controleren. Die worden met de hand verwijderd zodra de agenda-agent echte
+evenementen heeft aangeleverd; de agent laat ze met opzet ongemoeid, omdat hun `start`
+in het verleden ligt en de controle daarop afgaat.
 
 ## 4. Redactieregels voor agents
 
@@ -92,7 +121,7 @@ Wat `agent-pr.yml` controleert op elke agent-branch:
 | Controle | Waarom |
 |---|---|
 | Schema-validatie van alle content | Basis; faalt die, dan geen merge. |
-| `voorbeeld` mag niet voorkomen in nieuwe bestanden | Anders gaat echte content als voorbeeld live. |
+| `voorbeeld` mag er alleen áf, nooit op | Anders gaat echte content als voorbeeld live. Een placeholder promoveren tot echte content mag wel: zie hieronder. |
 | `gepubliceerd` niet in de toekomst, `start` niet in het verleden | Vangt een verkeerd gelezen jaartal, en een evenement dat al geweest is. |
 | `bronUrl` en `url` geven HTTP 200 | Vangt een verzonnen of verplaatste link. |
 | Geen bestaande bestanden verwijderd | Een agent mag toevoegen en bijwerken, niet opruimen. |
