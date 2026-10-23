@@ -3,57 +3,97 @@
   "naam": "Opwek wind op zee",
   "leverancier": "ned",
   "thema": "opwek",
-  "beschrijving": "Voorbeeld: geschatte opwek van windparken op zee per kwartier. Geschikt om het aandeel wind in de opwek te volgen. Metadata nog niet gecontroleerd.",
+  "beschrijving": "Opwek van de Nederlandse windparken op zee, landelijk en per windpark. Het Nationaal Energie Dashboard modelleerde deze reeks aanvankelijk zelf en neemt nu de bemeten gegevens over van het transparantieplatform ENTSO-E; de uitsplitsing per windpark en de voorspelling blijven gemodelleerd.",
   "frequentie": "kwartier",
+  "frequentieLabel": "instelbaar van 10 minuten tot jaar",
   "formaat": "API",
   "toegang": "account",
-  "sinds": 2019,
+  "sinds": 2016,
   "eenheid": "kW",
-  "laatstBijgewerkt": "2026-10-08",
-  "bronUrl": "https://ned.nl/",
+  "laatstBijgewerkt": "2026-10-23",
+  "laatstGecontroleerd": "2026-10-23T09:49:00+02:00",
+  "bronUrl": "https://ned.nl/nl/dataportaal/energie-productie/elektriciteit/windenergie-op-zee",
+  "documentatieUrl": "https://ned.nl/nl/datacatalogus",
   "licentie": {
-    "naam": "Te controleren"
+    "naam": "Vrij te gebruiken met bronvermelding, volgens de datasetpagina van ned.nl",
+    "url": "https://ned.nl/nl/dataportaal/energie-productie/elektriciteit/windenergie-op-zee"
   },
   "velden": [
     {
-      "naam": "tijdstip_start",
-      "type": "datum-tijd (UTC)",
-      "betekenis": "Begin van het meetinterval"
+      "naam": "validfrom",
+      "type": "datum-tijd",
+      "betekenis": "Begin van het interval waarover de waarde geldt"
     },
     {
-      "naam": "tijdstip_eind",
-      "type": "datum-tijd (UTC)",
-      "betekenis": "Einde van het meetinterval"
+      "naam": "validto",
+      "type": "datum-tijd",
+      "betekenis": "Einde van het interval waarover de waarde geldt"
     },
     {
-      "naam": "waarde",
+      "naam": "capacity",
       "type": "getal",
-      "betekenis": "Geschatte opwek in kW"
+      "betekenis": "Opgewekt vermogen in kW"
     },
     {
-      "naam": "eenheid",
-      "type": "tekst",
-      "betekenis": "kW"
+      "naam": "volume",
+      "type": "getal",
+      "betekenis": "Opgewekt volume in kWh"
     },
     {
-      "naam": "status",
-      "type": "tekst",
-      "betekenis": "definitief of voorlopig"
+      "naam": "percentage",
+      "type": "getal",
+      "betekenis": "Benutting als percentage van het totaal geinstalleerde vermogen"
+    },
+    {
+      "naam": "point",
+      "type": "verwijzing",
+      "betekenis": "Het gebied waar de waarde over gaat: Nederland als geheel of een afzonderlijk windpark op zee"
+    },
+    {
+      "naam": "type",
+      "type": "verwijzing",
+      "betekenis": "De energiedrager; voor wind op zee zijn er drie typen, 17 WindOffShore, 22 WindOffshoreB en 51 WindOffshoreC"
+    },
+    {
+      "naam": "granularity",
+      "type": "verwijzing",
+      "betekenis": "De tijdstap: 10 minuten, kwartier, uur, dag, maand of jaar"
+    },
+    {
+      "naam": "granularitytimezone",
+      "type": "verwijzing",
+      "betekenis": "De tijdzone van de tijdstap: UTC of Europe/Amsterdam"
+    },
+    {
+      "naam": "classification",
+      "type": "verwijzing",
+      "betekenis": "Soort waarde; op dit moment alleen near-realtime"
+    },
+    {
+      "naam": "lastupdate",
+      "type": "datum-tijd",
+      "betekenis": "Wanneer het record voor het laatst is bijgewerkt"
     }
   ],
   "beperkingen": [
-    "Voorbeeld: waarden zijn schattingen en kunnen achteraf worden bijgesteld."
+    "De datacatalogus kent drie typen voor wind op zee: 17 WindOffShore met de uitsplitsing per windpark, 22 WindOffshoreB voor co2monitor.nl en 51 WindOffshoreC voor ned.nl en energieopwek.nl. Welke je kiest bepaalt de uitkomst; kies er een en houd die vast.",
+    "De uitsplitsing per windpark is gemodelleerd, ook waar het landelijke totaal op bemeten ENTSO-E-gegevens berust.",
+    "Voor de API en de downloads is een gratis account op ned.nl nodig; de sleutel maak je zelf aan onder mijn account. Deel de sleutel niet met anderen.",
+    "De algemene voorwaarden van het Nationaal Energie Dashboard verbieden in artikel 3.6 het kopieren, distribueren of doorverkopen van het product aan derden zonder voorafgaande toestemming. De datasetpagina staat hergebruik met bronvermelding wel toe; neem bij doorgifte op grote schaal contact op.",
+    "De oude endpoint api.netanders.io/v1 is niet langer in gebruik; gebruik api.ned.nl/v1.",
+    "Naast de gerealiseerde opwek publiceert ned.nl een voorspelling voor zeven dagen vooruit. Die houdt rekening met het terugregelen van windparken bij storm en wordt verlaagd bij een negatieve day-ahead prijs."
   ],
   "preview": {
-    "enabled": true,
+    "enabled": false,
     "weergave": "weefsel"
   },
   "prompt": {
     "valkuilen": [
-      "Tijdstippen zijn in UTC; zet om naar Nederlandse tijd.",
-      "Recente waarden zijn voorlopig."
+      "Kies bewust een granularitytimezone: UTC en Europe/Amsterdam geven rond de zomertijdwissel een andere dagindeling.",
+      "capacity is een vermogen in kW en volume een hoeveelheid in kWh. Tel capacity niet op over tijdstappen alsof het energie is.",
+      "Tel de drie typen voor wind op zee niet bij elkaar op: het zijn drie varianten van dezelfde opwek, geen aparte parken.",
+      "De reeks loopt vanaf 2016, maar het geinstalleerde vermogen op zee is sindsdien sterk gegroeid. Zet een jaarvergelijking af tegen het vermogen, niet tegen de absolute opwek alleen."
     ]
   },
-  "zekerheid": "laag",
-  "voorbeeld": true
+  "zekerheid": "midden"
 }

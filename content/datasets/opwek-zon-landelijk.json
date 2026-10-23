@@ -3,49 +3,97 @@
   "naam": "Opwek zon, landelijk",
   "leverancier": "ned",
   "thema": "opwek",
-  "beschrijving": "Geschatte opwek van alle zonnepanelen in Nederland per kwartier, op basis van metingen en weerdata. Geschikt om de dagelijkse zonnecurve en het aandeel zon in het verbruik te volgen.",
+  "beschrijving": "Gemodelleerde opwek van alle zonnepanelen in Nederland, van daken tot zonneweides, landelijk en per provincie. Het Nationaal Energie Dashboard rekent met het geinstalleerde vermogen, cijfers van het CBS, weergegevens en het transparantieplatform ENTSO-E. De reeks telt ook de stroom mee die direct achter de meter wordt verbruikt.",
   "frequentie": "kwartier",
+  "frequentieLabel": "instelbaar van 10 minuten tot jaar",
   "formaat": "API",
   "toegang": "account",
-  "sinds": 2019,
+  "sinds": 2017,
   "eenheid": "kW",
-  "laatstBijgewerkt": "2026-10-08",
-  "laatstGecontroleerd": "2026-10-09T06:12:00+02:00",
-  "bronUrl": "https://ned.nl/",
-  "documentatieUrl": "https://ned-edb.atlassian.net/wiki/spaces/PAD/overview",
+  "laatstBijgewerkt": "2026-10-23",
+  "laatstGecontroleerd": "2026-10-23T09:49:00+02:00",
+  "bronUrl": "https://ned.nl/nl/dataportaal/energie-productie/elektriciteit/zonne-energie",
+  "documentatieUrl": "https://ned.nl/nl/datacatalogus",
   "licentie": {
-    "naam": "Voorwaarden van de bron (te controleren)"
+    "naam": "Vrij te gebruiken met bronvermelding, volgens de datasetpagina van ned.nl",
+    "url": "https://ned.nl/nl/dataportaal/energie-productie/elektriciteit/zonne-energie"
   },
   "velden": [
     {
-      "naam": "tijdstip_start",
-      "type": "datum-tijd (UTC)",
-      "betekenis": "Begin van het meetinterval"
+      "naam": "validfrom",
+      "type": "datum-tijd",
+      "betekenis": "Begin van het interval waarover de waarde geldt"
     },
     {
-      "naam": "tijdstip_eind",
-      "type": "datum-tijd (UTC)",
-      "betekenis": "Einde van het meetinterval"
+      "naam": "validto",
+      "type": "datum-tijd",
+      "betekenis": "Einde van het interval waarover de waarde geldt"
     },
     {
-      "naam": "waarde",
+      "naam": "capacity",
       "type": "getal",
-      "betekenis": "Geschatte opwek in kW"
+      "betekenis": "Opgewekt vermogen in kW"
+    },
+    {
+      "naam": "volume",
+      "type": "getal",
+      "betekenis": "Opgewekt volume in kWh"
+    },
+    {
+      "naam": "percentage",
+      "type": "getal",
+      "betekenis": "Benutting als percentage van het totaal geinstalleerde vermogen"
+    },
+    {
+      "naam": "point",
+      "type": "verwijzing",
+      "betekenis": "Het gebied waar de waarde over gaat: Nederland als geheel of een provincie"
+    },
+    {
+      "naam": "type",
+      "type": "verwijzing",
+      "betekenis": "De energiedrager; voor deze reeks type 2, Solar"
+    },
+    {
+      "naam": "granularity",
+      "type": "verwijzing",
+      "betekenis": "De tijdstap: 10 minuten, kwartier, uur, dag, maand of jaar"
+    },
+    {
+      "naam": "granularitytimezone",
+      "type": "verwijzing",
+      "betekenis": "De tijdzone van de tijdstap: UTC of Europe/Amsterdam"
+    },
+    {
+      "naam": "classification",
+      "type": "verwijzing",
+      "betekenis": "Soort waarde; op dit moment alleen near-realtime"
+    },
+    {
+      "naam": "lastupdate",
+      "type": "datum-tijd",
+      "betekenis": "Wanneer het record voor het laatst is bijgewerkt"
     }
   ],
   "beperkingen": [
-    "Voorbeeld: waarden zijn schattingen en kunnen achteraf worden bijgesteld."
+    "De cijfers zijn gemodelleerd, niet gemeten. Van zonne-energie zijn volgens ned.nl geen goede actuele bemeten gegevens beschikbaar; het model gebruikt het geinstalleerde vermogen, CBS-cijfers, weergegevens en ENTSO-E.",
+    "De reeks volgt het principe achter de meter: ook de zonnestroom die direct in huis of op het bedrijf wordt verbruikt telt mee, niet alleen wat aan het net wordt geleverd. Dat is dus meer dan de teruglevering die een netbeheerder ziet.",
+    "Voor de API en de downloads is een gratis account op ned.nl nodig; de sleutel maak je zelf aan onder mijn account. Deel de sleutel niet met anderen.",
+    "De algemene voorwaarden van het Nationaal Energie Dashboard verbieden in artikel 3.6 het kopieren, distribueren of doorverkopen van het product aan derden zonder voorafgaande toestemming. De datasetpagina staat hergebruik met bronvermelding wel toe; neem bij doorgifte op grote schaal contact op.",
+    "De oude endpoint api.netanders.io/v1 is niet langer in gebruik; gebruik api.ned.nl/v1.",
+    "Naast de gerealiseerde opwek publiceert ned.nl een voorspelling voor zeven dagen vooruit. Dat is een aparte reeks met een eigen model, onder meer op basis van weersverwachting en day-ahead prijzen."
   ],
   "preview": {
-    "enabled": true,
+    "enabled": false,
     "weergave": "weefsel"
   },
   "prompt": {
     "valkuilen": [
-      "Tijdstippen zijn in UTC; zet om naar Nederlandse tijd.",
-      "Recente waarden zijn voorlopig."
+      "Kies bewust een granularitytimezone: UTC en Europe/Amsterdam geven rond de zomertijdwissel een andere dagindeling.",
+      "capacity is een vermogen in kW en volume een hoeveelheid in kWh. Tel capacity niet op over tijdstappen alsof het energie is.",
+      "De waarden zijn een modeluitkomst en kunnen achteraf worden bijgesteld.",
+      "Haal de gerealiseerde reeks en de zevendaagse voorspelling niet door elkaar; ze staan in dezelfde API."
     ]
   },
-  "zekerheid": "midden",
-  "voorbeeld": true
+  "zekerheid": "midden"
 }
