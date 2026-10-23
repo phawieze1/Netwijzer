@@ -18,16 +18,40 @@ pagina. Twijfel je, neem het evenement dan niet op.
 **Stappen**
 
 1. Lees `docs/03-content-en-agents.md` en `content/schemas/evenement.schema.json`, en de bestaande bestanden in `content/agenda/`.
-2. Neem alleen evenementen op met een officiële pagina met datum, plaats (of "online") en organisator. Staat de datum er niet eenduidig op, dan sla je het over.
-3. Eén bestand per evenement: `content/agenda/YYYY-MM-DD-<slug>.json`, met de startdatum in de bestandsnaam.
-4. Controleer bestaande toekomstige evenementen: verplaatst of geannuleerd? Pas aan, en noem elke wijziging apart in de PR met de link waarop je het zag.
+2. Loop **eerst de vaste lijst hieronder** langs, en zoek daarna vrij verder op het web.
+3. Neem alleen evenementen op met een officiële pagina met datum, plaats (of "online") en organisator. Staat de datum er niet eenduidig op, dan sla je het over.
+4. Eén bestand per evenement: `content/agenda/YYYY-MM-DD-<slug>.json`, met de startdatum in de bestandsnaam.
+5. Controleer bestaande toekomstige evenementen: verplaatst of geannuleerd? Pas aan, en noem elke wijziging apart in de PR met de link waarop je het zag.
+
+**Minimaal te controleren agendapagina's**
+
+Dit is een ondergrens, geen begrenzing: je loopt deze elke run langs, en gaat daarna
+gewoon zelf op zoek. De lijst bestaat omdat twee runs anders op verschillende pagina's
+uitkomen en dus verschillende evenementen vinden — dat maakt de agenda afhankelijk van
+toeval in plaats van van de criteria.
+
+| Pagina | Waarom |
+|---|---|
+| https://www.programmavivet.nl/agenda/default.aspx | VIVET is het samenwerkingsprogramma voor energiedata van CBS, Kadaster, Netbeheer Nederland, PBL en RVO. Het meest op het onderwerp van alle bronnen. |
+| https://www.regionale-energiestrategie.nl/res+agenda/default.aspx | Publiceert ook de VIVET-bijeenkomsten en RES-bijeenkomsten met een datacomponent. |
+| https://www.dutchpower.net/eventagenda | Vakbijeenkomsten over netbeheer, meten en data. |
+| https://dataexpedities.nl/ | Hackathons met open data van CBS, Open State Foundation en Stichting Momus. |
+| https://www.nvde.nl/actueel/evenementen/ | Brede energieagenda; bruikbaar om kandidaten te vinden die elders niet staan. |
+| https://www.aanmelder.nl/digitaliseringenergiesysteem2026 | Het jaarlijkse congres rond de Actieagenda Digitalisering Energiesysteem. Loopt de editie van dit jaar af, zoek dan de volgende. |
+| https://vng.nl/agenda | VNG houdt vragenuren over het Energie Dataportaal en energiedata per gemeente. |
+
+Geeft een pagina een 403 of 404, meld dat dan in de pull request in plaats van hem
+stil over te slaan: dan weten we dat de lijst onderhoud nodig heeft.
+
+Komt een evenement op meer dan één van deze pagina's voor, neem dan de officiële
+pagina van de organisator als `url`, niet de agenda waarin je het vond.
 
 **Laat de acht placeholders uit fase 1 ongemoeid.** Je herkent ze aan
 `"voorbeeld": true` en een organisator als "Voorbeeldorganisator". Ze liggen allemaal
 in het verleden en de evenementen zijn verzonnen, dus er is niets aan te controleren
 en niets te promoveren. Ze worden met de hand verwijderd zodra jij echte evenementen
 hebt aangeleverd. Raak je ze wél aan, dan blokkeert `scripts/check-agent-content.ts`
-je pull request, omdat hun `start` in het verleden ligt. Stap 4 gaat dus alleen over
+je pull request, omdat hun `start` in het verleden ligt. Stap 5 gaat dus alleen over
 evenementen die jij of een eerdere run zelf heeft toegevoegd.
 5. Branch `agent/agenda/<datum>`, pull request met per evenement de link en zekerheid.
 
