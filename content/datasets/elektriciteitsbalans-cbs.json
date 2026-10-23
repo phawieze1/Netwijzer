@@ -1,43 +1,90 @@
 {
   "slug": "elektriciteitsbalans-cbs",
-  "naam": "Elektriciteitsbalans",
+  "naam": "Elektriciteitsbalans; aanbod en verbruik",
   "leverancier": "cbs-statline",
   "thema": "verbruik",
-  "beschrijving": "Voorbeeld: maandcijfers over productie, invoer, uitvoer en verbruik van elektriciteit in Nederland. Geschikt voor trends over meerdere jaren. Metadata nog niet gecontroleerd.",
+  "beschrijving": "Maandcijfers over aanbod en verbruik van elektriciteit in Nederland: bruto en netto productie uitgesplitst naar energiebron, invoer en uitvoer per land, distributieverliezen en het berekende netto verbruik. StatLine-tabel 84575NED, op te halen via de open OData-API van CBS.",
   "frequentie": "maand",
   "formaat": "API",
   "toegang": "open",
-  "sinds": 2008,
-  "eenheid": "GWh",
-  "laatstBijgewerkt": "2026-09-18",
-  "bronUrl": "https://www.cbs.nl/",
+  "sinds": 2015,
+  "eenheid": "mln kWh",
+  "laatstBijgewerkt": "2026-09-30",
+  "laatstGecontroleerd": "2026-10-23T08:41:00+02:00",
+  "bronUrl": "https://www.cbs.nl/nl-nl/cijfers/detail/84575NED",
+  "documentatieUrl": "https://www.cbs.nl/nl-nl/onze-diensten/open-data/statline-als-open-data",
   "licentie": {
-    "naam": "Te controleren"
+    "naam": "CC BY 4.0",
+    "url": "https://creativecommons.org/licenses/by/4.0/deed.nl"
   },
   "velden": [
     {
-      "naam": "periode",
+      "naam": "Perioden",
       "type": "tekst",
-      "betekenis": "Maand, bijvoorbeeld 2026-09"
+      "betekenis": "Periodecode, bijvoorbeeld 2026MM07 voor juli 2026 of 2025JJ00 voor het jaar 2025"
     },
     {
-      "naam": "gebied",
-      "type": "tekst",
-      "betekenis": "Gebied, hier Nederland"
+      "naam": "BrutoProductie_1",
+      "type": "geheel getal",
+      "betekenis": "Bruto productie van elektriciteit in mln kWh"
     },
     {
-      "naam": "waarde",
-      "type": "getal",
-      "betekenis": "Waarde in GWh"
+      "naam": "EigenVerbruikBijElektrProductie_2",
+      "type": "geheel getal",
+      "betekenis": "Eigen verbruik bij de elektriciteitsproductie in mln kWh"
+    },
+    {
+      "naam": "NettoProductieTotaal_3",
+      "type": "geheel getal",
+      "betekenis": "Netto productie, totaal, in mln kWh: bruto productie minus eigen verbruik"
+    },
+    {
+      "naam": "WindenergieTotaal_12",
+      "type": "geheel getal",
+      "betekenis": "Netto productie uit windenergie in mln kWh, met op land en op zee apart"
+    },
+    {
+      "naam": "Zonnestroom_15",
+      "type": "geheel getal",
+      "betekenis": "Netto productie uit zonnestroom in mln kWh"
+    },
+    {
+      "naam": "InvoerTotaal_17",
+      "type": "geheel getal",
+      "betekenis": "Invoer, totaal, in mln kWh, met de landen van herkomst apart"
+    },
+    {
+      "naam": "UitvoerTotaal_23",
+      "type": "geheel getal",
+      "betekenis": "Uitvoer, totaal, in mln kWh, met de landen van bestemming apart"
+    },
+    {
+      "naam": "Distributieverliezen_29",
+      "type": "geheel getal",
+      "betekenis": "Distributieverliezen in mln kWh"
+    },
+    {
+      "naam": "NettoVerbruikBerekend_30",
+      "type": "geheel getal",
+      "betekenis": "Netto verbruik in mln kWh, berekend als netto productie plus invoer minus uitvoer en distributieverliezen"
     }
   ],
   "beperkingen": [
-    "Voorbeeld: recente maanden kunnen voorlopig zijn en later worden bijgesteld."
+    "Volledige maandcijfers zijn beschikbaar vanaf 2015. Vanaf 1936 per jaar en vanaf 1976 per maand zijn alleen de totale productie, invoer en uitvoer bekend.",
+    "Status van de cijfers: tot en met 2023 definitief, 2024 en 2025 nader voorlopig, 2026 voorlopig.",
+    "Voorlopige cijfers komen de tweede maand na afloop van de verslagperiode, nader voorlopige uiterlijk in december van het jaar erna en definitieve uiterlijk in december van het tweede jaar erna.",
+    "Het verbruik is geen meting: het wordt berekend uit de netto productie, de invoer, de uitvoer en de distributieverliezen."
   ],
   "preview": {
     "enabled": true,
-    "weergave": "weefsel"
+    "weergave": "staven"
   },
-  "zekerheid": "laag",
-  "voorbeeld": true
+  "prompt": {
+    "valkuilen": [
+      "De tabel bevat jaar- en maandperioden door elkaar. Filter op de periodecodes met MM als je alleen maanden wilt, anders tel je jaren dubbel.",
+      "Alle waarden staan in miljoen kWh, dus in GWh. Reken niet met kWh.",
+      "Recente jaren zijn voorlopig of nader voorlopig en worden later bijgesteld; neem de status mee bij een vergelijking over jaren."
+    ]
+  },
+  "zekerheid": "hoog"
 }

@@ -1,47 +1,127 @@
 {
   "slug": "kleinverbruik-postcode-enexis",
-  "naam": "Kleinverbruik per postcode",
+  "naam": "Verbruiksdata kleinverbruikaansluitingen",
   "leverancier": "enexis",
   "thema": "verbruik",
-  "beschrijving": "Voorbeeld: jaarlijks gemiddeld verbruik van kleinverbruikers per postcodegebied in het verzorgingsgebied van Enexis. Metadata nog niet gecontroleerd.",
+  "beschrijving": "Standaardjaarafname van alle kleinverbruikaansluitingen in het verzorgingsgebied van Enexis Netbeheer, samengevoegd per postcodegebied. Per regel zijn minimaal tien aansluitingen samengevoegd. Naast de afname staan er percentages in over slimme meters, dubbel tarief en aansluitwaarde.",
   "frequentie": "jaar",
+  "frequentieLabel": "jaarlijks, peildatum 1 januari",
   "formaat": "Bestand",
   "toegang": "open",
   "sinds": 2011,
   "eenheid": "kWh",
-  "laatstBijgewerkt": "2026-05-01",
-  "bronUrl": "https://www.enexis.nl/",
+  "laatstGecontroleerd": "2026-10-23T08:41:00+02:00",
+  "bronUrl": "https://www.enexis.nl/over-ons/waar-staan-wij-voor/open-data",
+  "documentatieUrl": "https://www.enexis.nl/-/media/enexis-nl/pdf-documents/open-data/toelichtingkleinverbruiksgegevensopendataenexisnetbeheer.pdf",
   "licentie": {
-    "naam": "Te controleren"
+    "naam": "Vrij gebruik volgens de disclaimer van Enexis; geen benoemde licentie",
+    "url": "https://www.enexis.nl/disclaimer"
   },
   "velden": [
     {
-      "naam": "periode",
+      "naam": "NETBEHEERDER",
       "type": "tekst",
-      "betekenis": "Jaar, bijvoorbeeld 2025"
+      "betekenis": "EAN-code van de regionale netbeheerder"
     },
     {
-      "naam": "gebied",
+      "naam": "NETGEBIED",
       "type": "tekst",
-      "betekenis": "Postcodegebied"
+      "betekenis": "Aanduiding van het gesloten inkoopgebied waar de aansluiting onder valt"
     },
     {
-      "naam": "waarde",
-      "type": "getal",
-      "betekenis": "Gemiddeld verbruik in kWh"
+      "naam": "STRAATNAAM",
+      "type": "tekst",
+      "betekenis": "Straatnaam; bij een samengevoegd cluster die van POSTCODE_VAN"
     },
     {
-      "naam": "aantal_aansluitingen",
+      "naam": "POSTCODE_VAN",
+      "type": "tekst",
+      "betekenis": "Postcode in het formaat vier cijfers en twee letters zonder spatie"
+    },
+    {
+      "naam": "POSTCODE_TOT",
+      "type": "tekst",
+      "betekenis": "Gelijk aan POSTCODE_VAN, of de bovengrens van de postcodereeks als postcodes zijn samengevoegd"
+    },
+    {
+      "naam": "WOONPLAATS",
+      "type": "tekst",
+      "betekenis": "Plaatsnaam; bij een samengevoegd cluster die van POSTCODE_VAN"
+    },
+    {
+      "naam": "LANDCODE",
+      "type": "tekst",
+      "betekenis": "Landcode volgens ISO 3166 alpha-2, hier NL"
+    },
+    {
+      "naam": "PRODUCTSOORT",
+      "type": "tekst",
+      "betekenis": "ELK voor elektriciteit of GAS voor gas"
+    },
+    {
+      "naam": "VERBRUIKSSEGMENT",
+      "type": "tekst",
+      "betekenis": "KVB, het segment kleinverbruik"
+    },
+    {
+      "naam": "AANSLUITINGEN_AANTAL",
       "type": "geheel getal",
-      "betekenis": "Aantal aansluitingen in het gebied"
+      "betekenis": "Aantal aansluitingen in het postcodegebied voor deze energiesoort"
+    },
+    {
+      "naam": "LEVERINGSRICHTING_PERC",
+      "type": "percentage",
+      "betekenis": "Percentage van de aansluitingen met netto afname; dit daalt als er meer wordt teruggeleverd"
+    },
+    {
+      "naam": "FYSIEKE_STATUS_PERC",
+      "type": "percentage",
+      "betekenis": "Percentage van de aansluitingen dat in bedrijf is"
+    },
+    {
+      "naam": "SOORT_AANSLUITING_PERC",
+      "type": "percentage",
+      "betekenis": "Percentage van de meest voorkomende aansluitwaarde"
+    },
+    {
+      "naam": "SOORT_AANSLUITING",
+      "type": "tekst",
+      "betekenis": "Naam van de meest voorkomende aansluitwaarde, bijvoorbeeld 1x25 of G6"
+    },
+    {
+      "naam": "SJA_GEMIDDELD",
+      "type": "getal",
+      "betekenis": "Gemiddelde standaardjaarafname, in kWh bij elektriciteit en in kubieke meter bij gas"
+    },
+    {
+      "naam": "SJA_LAAG_TARIEF_PERC",
+      "type": "percentage",
+      "betekenis": "Percentage van de aansluitingen met een dubbel tarief"
+    },
+    {
+      "naam": "SLIMME_METER_PERC",
+      "type": "percentage",
+      "betekenis": "Percentage slimme meters, alle generaties samen"
     }
   ],
   "beperkingen": [
-    "Voorbeeld: kleine gebieden kunnen zijn samengevoegd of weggelaten om herleidbaarheid te voorkomen."
+    "Enexis stelt deze dataset niet als directe download beschikbaar: je vraagt hem aan via een formulier op de open-datapagina en ontvangt het bestand per e-mail.",
+    "Standaard gaan de datasets maximaal drie jaar terug. Oudere jaren zijn op te vragen via Partners in Energie.",
+    "Per regel zijn minimaal tien aansluitingen samengevoegd. Bij minder dan tien worden postcodes samengevoegd en staat de bovengrens van de reeks in POSTCODE_TOT.",
+    "De standaardjaarafname is de verwachte jaarafname bij gestandaardiseerde condities, niet het gemeten verbruik. Bij een draaistroommeter is de afname gesaldeerd.",
+    "Sinds 14 maart 2022 heet standaardjaarverbruik (SJV) in de toelichting standaardjaarafname (SJA), na een besluit van de ACM.",
+    "De toelichting is versie 1.7 van 14 maart 2022 en noemt geen startjaar van de reeks; het jaartal 2011 in dit veld is niet bij de bron bevestigd."
   ],
   "preview": {
-    "enabled": true,
+    "enabled": false,
     "weergave": "staven"
+  },
+  "prompt": {
+    "valkuilen": [
+      "Het bestand is gescheiden met tab-tekens, tekstvelden staan tussen aanhalingstekens en het decimaalteken is een komma.",
+      "SJA_GEMIDDELD staat in kWh bij elektriciteit en in kubieke meters bij gas; filter eerst op PRODUCTSOORT.",
+      "Een regel kan meer dan een postcode beslaan; vergelijk POSTCODE_VAN met POSTCODE_TOT voordat je per postcode rekent."
+    ]
   },
   "zekerheid": "laag",
   "voorbeeld": true

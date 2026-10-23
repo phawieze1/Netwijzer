@@ -1,23 +1,78 @@
 {
   "slug": "kleinverbruik-postcode-liander",
-  "naam": "Kleinverbruik per postcode",
+  "naam": "Verbruiksdata kleinverbruikaansluitingen",
   "leverancier": "liander",
   "thema": "verbruik",
-  "beschrijving": "Voorbeeld: jaarlijks gemiddeld verbruik van kleinverbruikers per postcodegebied.",
+  "beschrijving": "Standaardjaarverbruik van alle kleinverbruikaansluitingen in het verzorgingsgebied van Liander, samengevoegd per postcode6. Elektriciteit tot en met 3 x 80 ampere en gas tot en met 40 kubieke meter per uur. Het gaat om het verwachte verbruik op basis van het jaar ervoor, niet om gemeten verbruik.",
   "frequentie": "jaar",
+  "frequentieLabel": "jaarlijks, peildatum 1 januari",
   "formaat": "Bestand",
   "toegang": "open",
-  "sinds": 2010,
+  "sinds": 2009,
   "eenheid": "kWh",
-  "laatstBijgewerkt": "2026-05-01",
-  "bronUrl": "https://www.liander.nl/",
+  "laatstBijgewerkt": "2026-01-01",
+  "laatstGecontroleerd": "2026-10-23T08:41:00+02:00",
+  "bronUrl": "https://www.liander.nl/over-ons/open-data",
+  "documentatieUrl": "https://www.liander.nl/-/media/files/open-data/kleinverbruikdata/toelichting-verbruiksbestand-kleine-aansluitingen-vanaf-2025.pdf",
   "licentie": {
-    "naam": "Te controleren"
+    "naam": "Liander open data: hergebruik toegestaan met naamsvermelding",
+    "url": "https://www.liander.nl/-/media/files/open-data/kleinverbruikdata/toelichting-verbruiksbestand-kleine-aansluitingen-vanaf-2025.pdf"
   },
+  "velden": [
+    {
+      "naam": "Postcode",
+      "type": "tekst (6 tekens)",
+      "betekenis": "Beginpostcode van de range die het postcodecluster bepaalt"
+    },
+    {
+      "naam": "Postcode_eind",
+      "type": "tekst (6 tekens)",
+      "betekenis": "Eindpostcode van de range die het postcodecluster bepaalt"
+    },
+    {
+      "naam": "Productsoort",
+      "type": "tekst (3 tekens)",
+      "betekenis": "ELK voor elektriciteit of GAS voor gas"
+    },
+    {
+      "naam": "Aansluitingen_aantal",
+      "type": "geheel getal",
+      "betekenis": "Aantal aansluitingen dat in dit postcodegebied is meegenomen"
+    },
+    {
+      "naam": "SJV_totaal",
+      "type": "geheel getal",
+      "betekenis": "Som van de standaardjaarverbruiken in het postcodegebied, in kWh bij elektriciteit en in kubieke meter bij gas"
+    },
+    {
+      "naam": "SJV_gemiddeld",
+      "type": "decimaal getal",
+      "betekenis": "Gemiddeld standaardjaarverbruik per aansluiting, afgerond op twee decimalen"
+    },
+    {
+      "naam": "Aantal_postcodes",
+      "type": "geheel getal",
+      "betekenis": "Aantal postcode6-gebieden waaruit het cluster bestaat"
+    }
+  ],
+  "beperkingen": [
+    "Gegevens zijn samengevoegd op postcode6 met minimaal tien aansluitingen per regel. Zijn er minder, dan wordt de postcode samengevoegd met de eerstvolgende in alfabetische volgorde tot een cluster.",
+    "Het standaardjaarverbruik (SJV) is het verwachte verbruik van een aansluiting op basis van het jaar ervoor, niet het werkelijk gemeten verbruik.",
+    "Het SJV houdt geen rekening met salderen. Teruglevering staat in een apart bestand, Terugleverdata Kleine Aansluitingen.",
+    "Liander geeft geen garantie over de kwaliteit of toepasbaarheid van de gegevens en is niet aansprakelijk voor schade.",
+    "Op liander.nl staan de bestanden met peildatum 2019 tot en met 2026. Oudere jaren, vanaf peildatum 2009, staan in de catalogus op data.overheid.nl."
+  ],
   "preview": {
     "enabled": true,
     "weergave": "staven"
   },
-  "zekerheid": "laag",
-  "voorbeeld": true
+  "prompt": {
+    "valkuilen": [
+      "Het bestand heet CSV maar is gescheiden met tab-tekens; het decimaalteken is een komma en duizendtallen hebben geen scheidingsteken.",
+      "Filter eerst op Productsoort: elektriciteit staat in kWh en gas in kubieke meters in dezelfde kolom.",
+      "Vanaf peildatum 1 januari 2020 bevat SJV_gemiddeld alleen nog de afgenomen elektriciteit, waardoor de reeks op dat punt een sprong omhoog maakt.",
+      "Een regel kan meer dan een postcode beslaan; gebruik Aantal_postcodes voordat je per postcode rekent."
+    ]
+  },
+  "zekerheid": "midden"
 }
