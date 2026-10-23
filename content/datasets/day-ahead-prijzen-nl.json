@@ -3,55 +3,61 @@
   "naam": "Day-ahead prijzen NL",
   "leverancier": "entsoe-transparency",
   "thema": "markt",
-  "beschrijving": "Voorbeeld: uurprijzen van de Nederlandse day-ahead markt voor elektriciteit. Geschikt om prijsverloop en negatieve prijzen te volgen. Metadata nog niet gecontroleerd.",
-  "frequentie": "uur",
+  "beschrijving": "De day-ahead prijs voor elektriciteit in de Nederlandse biedzone, per markttijdseenheid en in euro per MWh. De prijzen komen van de elektriciteitsbeurzen en worden uiterlijk een uur na sluiting van de day-ahead veiling gepubliceerd op het Transparency Platform van ENTSO-E.",
+  "frequentie": "kwartier",
+  "frequentieLabel": "per markttijdseenheid",
   "formaat": "API",
   "toegang": "account",
   "sinds": 2015,
   "eenheid": "EUR/MWh",
   "laatstBijgewerkt": "2026-10-08",
+  "laatstGecontroleerd": "2026-10-23T09:49:00+02:00",
   "bronUrl": "https://transparency.entsoe.eu/",
-  "licentie": {
-    "naam": "Te controleren"
-  },
+  "documentatieUrl": "https://transparencyplatform.zendesk.com/hc/en-us/articles/16647234190100-Energy-Prices-12-1-D",
   "velden": [
     {
-      "naam": "tijdstip_start",
+      "naam": "TimeInterval",
       "type": "datum-tijd (UTC)",
-      "betekenis": "Begin van het prijsinterval"
+      "betekenis": "Begin en einde van de periode waarover de reeks loopt"
     },
     {
-      "naam": "tijdstip_eind",
-      "type": "datum-tijd (UTC)",
-      "betekenis": "Einde van het prijsinterval"
+      "naam": "resolution",
+      "type": "tekst",
+      "betekenis": "Lengte van de markttijdseenheid, bijvoorbeeld PT15M of PT60M"
     },
     {
-      "naam": "waarde",
+      "naam": "position",
+      "type": "geheel getal",
+      "betekenis": "Volgnummer van het punt binnen de periode; samen met resolution bepaalt het het tijdstip"
+    },
+    {
+      "naam": "price.amount",
       "type": "getal",
-      "betekenis": "Prijs in EUR/MWh"
+      "betekenis": "Day-ahead prijs in EUR/MWh; kan negatief zijn"
     },
     {
-      "naam": "eenheid",
+      "naam": "in_Domain / out_Domain",
       "type": "tekst",
-      "betekenis": "EUR/MWh"
-    },
-    {
-      "naam": "status",
-      "type": "tekst",
-      "betekenis": "definitief of voorlopig"
+      "betekenis": "EIC-code van de biedzone; voor Nederland 10YNL----------L"
     }
   ],
   "beperkingen": [
-    "Voorbeeld: toegang vraagt een account; voorwaarden niet gecontroleerd."
+    "Day-ahead prijzen (artikel 12.1.d van de Transparantieverordening) staan NIET op de lijst van gegevens die ENTSO-E vrijgeeft onder Creative Commons Naamsvermelding 4.0. Hergebruik vraagt daarom vooraf toestemming van de primaire eigenaar van de gegevens, meestal de elektriciteitsbeurs. Daarom staat er hier geen licentie ingevuld.",
+    "De API vraagt een account op het Transparency Platform plus een security token. Dat token krijg je pas na een mail aan transparency@entsoe.eu met RESTful API access in de onderwerpregel; ENTSO-E verleent toegang binnen drie werkdagen.",
+    "Sinds handelsdag 30 september 2025, voor leveringsdag 1 oktober 2025, werkt de Europese day-ahead marktkoppeling SDAC met een markttijdseenheid van een kwartier in plaats van een uur. Oudere reeksen staan dus per uur en nieuwere per kwartier.",
+    "Het antwoord is XML en geeft geen tijdstempel per punt: je leidt het tijdstip af uit het begin van de periode, de resolution en het volgnummer.",
+    "Het startjaar 2015 in het veld sinds staat niet in de documentatie van het platform en is niet bij de bron bevestigd."
   ],
   "preview": {
-    "enabled": true,
+    "enabled": false,
     "weergave": "weefsel"
   },
   "prompt": {
     "valkuilen": [
-      "Tijdstippen zijn in UTC; zet om naar Nederlandse tijd.",
-      "Prijzen kunnen negatief zijn; filter die niet weg."
+      "Tijdstippen zijn in UTC; zet ze om naar Nederlandse tijd voordat je een dagcurve tekent.",
+      "Prijzen kunnen negatief zijn; filter die niet weg.",
+      "Let op de resolution: een reeks van voor oktober 2025 staat per uur, daarna per kwartier. Tel uur- en kwartierwaarden niet bij elkaar op zonder om te rekenen.",
+      "De prijs staat in EUR per MWh, niet per kWh."
     ]
   },
   "zekerheid": "laag",

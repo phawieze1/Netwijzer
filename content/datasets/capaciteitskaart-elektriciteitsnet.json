@@ -3,46 +3,87 @@
   "naam": "Capaciteitskaart elektriciteitsnet",
   "leverancier": "netbeheer-nederland",
   "thema": "net",
-  "beschrijving": "Voorbeeld: kaart met de beschikbare transportcapaciteit per station, voor afname en voor teruglevering. Actualisatiefrequentie en metadata nog niet gecontroleerd.",
+  "beschrijving": "Landelijke kaart van de netbeheerders met de transportcapaciteit en de congestie op het elektriciteitsnet, apart voor afname en voor teruglevering. Drie lagen: een totaaloverzicht, het hoogspanningsnet van TenneT en de voedingsgebieden van de regionale netbeheerders. De brondata achter de kaart is als puntkomma-gescheiden CSV te downloaden.",
   "frequentie": "statisch",
-  "frequentieLabel": "per station",
+  "frequentieLabel": "onregelmatig, per netbeheerder bijgewerkt",
   "formaat": "Kaart",
   "toegang": "open",
   "sinds": 2022,
-  "eenheid": "MVA",
-  "laatstBijgewerkt": "2026-09-27",
-  "bronUrl": "https://www.netbeheernederland.nl/",
-  "licentie": {
-    "naam": "Te controleren"
-  },
+  "eenheid": "MW",
+  "laatstBijgewerkt": "2026-10-19",
+  "laatstGecontroleerd": "2026-10-23T09:49:00+02:00",
+  "bronUrl": "https://capaciteitskaart.netbeheernederland.nl/",
+  "documentatieUrl": "https://capaciteitskaart.netbeheernederland.nl/info/algemene-info",
   "velden": [
     {
-      "naam": "id",
+      "naam": "voedingsgebied_id",
       "type": "tekst",
-      "betekenis": "Unieke sleutel van het object"
+      "betekenis": "Unieke sleutel van het voedingsgebied van de regionale netbeheerder"
     },
     {
-      "naam": "naam",
-      "type": "tekst",
-      "betekenis": "Naam van het station"
-    },
-    {
-      "naam": "geometrie",
-      "type": "GeoJSON",
-      "betekenis": "Punt of vlak in WGS84"
-    },
-    {
-      "naam": "waarde",
+      "naam": "aanwezige_transportcapaciteit_afname",
       "type": "getal",
-      "betekenis": "Capaciteit in MVA"
+      "betekenis": "Maximale afnamecapaciteit die het net in dit gebied aankan, in MW"
+    },
+    {
+      "naam": "aanwezige_transportcapaciteit_invoeding",
+      "type": "getal",
+      "betekenis": "Maximale invoedingscapaciteit die het net in dit gebied aankan, in MW"
+    },
+    {
+      "naam": "benodigde_transportcapaciteit_afname",
+      "type": "getal",
+      "betekenis": "Transportcapaciteit voor afname die op spitsmomenten nodig is om de transportovereenkomsten uit te voeren, in MW"
+    },
+    {
+      "naam": "benodigde_transportcapaciteit_invoeding",
+      "type": "getal",
+      "betekenis": "Transportcapaciteit voor invoeding die op spitsmomenten nodig is om de transportovereenkomsten uit te voeren, in MW"
+    },
+    {
+      "naam": "wachtrij_afname",
+      "type": "getal",
+      "betekenis": "Wachtrij voor afname, uitgedrukt in vermogen in MW"
+    },
+    {
+      "naam": "wachtrij_invoeding",
+      "type": "getal",
+      "betekenis": "Wachtrij voor invoeding, uitgedrukt in vermogen in MW"
+    },
+    {
+      "naam": "unieke_verzoeken_afname",
+      "type": "geheel getal",
+      "betekenis": "Aantal unieke aanvragen voor afname"
+    },
+    {
+      "naam": "RNB",
+      "type": "tekst",
+      "betekenis": "De regionale netbeheerder die het voedingsgebied beheert"
+    },
+    {
+      "naam": "afname (kleurcode)",
+      "type": "geheel getal",
+      "betekenis": "Kleurcode per postcode6 of per TenneT-tussenstation: -1 geen informatie, 0 transparant, 1 geel, 2 oranje, 3 rood"
     }
   ],
   "beperkingen": [
-    "Voorbeeld: een kaart is een momentopname; er is geen historische reeks."
+    "De kaart is een indicatie. Netbeheer Nederland geeft geen garantie over de volledigheid, juistheid of actualiteit en u kunt er geen rechten aan ontlenen; neem bij concrete plannen eerst contact op met uw netbeheerder.",
+    "Netbeheer Nederland noemt bij de kaart en bij de downloads geen licentie of hergebruikvoorwaarden, alleen een disclaimer. Daarom staat er hier geen licentie ingevuld.",
+    "Er is geen vaste actualisatiefrequentie. Elke netbeheerder werkt zijn eigen gegevens bij; de pagina Laatst vernieuwd geeft per netbeheerder en per gegevenssoort de datum van de laatste wijziging.",
+    "De kaart gaat over aansluitingen groter dan 3 x 80 ampere en geldt niet voor huishoudelijke aansluitingen op het laagspanningsnet.",
+    "De wachtrij van een regionale netbeheerder telt klanten mee die last hebben van TenneT-congestie, maar niet de klanten die alleen op het hoogspanningsnet van TenneT zijn aangesloten. Een wachtrij van 0 kan ook op ontbrekende gegevens duiden.",
+    "Het startjaar 2022 in het veld sinds staat niet in de documentatie van de kaart en is niet bij de bron bevestigd."
   ],
   "preview": {
-    "enabled": true,
+    "enabled": false,
     "weergave": "punten"
+  },
+  "prompt": {
+    "valkuilen": [
+      "De CSV-bestanden zijn gescheiden met een puntkomma en gebruiken een komma als decimaalteken.",
+      "De eenheid is MW, niet MVA; de kleurcodes zijn gehele getallen van -1 tot en met 3 en geen capaciteit.",
+      "De kaart kent geen historische reeks: elke download is een momentopname, en de netbeheerders werken op verschillende datums bij."
+    ]
   },
   "zekerheid": "laag",
   "voorbeeld": true
