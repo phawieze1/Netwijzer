@@ -18,7 +18,7 @@ export type StartpromptDataset = {
   frequentie: Frequentie;
   frequentieLabel?: string | undefined;
   eenheid?: string | undefined;
-  sinds: number;
+  sinds?: number | undefined;
   formaat: 'API' | 'Bestand' | 'Kaart';
   toegang: 'open' | 'account';
   velden?: ReadonlyArray<{ naam: string }> | undefined;
@@ -59,7 +59,7 @@ export function startprompt(dataset: StartpromptDataset): string {
     leverancier: dataset.leverancier,
     frequentieLabel: frequentieLabel(dataset.frequentie, dataset.frequentieLabel),
     eenheid: dataset.eenheid ?? 'niet vermeld bij de bron',
-    sinds: String(dataset.sinds),
+    sinds: dataset.sinds === undefined ? 'niet vermeld bij de bron' : String(dataset.sinds),
     'velden | join(", ")': veldnamen.length > 0 ? veldnamen.join(', ') : 'nog niet gedocumenteerd',
     toegangZin: toegangZin(dataset.formaat, dataset.toegang),
   };

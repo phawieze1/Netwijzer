@@ -91,7 +91,7 @@ const beschrijving = item.beschrijving;
                     <span class="cell">{toegangLabel(dataset.data.toegang)}</span>
                     <span class="cell">
                       <small>beschikbaar sinds</small>
-                      {dataset.data.sinds}
+                      {dataset.data.sinds ?? 'onbekend'}
                     </span>
                   </a>
                 ))}

@@ -153,7 +153,7 @@ const velden: ReadonlyArray<{ naam: string; type: string; betekenis: string }> =
         </div>
         <div><span class="label">Formaat</span><b>{d.formaat}</b></div>
         <div><span class="label">Toegang</span><b>{toegangLabel(d.toegang)}</b></div>
-        <div><span class="label">Beschikbaar sinds</span><b>{d.sinds}</b></div>
+        <div><span class="label">Beschikbaar sinds</span><b>{d.sinds ?? NIET_VERMELD}</b></div>
         <div>
           <span class="label">Laatst bijgewerkt</span>
           <b>{d.laatstBijgewerkt !== undefined ? datum(d.laatstBijgewerkt) : NIET_VERMELD}</b>
