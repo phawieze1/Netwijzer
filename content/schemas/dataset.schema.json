@@ -14,7 +14,6 @@
     "frequentie",
     "formaat",
     "toegang",
-    "sinds",
     "bronUrl",
     "zekerheid"
   ],
@@ -81,7 +80,8 @@
     "sinds": {
       "type": "integer",
       "minimum": 1990,
-      "maximum": 2100
+      "maximum": 2100,
+      "description": "Het jaar waarin de reeks begint, alleen als de leverancier dat documenteert. Weet je het niet, laat het veld dan weg: de site toont dan \"Niet vermeld bij de bron\". Nooit het huidige jaar invullen als verzinsel, want de site presenteert dit als \"beschikbaar sinds\" met een tijdbalk."
     },
     "eenheid": {
       "type": "string"

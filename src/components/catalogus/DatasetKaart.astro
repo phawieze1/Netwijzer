@@ -48,6 +48,6 @@ const attributen = itemAttributen({
   <div class="facts">
     <span><small>Frequentie</small>{frequentieLabel(d.frequentie, d.frequentieLabel)}</span>
     <span><small>Formaat</small>{d.formaat}</span>
-    <span><small>Sinds</small>{d.sinds}</span>
+    <span><small>Sinds</small>{d.sinds ?? 'onbekend'}</span>
   </div>
 </a>
