@@ -32,12 +32,15 @@
     }
   ],
   "beperkingen": [
-    "Voorbeeld: fictieve dataset, niet geschikt om mee te rekenen."
+    "Voorbeeld: fictieve dataset, niet geschikt om mee te rekenen.",
+    "Voorbeeld: dit item hoort bij de bron Voorbeeldbron, die geen echte organisatie is, en wijst naar example.org. Er valt dus niets bij een leverancier na te trekken en het item kan niet worden gepromoveerd.",
+    "Voorbeeld: verwijder dit item met de hand zodra er een echte dataset over laadpunten in de catalogus staat, net als bij de verzonnen evenementen in de agenda."
   ],
   "preview": {
     "enabled": true,
     "weergave": "punten"
   },
   "zekerheid": "laag",
-  "voorbeeld": true
+  "voorbeeld": true,
+  "laatstGecontroleerd": "2026-10-23T09:49:00+02:00"
 }

@@ -3,46 +3,30 @@
   "naam": "Hoogspanningsnet",
   "leverancier": "pdok",
   "thema": "geo",
-  "beschrijving": "Voorbeeld: geodata van hoogspanningslijnen en stations, per lijn. Gegevens uit overheidsbronnen en OpenStreetMap lopen hier door elkaar. Herkomst en metadata nog niet gecontroleerd.",
+  "beschrijving": "Geodata van hoogspanningslijnen en schakel- en transformatorstations, bedoeld om het landelijke net op een kaart te zetten. Welke dataset hier precies achter zit is nog niet vastgesteld: een landelijke laag met het hoogspanningsnet is op PDOK en in het Nationaal Georegister niet gevonden.",
   "frequentie": "statisch",
   "frequentieLabel": "per lijn",
   "formaat": "Kaart",
   "toegang": "open",
   "sinds": 2016,
   "eenheid": "kV",
-  "laatstBijgewerkt": "2026-10-02",
-  "bronUrl": "https://www.pdok.nl/",
-  "licentie": {
-    "naam": "Te controleren"
-  },
-  "velden": [
-    {
-      "naam": "id",
-      "type": "tekst",
-      "betekenis": "Unieke sleutel van het object"
-    },
-    {
-      "naam": "naam",
-      "type": "tekst",
-      "betekenis": "Naam van station of lijn"
-    },
-    {
-      "naam": "geometrie",
-      "type": "GeoJSON",
-      "betekenis": "Punt of lijn in WGS84"
-    },
-    {
-      "naam": "waarde",
-      "type": "getal",
-      "betekenis": "Spanningsniveau in kV"
-    }
-  ],
+  "laatstGecontroleerd": "2026-10-23T09:49:00+02:00",
+  "bronUrl": "https://www.pdok.nl/datasets",
   "beperkingen": [
-    "Voorbeeld: de dekking van vrijwilligersdata is per regio verschillend."
+    "Een zoekopdracht in het Nationaal Georegister, de catalogus achter PDOK, op hoogspanning en op elektriciteitsnet levert geen landelijke dataset van het hoogspanningsnet op. Wat er wel staat is regionaal of historisch, zoals Elektriciteitstations TenneT en netbeheerders Zuid-Holland 2024 en Hoogspanningsleiding (historie).",
+    "Wat PDOK wel landelijk aanbiedt voor het elektriciteitsnet zijn de liggingsgegevens elektriciteitsnetten van Liander, onder CC BY 4.0. Die dekken alleen het verzorgingsgebied van Liander en bevatten naast hoogspanning (50 kV en hoger) ook midden- en laagspanning.",
+    "Omdat de onderliggende bron niet is vastgesteld, zijn leverancier, frequentie, startjaar, eenheid en licentie van dit item niet bij een bron bevestigd. Het item blijft daarom als voorbeeld gemarkeerd.",
+    "De oorspronkelijke beschrijving meldde dat overheidsbronnen en OpenStreetMap door elkaar lopen. Dat is niet terug te vinden bij PDOK en is bij deze controle niet bevestigd."
   ],
   "preview": {
-    "enabled": true,
+    "enabled": false,
     "weergave": "punten"
+  },
+  "prompt": {
+    "valkuilen": [
+      "Controleer eerst welke bron je werkelijk voor je hebt: een landelijke hoogspanningslaag en de netgegevens van een enkele regionale netbeheerder dekken een heel ander gebied.",
+      "Een netkaart zonder peildatum zegt weinig; het net verandert door netuitbreidingen."
+    ]
   },
   "zekerheid": "laag",
   "voorbeeld": true
