@@ -79,7 +79,7 @@
     "De cijfers zijn gemodelleerd, niet gemeten. Van zonne-energie zijn volgens ned.nl geen goede actuele bemeten gegevens beschikbaar; het model gebruikt het geinstalleerde vermogen, CBS-cijfers, weergegevens en ENTSO-E.",
     "De reeks volgt het principe achter de meter: ook de zonnestroom die direct in huis of op het bedrijf wordt verbruikt telt mee, niet alleen wat aan het net wordt geleverd. Dat is dus meer dan de teruglevering die een netbeheerder ziet.",
     "Voor de API en de downloads is een gratis account op ned.nl nodig; de sleutel maak je zelf aan onder mijn account. Deel de sleutel niet met anderen.",
-    "De algemene voorwaarden van het Nationaal Energie Dashboard verbieden in artikel 3.6 het kopieren, distribueren of doorverkopen van het product aan derden zonder voorafgaande toestemming. De datasetpagina staat hergebruik met bronvermelding wel toe; neem bij doorgifte op grote schaal contact op.",
+    "De algemene voorwaarden van ned.nl verbieden in artikel 3.6 het kopieren, distribueren of doorverkopen aan derden zonder toestemming. De datasetpagina staat hergebruik met bronvermelding wel toe.",
     "De oude endpoint api.netanders.io/v1 is niet langer in gebruik; gebruik api.ned.nl/v1.",
     "Naast de gerealiseerde opwek publiceert ned.nl een voorspelling voor zeven dagen vooruit. Dat is een aparte reeks met een eigen model, onder meer op basis van weersverwachting en day-ahead prijzen."
   ],

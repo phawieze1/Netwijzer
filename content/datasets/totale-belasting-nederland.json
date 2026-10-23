@@ -42,7 +42,8 @@
     }
   ],
   "beperkingen": [
-    "De werkelijke totale belasting (artikel 6.1.a van de Transparantieverordening) staat NIET op de lijst van gegevens die ENTSO-E vrijgeeft onder Creative Commons Naamsvermelding 4.0; alleen de day-ahead prognose van de totale belasting (6.1.b) staat erop. Hergebruik van de werkelijke belasting vraagt daarom vooraf toestemming van de primaire eigenaar. Daarom staat er hier geen licentie ingevuld.",
+    "De werkelijke totale belasting (artikel 6.1.a van de Transparantieverordening) staat niet op de lijst van gegevens die ENTSO-E vrijgeeft onder CC BY 4.0; alleen de day-ahead prognose (6.1.b) staat erop.",
+    "Hergebruik van de werkelijke belasting vraagt vooraf toestemming van de primaire eigenaar. Daarom staat er hier geen licentie ingevuld.",
     "De API vraagt een account op het Transparency Platform plus een security token. Dat token krijg je pas na een mail aan transparency@entsoe.eu met RESTful API access in de onderwerpregel; ENTSO-E verleent toegang binnen drie werkdagen.",
     "De belasting is geen directe meting van het verbruik: ENTSO-E berekent hem als netto-opwek min uitvoer plus invoer min opgenomen energie. Is de netto-opwek van een eenheid niet bekend, dan wordt die geschat.",
     "Bijwerken achteraf is toegestaan maar niet verplicht, dus een reeks kan na publicatie nog veranderen.",

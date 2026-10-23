@@ -76,10 +76,10 @@
     }
   ],
   "beperkingen": [
-    "De datacatalogus kent drie typen voor wind op zee: 17 WindOffShore met de uitsplitsing per windpark, 22 WindOffshoreB voor co2monitor.nl en 51 WindOffshoreC voor ned.nl en energieopwek.nl. Welke je kiest bepaalt de uitkomst; kies er een en houd die vast.",
+    "De datacatalogus kent drie typen voor wind op zee: 17 WindOffShore met de uitsplitsing per windpark, 22 WindOffshoreB voor co2monitor.nl en 51 WindOffshoreC voor ned.nl. De keuze bepaalt de uitkomst.",
     "De uitsplitsing per windpark is gemodelleerd, ook waar het landelijke totaal op bemeten ENTSO-E-gegevens berust.",
     "Voor de API en de downloads is een gratis account op ned.nl nodig; de sleutel maak je zelf aan onder mijn account. Deel de sleutel niet met anderen.",
-    "De algemene voorwaarden van het Nationaal Energie Dashboard verbieden in artikel 3.6 het kopieren, distribueren of doorverkopen van het product aan derden zonder voorafgaande toestemming. De datasetpagina staat hergebruik met bronvermelding wel toe; neem bij doorgifte op grote schaal contact op.",
+    "De algemene voorwaarden van ned.nl verbieden in artikel 3.6 het kopieren, distribueren of doorverkopen aan derden zonder toestemming. De datasetpagina staat hergebruik met bronvermelding wel toe.",
     "De oude endpoint api.netanders.io/v1 is niet langer in gebruik; gebruik api.ned.nl/v1.",
     "Naast de gerealiseerde opwek publiceert ned.nl een voorspelling voor zeven dagen vooruit. Die houdt rekening met het terugregelen van windparken bij storm en wordt verlaagd bij een negatieve day-ahead prijs."
   ],

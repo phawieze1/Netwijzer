@@ -77,7 +77,7 @@
   ],
   "beperkingen": [
     "De API vraagt een API-sleutel. Die vraag je aan in het API Developer Portal van TenneT of via je MyTenneT-account.",
-    "De algemene voorwaarden van de API Gateway van TenneT verbieden het delen of doorverkopen van opgehaalde gegevens aan derden, tenzij de documentatie van de API dat toestaat, en dragen geen rechten op de gegevens over. Het is dus geen open-datalicentie.",
+    "De algemene voorwaarden van de API Gateway van TenneT dragen geen rechten op de gegevens over en verbieden het delen of doorverkopen aan derden, tenzij de documentatie dat toestaat. Het is dus geen open-datalicentie.",
     "Strakke verzoeklimieten: het endpoint /latest mag maximaal 1 verzoek per seconde en 10 per minuut, en geeft de laatste 30 minuten terug. Het endpoint over een tijdvak mag maximaal 8 verzoeken per dag met een tijdvak van hoogstens 4 uur.",
     "Voor grote historische bestanden verwijst TenneT naar de handmatige download op de transparantiepagina, tot 100 MB per keer.",
     "TenneT publiceert de gegevens met een door TenneT instelbare vertraging.",

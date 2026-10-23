@@ -12,12 +12,13 @@
   "bronUrl": "https://klimaatmonitor.databank.nl/",
   "documentatieUrl": "https://klimaatmonitor.databank.nl/content/klimaatmonitor-api",
   "beperkingen": [
-    "De Regionale klimaatmonitor wordt beheerd door de Rijksdienst voor Ondernemend Nederland (RVO). Noch de disclaimer, noch de gebruiksvoorwaarden van de Open Data Service noemen een licentie; RVO wijst aansprakelijkheid voor onjuiste of verouderde informatie af en stelt dat aan de datasets geen rechten kunnen worden ontleend.",
+    "De Regionale klimaatmonitor wordt beheerd door de Rijksdienst voor Ondernemend Nederland (RVO). Noch de disclaimer, noch de gebruiksvoorwaarden van de Open Data Service noemen een licentie.",
+    "RVO wijst aansprakelijkheid voor onjuiste of verouderde informatie af en stelt dat aan de datasets geen rechten kunnen worden ontleend.",
     "De gebruiksvoorwaarden van de Open Data Service richten zich op (decentrale) overheden, die de webservices vrij mogen gebruiken zolang ze de dienst niet overbelasten. Of hergebruik door anderen is toegestaan, staat er niet.",
-    "Geautomatiseerd ophalen gaat via de Open Data Service, een JSON-API. Die vraagt een API-sleutel die je met naam, organisatie en mailadres via het contactformulier aanvraagt; je mailadres komt dan ook op de nieuwsbrieflijst. De sleutel mag je niet met anderen delen.",
+    "Geautomatiseerd ophalen gaat via de Open Data Service, een JSON-API. Die vraagt een API-sleutel die je met naam, organisatie en mailadres via het contactformulier aanvraagt. De sleutel mag je niet delen.",
     "RVO vraagt applicaties de opgehaalde gegevens zelf op te slaan en niet rechtstreeks aan de Open Data Service te koppelen.",
     "De cijfers zijn een regionale uitsplitsing van landelijke registraties. Soms zijn ze identiek aan de landelijke cijfers, soms een deelverzameling of een verdeling daarvan over Nederland.",
-    "Welke eenheid de indicator gebruikt en vanaf welk jaar de reeks loopt, staat niet op de openbare pagina's van de monitor: het dashboard is een Jive-toepassing die je alleen interactief kunt doorlopen. Die twee velden zijn daarom opnieuw niet bevestigd."
+    "Welke eenheid de indicator gebruikt en vanaf welk jaar de reeks loopt, staat niet op de openbare paginas van de monitor: het dashboard is alleen interactief te doorlopen. Die twee velden zijn niet bevestigd."
   ],
   "preview": {
     "enabled": false,

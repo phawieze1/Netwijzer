@@ -42,9 +42,10 @@
     }
   ],
   "beperkingen": [
-    "Day-ahead prijzen (artikel 12.1.d van de Transparantieverordening) staan NIET op de lijst van gegevens die ENTSO-E vrijgeeft onder Creative Commons Naamsvermelding 4.0. Hergebruik vraagt daarom vooraf toestemming van de primaire eigenaar van de gegevens, meestal de elektriciteitsbeurs. Daarom staat er hier geen licentie ingevuld.",
+    "Day-ahead prijzen (artikel 12.1.d van de Transparantieverordening) staan niet op de lijst van gegevens die ENTSO-E vrijgeeft onder CC BY 4.0. Daarom staat er hier geen licentie ingevuld.",
+    "Hergebruik vraagt vooraf toestemming van de primaire eigenaar van de gegevens, meestal de elektriciteitsbeurs.",
     "De API vraagt een account op het Transparency Platform plus een security token. Dat token krijg je pas na een mail aan transparency@entsoe.eu met RESTful API access in de onderwerpregel; ENTSO-E verleent toegang binnen drie werkdagen.",
-    "Sinds handelsdag 30 september 2025, voor leveringsdag 1 oktober 2025, werkt de Europese day-ahead marktkoppeling SDAC met een markttijdseenheid van een kwartier in plaats van een uur. Oudere reeksen staan dus per uur en nieuwere per kwartier.",
+    "Sinds handelsdag 30 september 2025, voor leveringsdag 1 oktober 2025, werkt de Europese day-ahead koppeling SDAC met een markttijdseenheid van een kwartier. Oudere reeksen staan per uur, nieuwere per kwartier.",
     "Het antwoord is XML en geeft geen tijdstempel per punt: je leidt het tijdstip af uit het begin van de periode, de resolution en het volgnummer.",
     "Het startjaar 2015 in het veld sinds staat niet in de documentatie van het platform en is niet bij de bron bevestigd."
   ],

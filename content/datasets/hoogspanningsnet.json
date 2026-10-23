@@ -13,8 +13,9 @@
   "laatstGecontroleerd": "2026-10-23T09:49:00+02:00",
   "bronUrl": "https://www.pdok.nl/datasets",
   "beperkingen": [
-    "Een zoekopdracht in het Nationaal Georegister, de catalogus achter PDOK, op hoogspanning en op elektriciteitsnet levert geen landelijke dataset van het hoogspanningsnet op. Wat er wel staat is regionaal of historisch, zoals Elektriciteitstations TenneT en netbeheerders Zuid-Holland 2024 en Hoogspanningsleiding (historie).",
-    "Wat PDOK wel landelijk aanbiedt voor het elektriciteitsnet zijn de liggingsgegevens elektriciteitsnetten van Liander, onder CC BY 4.0. Die dekken alleen het verzorgingsgebied van Liander en bevatten naast hoogspanning (50 kV en hoger) ook midden- en laagspanning.",
+    "Een zoekopdracht in het Nationaal Georegister, de catalogus achter PDOK, op hoogspanning en op elektriciteitsnet levert geen landelijke dataset van het hoogspanningsnet op.",
+    "Wat er wel staat is regionaal of historisch, zoals Elektriciteitstations TenneT en netbeheerders Zuid-Holland 2024 en Hoogspanningsleiding (historie).",
+    "Wat PDOK wel landelijk aanbiedt zijn de liggingsgegevens elektriciteitsnetten van Liander, onder CC BY 4.0. Die dekken alleen het gebied van Liander en bevatten ook midden- en laagspanning.",
     "Omdat de onderliggende bron niet is vastgesteld, zijn leverancier, frequentie, startjaar, eenheid en licentie van dit item niet bij een bron bevestigd. Het item blijft daarom als voorbeeld gemarkeerd.",
     "De oorspronkelijke beschrijving meldde dat overheidsbronnen en OpenStreetMap door elkaar lopen. Dat is niet terug te vinden bij PDOK en is bij deze controle niet bevestigd."
   ],
