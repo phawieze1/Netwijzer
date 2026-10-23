@@ -1,8 +1,8 @@
 {
   "slug": "klimaatmonitor",
-  "naam": "Klimaatmonitor",
+  "naam": "Regionale klimaatmonitor",
   "type": "overheid",
-  "website": "https://example.org/",
-  "beschrijving": "Databank met energie- en klimaatcijfers per gemeente. Website, type en beschrijving te controleren; de website is hier nog een voorbeeldadres.",
+  "website": "https://klimaatmonitor.databank.nl/",
+  "beschrijving": "Open-dataportaal met regionale uitsplitsingen van landelijke cijfers over energiegebruik, hernieuwbare opwek en klimaatbeleid, tot op gemeenteniveau. Beheerd door de Rijksdienst voor Ondernemend Nederland (RVO).",
   "voorbeeld": true
 }
