@@ -136,8 +136,11 @@ const velden: ReadonlyArray<{ naam: string; type: string; betekenis: string }> =
     {
       d.voorbeeld === true && (
         <p class="voorbeeldmelding">
-          <span class="badge key">Voorbeeld</span>
-          <span>De metadata van deze dataset is nog niet gecontroleerd.</span>
+          <span class="badge key">Ongecontroleerd</span>
+          <span>
+            De dataset bestaat, maar deze beschrijving is nog niet bij de leverancier
+            nagetrokken. Frequentie, formaat, velden en licentie kunnen afwijken.
+          </span>
         </p>
       )
     }
