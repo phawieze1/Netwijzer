@@ -3,55 +3,62 @@
   "naam": "Totale belasting Nederland",
   "leverancier": "entsoe-transparency",
   "thema": "verbruik",
-  "beschrijving": "Voorbeeld: landelijke belasting van het elektriciteitsnet per kwartier. Geschikt om de dag- en weekcurve van het verbruik te volgen. Metadata nog niet gecontroleerd.",
+  "beschrijving": "De werkelijke totale belasting van de Nederlandse biedzone per markttijdseenheid: de opwek op het net van TSO en netbeheerders, min het saldo van de uitwisseling met buurlanden en min het vermogen dat opslag opneemt. TenneT levert de cijfers aan het Transparency Platform van ENTSO-E, uiterlijk een uur na afloop van de periode.",
   "frequentie": "kwartier",
+  "frequentieLabel": "per markttijdseenheid",
   "formaat": "API",
   "toegang": "account",
   "sinds": 2015,
   "eenheid": "MW",
   "laatstBijgewerkt": "2026-10-08",
+  "laatstGecontroleerd": "2026-10-23T09:49:00+02:00",
   "bronUrl": "https://transparency.entsoe.eu/",
-  "licentie": {
-    "naam": "Te controleren"
-  },
+  "documentatieUrl": "https://transparencyplatform.zendesk.com/hc/en-us/articles/16647979768084-Actual-Total-Load-Day-ahead-Per-Bidding-Zone-6-1-A-6-1-B",
   "velden": [
     {
-      "naam": "tijdstip_start",
+      "naam": "TimeInterval",
       "type": "datum-tijd (UTC)",
-      "betekenis": "Begin van het meetinterval"
+      "betekenis": "Begin en einde van de periode waarover de reeks loopt"
     },
     {
-      "naam": "tijdstip_eind",
-      "type": "datum-tijd (UTC)",
-      "betekenis": "Einde van het meetinterval"
+      "naam": "resolution",
+      "type": "tekst",
+      "betekenis": "Lengte van de markttijdseenheid, bijvoorbeeld PT15M"
     },
     {
-      "naam": "waarde",
+      "naam": "position",
+      "type": "geheel getal",
+      "betekenis": "Volgnummer van het punt binnen de periode; samen met resolution bepaalt het het tijdstip"
+    },
+    {
+      "naam": "quantity",
       "type": "getal",
-      "betekenis": "Gemeten of geschatte waarde in MW"
+      "betekenis": "Totale belasting in MW, het gemiddelde van de realtime-metingen over de markttijdseenheid"
     },
     {
-      "naam": "eenheid",
+      "naam": "outBiddingZone_Domain",
       "type": "tekst",
-      "betekenis": "MW"
-    },
-    {
-      "naam": "status",
-      "type": "tekst",
-      "betekenis": "definitief of voorlopig"
+      "betekenis": "EIC-code van de biedzone; voor Nederland 10YNL----------L"
     }
   ],
   "beperkingen": [
-    "Voorbeeld: toegang vraagt een account; voorwaarden niet gecontroleerd."
+    "De werkelijke totale belasting (artikel 6.1.a van de Transparantieverordening) staat niet op de lijst van gegevens die ENTSO-E vrijgeeft onder CC BY 4.0; alleen de day-ahead prognose (6.1.b) staat erop.",
+    "Hergebruik van de werkelijke belasting vraagt vooraf toestemming van de primaire eigenaar. Daarom staat er hier geen licentie ingevuld.",
+    "De API vraagt een account op het Transparency Platform plus een security token. Dat token krijg je pas na een mail aan transparency@entsoe.eu met RESTful API access in de onderwerpregel; ENTSO-E verleent toegang binnen drie werkdagen.",
+    "De belasting is geen directe meting van het verbruik: ENTSO-E berekent hem als netto-opwek min uitvoer plus invoer min opgenomen energie. Is de netto-opwek van een eenheid niet bekend, dan wordt die geschat.",
+    "Bijwerken achteraf is toegestaan maar niet verplicht, dus een reeks kan na publicatie nog veranderen.",
+    "Het startjaar 2015 in het veld sinds staat niet in de documentatie van het platform en is niet bij de bron bevestigd."
   ],
   "preview": {
-    "enabled": true,
+    "enabled": false,
     "weergave": "weefsel"
   },
   "prompt": {
     "valkuilen": [
-      "Tijdstippen zijn in UTC; zet om naar Nederlandse tijd.",
-      "Recente waarden kunnen voorlopig zijn."
+      "Tijdstippen zijn in UTC; zet ze om naar Nederlandse tijd voordat je een dag- of weekcurve tekent.",
+      "Het antwoord is XML en geeft geen tijdstempel per punt: leid het tijdstip af uit het begin van de periode, de resolution en het volgnummer.",
+      "Een waarde is een gemiddeld vermogen in MW over de markttijdseenheid, geen energie. Voor MWh vermenigvuldig je met de lengte van de eenheid.",
+      "Verwar de werkelijke belasting (6.1.a) niet met de day-ahead prognose (6.1.b): die staan in dezelfde documentatie maar zijn verschillende reeksen."
     ]
   },
   "zekerheid": "laag",

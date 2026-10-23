@@ -3,55 +3,96 @@
   "naam": "Balansdelta",
   "leverancier": "tennet",
   "thema": "net",
-  "beschrijving": "Voorbeeld: het verschil tussen vraag en aanbod op het landelijke net, per minuut. Geschikt om onbalans en het regelvermogen te volgen. Metadata nog niet gecontroleerd.",
+  "beschrijving": "Het vermogen dat TenneT inzet om vraag en aanbod op het landelijke net in balans te houden, uitgesplitst naar aFRR, mFRRda, IGCC en de Europese platforms PICASSO en MARI, met de hoogste opregel- en laagste afregelprijs. Te volgen via de API Balance Delta High Res of te downloaden van de transparantiepagina van TenneT.",
   "frequentie": "minuut",
+  "frequentieLabel": "elke 12 seconden",
   "formaat": "API",
-  "toegang": "open",
+  "toegang": "account",
   "sinds": 2018,
   "eenheid": "MW",
   "laatstBijgewerkt": "2026-10-09",
-  "bronUrl": "https://www.tennet.eu/",
+  "laatstGecontroleerd": "2026-10-23T09:49:00+02:00",
+  "bronUrl": "https://www.tennet.eu/nl-en/grids-and-markets/transparency-data-netherlands/download-page-transparency",
+  "documentatieUrl": "https://developer.tennet.eu/specs/balance-delta-high-res",
   "licentie": {
-    "naam": "Te controleren"
+    "naam": "API Gateway Service General Terms and Conditions van TenneT; geen open-datalicentie",
+    "url": "https://developer.tennet.eu/fair-use-policy/"
   },
   "velden": [
     {
-      "naam": "tijdstip_start",
+      "naam": "timeInterval_start",
       "type": "datum-tijd (UTC)",
-      "betekenis": "Begin van het meetinterval"
+      "betekenis": "Begin van het interval"
     },
     {
-      "naam": "tijdstip_eind",
+      "naam": "timeInterval_end",
       "type": "datum-tijd (UTC)",
-      "betekenis": "Einde van het meetinterval"
+      "betekenis": "Einde van het interval"
     },
     {
-      "naam": "waarde",
+      "naam": "sequence",
+      "type": "tekst",
+      "betekenis": "Volgnummer van het punt binnen de periode; in de CSV heet deze kolom Isp"
+    },
+    {
+      "naam": "power_afrr_in / power_afrr_out",
       "type": "getal",
-      "betekenis": "Gemeten waarde in MW"
+      "betekenis": "Geactiveerd aFRR-vermogen omhoog en omlaag"
     },
     {
-      "naam": "eenheid",
-      "type": "tekst",
-      "betekenis": "MW"
+      "naam": "power_mfrrda_in / power_mfrrda_out",
+      "type": "getal",
+      "betekenis": "Geactiveerd vermogen uit de noodvermogensreserve mFRRda, omhoog en omlaag; kan leeg zijn"
     },
     {
-      "naam": "status",
-      "type": "tekst",
-      "betekenis": "definitief of voorlopig"
+      "naam": "power_igcc_in / power_igcc_out",
+      "type": "getal",
+      "betekenis": "Vermogen dat via IGCC met buurlanden wordt uitgewisseld om onbalans te verrekenen"
+    },
+    {
+      "naam": "power_picasso_in / power_picasso_out",
+      "type": "getal",
+      "betekenis": "Bijdrage van het Europese aFRR-platform PICASSO"
+    },
+    {
+      "naam": "power_mari_in / power_mari_out",
+      "type": "getal",
+      "betekenis": "Bijdrage van het Europese mFRR-platform MARI"
+    },
+    {
+      "naam": "max_upw_regulation_price",
+      "type": "getal",
+      "betekenis": "Hoogste prijs van het opgeregelde vermogen in EUR/MWh; kan leeg zijn"
+    },
+    {
+      "naam": "min_downw_regulation_price",
+      "type": "getal",
+      "betekenis": "Laagste prijs van het afgeregelde vermogen in EUR/MWh, kan negatief zijn; kan leeg zijn"
+    },
+    {
+      "naam": "mid_price",
+      "type": "getal",
+      "betekenis": "Middenprijs in EUR/MWh"
     }
   ],
   "beperkingen": [
-    "Voorbeeld: waarden per minuut zijn voorlopig en worden later vastgesteld."
+    "De API vraagt een API-sleutel. Die vraag je aan in het API Developer Portal van TenneT of via je MyTenneT-account.",
+    "De algemene voorwaarden van de API Gateway van TenneT dragen geen rechten op de gegevens over en verbieden het delen of doorverkopen aan derden, tenzij de documentatie dat toestaat. Het is dus geen open-datalicentie.",
+    "Strakke verzoeklimieten: het endpoint /latest mag maximaal 1 verzoek per seconde en 10 per minuut, en geeft de laatste 30 minuten terug. Het endpoint over een tijdvak mag maximaal 8 verzoeken per dag met een tijdvak van hoogstens 4 uur.",
+    "Voor grote historische bestanden verwijst TenneT naar de handmatige download op de transparantiepagina, tot 100 MB per keer.",
+    "TenneT publiceert de gegevens met een door TenneT instelbare vertraging.",
+    "Het startjaar 2018 in het veld sinds staat niet in de documentatie van de API of de downloadpagina en is niet bij de bron bevestigd."
   ],
   "preview": {
-    "enabled": true,
+    "enabled": false,
     "weergave": "weefsel"
   },
   "prompt": {
     "valkuilen": [
-      "Tijdstippen zijn in UTC; zet om naar Nederlandse tijd.",
-      "Een negatieve waarde betekent een ander tekort dan een positieve; let op het teken."
+      "Tijdstippen komen standaard in UTC; zet ze om naar Nederlandse tijd voordat je een dagcurve tekent.",
+      "In en out zijn aparte kolommen, geen plus en min. Wil je één balansdelta, trek dan out van in af in plaats van ze op te tellen.",
+      "De prijsvelden kunnen leeg zijn en de afregelprijs kan negatief zijn; filter die niet weg.",
+      "De eenheid heet in het XML-antwoord MAW; dat is megawatt."
     ]
   },
   "zekerheid": "laag",
