@@ -39,9 +39,20 @@ toeval in plaats van van de criteria.
 | https://www.nvde.nl/actueel/evenementen/ | Brede energieagenda; bruikbaar om kandidaten te vinden die elders niet staan. |
 | https://www.aanmelder.nl/digitaliseringenergiesysteem2026 | Het jaarlijkse congres rond de Actieagenda Digitalisering Energiesysteem. Loopt de editie van dit jaar af, zoek dan de volgende. |
 | https://vng.nl/agenda | VNG houdt vragenuren over het Energie Dataportaal en energiedata per gemeente. |
+| https://www.cbs.nl/nl-nl/dossier/nederland-regionaal/regionale-webinars | CBS kondigt zijn eigen datawebinars hier aan, met een blok "Eerstvolgende webinar". Energie is een van de vaste onderwerpen. Het webinar zelf loopt via `aanmelder.nl`; neem die aanmeldpagina als `url`. |
+| https://elaad.nl/evenementen/ | ElaadNL is het kennis- en innovatiecentrum voor laden. Het publiceert laaddata en de Elaad Outlooks, en organiseert daar webinars en live events over. Filter op "Aanstaande". |
+| https://www.energiesysteemenruimte.nl/agenda/default.aspx | Agenda van het programma Energiesysteem en Ruimte, dezelfde familie als VIVET en de RES. Publiceert de congres- en regiodagen uit het Landelijk Actieprogramma Netcongestie. |
+| https://www.mffbas.nl/nieuws/ | MFFBAS beheert de data-uitwisseling van de sector (Energiedatawijzer, Het Normo) en kondigt zijn informatiesessies — centraal IT-landschap, congestiemanagement — op de nieuwspagina aan. Op `/evenementen/` staan alleen ledenvergaderingen, dus kijk op de nieuwspagina. |
+| https://www.geonovum.nl/agenda | De enige geodatabron in deze lijst, voor het thema `geo`. De meeste items gaan over de Omgevingswet en niet over energie; kijk naar de datum-, digital-twin- en geo-standaardenbijeenkomsten. |
 
 Geeft een pagina een 403 of 404, meld dat dan in de pull request in plaats van hem
 stil over te slaan: dan weten we dat de lijst onderhoud nodig heeft.
+
+Twee pagina's die op het onderwerp zitten maar een automatische lezer weigeren met een
+403 staan er bewust niet in, zodat je er geen run aan kwijt bent:
+`https://www.energy-innovation.nl/nl/agenda/` (Energy Innovation NL, mede-organisator
+van Digitalisering Energiesysteem) en `https://www.topsectorenergie.nl/agenda/`. Kun je
+ze op een gegeven moment wél lezen, meld dat dan, dan kunnen ze erbij.
 
 Komt een evenement op meer dan één van deze pagina's voor, neem dan de officiële
 pagina van de organisator als `url`, niet de agenda waarin je het vond.
