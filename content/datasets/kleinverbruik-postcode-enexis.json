@@ -10,7 +10,7 @@
   "toegang": "open",
   "sinds": 2020,
   "eenheid": "kWh",
-  "laatstGecontroleerd": "2026-10-23T09:49:00+02:00",
+  "laatstGecontroleerd": "2026-10-28T08:25:00+01:00",
   "bronUrl": "https://www.enexis.nl/over-ons/waar-staan-wij-voor/open-data",
   "documentatieUrl": "https://www.enexis.nl/-/media/enexis-nl/pdf-documents/open-data/toelichtingkleinverbruiksgegevensopendataenexisnetbeheer.pdf",
   "licentie": {
@@ -107,9 +107,10 @@
   "beperkingen": [
     "Enexis stelt deze dataset niet als directe download beschikbaar op de eigen site: je vraagt hem aan via een formulier. In de landelijke catalogus data.overheid.nl staan de CSV-bestanden wel rechtstreeks.",
     "De registratie van Enexis in data.overheid.nl noemt CC0 1.0 als licentie. Op de eigen open-datapagina schrijft Enexis alleen dat je de datasets vrij mag gebruiken, zonder een licentie te noemen, en verwijst het naar de disclaimer.",
-    "Het startjaar is niet gedocumenteerd. De catalogus toont peildatum 1 januari 2020, 2021 en 2022 en Enexis houdt zelf ongeveer drie jaar beschikbaar. Het veld sinds is dus de vroegste gepubliceerde peildatum.",
+    "Het startjaar is niet gedocumenteerd. De catalogus data.overheid.nl biedt de peildatums 1 januari 2020, 2021 en 2022. Het veld sinds staat daarom op de vroegste gepubliceerde peildatum.",
+    "Enexis biedt op de eigen site bij sommige sets historische data aan, tot maximaal drie jaar terug. Welke peildatums dat nu zijn, staat er niet bij.",
     "Voor oudere jaren verwijst Enexis naar Partners in Energie.",
-    "De registratie in data.overheid.nl is sinds 31 januari 2023 niet bijgewerkt; nieuwere peildatums staan er niet in.",
+    "De registratie in data.overheid.nl is sinds 31 januari 2023 niet bijgewerkt; nieuwere peildatums staan er niet in. Het veld laatstBijgewerkt staat op die datum, terwijl de nieuwste peildatum in de registratie 1 januari 2022 is.",
     "Per regel zijn minimaal tien aansluitingen samengevoegd. Bij minder dan tien worden postcodes samengevoegd en staat de bovengrens van de reeks in POSTCODE_TOT.",
     "De standaardjaarafname is de verwachte jaarafname bij gestandaardiseerde condities, niet het gemeten verbruik. Bij een draaistroommeter is de afname gesaldeerd.",
     "Sinds 14 maart 2022 heet standaardjaarverbruik (SJV) in de toelichting standaardjaarafname (SJA), na een besluit van de ACM."
@@ -125,7 +126,6 @@
       "Een regel kan meer dan een postcode beslaan; vergelijk POSTCODE_VAN met POSTCODE_TOT voordat je per postcode rekent."
     ]
   },
-  "zekerheid": "laag",
-  "voorbeeld": true,
-  "laatstBijgewerkt": "2022-01-01"
+  "zekerheid": "midden",
+  "laatstBijgewerkt": "2023-01-31"
 }
