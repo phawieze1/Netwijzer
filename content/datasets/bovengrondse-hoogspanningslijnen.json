@@ -1,0 +1,43 @@
+{
+  "slug": "bovengrondse-hoogspanningslijnen",
+  "naam": "Bovengrondse hoogspanningslijnen met rekenafstanden",
+  "leverancier": "rivm",
+  "thema": "geo",
+  "beschrijving": "Landelijke kaartlaag met de bovengrondse hoogspanningslijnen in Nederland, met per lijn het spanningsniveau en de rekenafstand waarbinnen het Rijk adviseert de magneetveldzone te berekenen. Het RIVM maakt de kaart in opdracht van het ministerie van Economische Zaken en Klimaat op basis van liggingsgegevens van TenneT en biedt hem open aan via WMS en WFS.",
+  "frequentie": "statisch",
+  "frequentieLabel": "onregelmatig, versie van 1 november 2023",
+  "formaat": "Kaart",
+  "toegang": "open",
+  "sinds": 2023,
+  "eenheid": "kV",
+  "laatstBijgewerkt": "2023-11-01",
+  "laatstGecontroleerd": "2026-10-28T08:25:00+01:00",
+  "bronUrl": "https://data.overheid.nl/dataset/83491-bovengrondse-hoogspanningslijnen-met-rekenafstanden",
+  "documentatieUrl": "https://www.rivm.nl/hoogspanningslijnen/netkaart",
+  "licentie": {
+    "naam": "Publiek domein (Creative Commons Public Domain Mark 1.0)",
+    "url": "https://creativecommons.org/publicdomain/mark/1.0/deed.nl"
+  },
+  "beperkingen": [
+    "De kaart gaat over bovengrondse hoogspanningslijnen. Ondergrondse kabels en hoogspanningsstations worden in de metadata en op de netkaartpagina van het RIVM niet als onderdeel genoemd.",
+    "Aan de RIVM-netkaart kunnen geen rechten worden ontleend. TenneT is verantwoordelijk voor de juistheid van de liggingsgegevens die het RIVM gebruikt.",
+    "De rekenafstand is niet de magneetveldzone zelf: de berekende zone is volgens het RIVM meestal smaller dan de afstand die bij een lijn staat.",
+    "De metadata noemt geen actualisatiefrequentie en geeft 1 november 2023 als laatste actualisatie. Daarom staat frequentie op statisch.",
+    "Het Compendium voor de Leefomgeving schrijft dat de netkaart vanaf 2023 jaarlijks wordt bijgewerkt. Een actualisatie na 1 november 2023 is in de metadata niet terug te vinden; die frequentie is dus niet bij de bron bevestigd.",
+    "Het veld sinds staat voor het jaar van de gepubliceerde versie. Sinds wanneer de netkaart bestaat staat niet in de metadata; de kaart is in elk geval in 2018 al eens gewijzigd.",
+    "Het RIVM publiceert geen beschrijving van de kolommen. De WFS geeft naam_fe, spanning__, rekenafs_1, fe_code, spanning_2 en naam_vakse; wat spanning_2 betekent is niet gedocumenteerd. Daarom staat er hier geen veldenlijst.",
+    "De netkaartpagina van het RIVM verwijst naar de viewer en de Atlas Leefomgeving, niet naar de WMS en WFS. Die twee services staan in de registratie op data.overheid.nl en op data.rivm.nl."
+  ],
+  "preview": {
+    "enabled": false
+  },
+  "prompt": {
+    "valkuilen": [
+      "De service levert coordinaten in Rijksdriehoekstelsel (EPSG:28992), niet in WGS84. Zet ze om voordat je ze op een webkaart legt.",
+      "Een hoogspanningslijn bestaat uit meerdere features: de WFS gaf 12.348 lijnstukken. Groepeer op naam_fe voordat je lijnen of kilometers telt.",
+      "Spanning en rekenafstand staan als tekst met eenheid erin, zoals 380 kV en 2 x 115 meter, en niet als getal.",
+      "De kaart is een momentopname van het net. Netuitbreidingen na de laatste actualisatie staan er niet in."
+    ]
+  },
+  "zekerheid": "laag"
+}

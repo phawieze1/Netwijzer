@@ -3,21 +3,23 @@
   "naam": "Hoogspanningsnet",
   "leverancier": "pdok",
   "thema": "geo",
-  "beschrijving": "Geodata van hoogspanningslijnen en schakel- en transformatorstations, bedoeld om het landelijke net op een kaart te zetten. Welke dataset hier precies achter zit is nog niet vastgesteld: een landelijke laag met het hoogspanningsnet is op PDOK en in het Nationaal Georegister niet gevonden.",
+  "beschrijving": "Geodata van hoogspanningslijnen en schakel- en transformatorstations, bedoeld om het landelijke net op een kaart te zetten. Welke dataset hier precies achter zit is nog niet vastgesteld. De landelijke laag met bovengrondse lijnen staat inmiddels als eigen item in de catalogus; voor de stations is nog geen landelijke bron gevonden.",
   "frequentie": "statisch",
   "frequentieLabel": "per lijn",
   "formaat": "Kaart",
   "toegang": "open",
   "sinds": 2016,
   "eenheid": "kV",
-  "laatstGecontroleerd": "2026-10-23T09:49:00+02:00",
+  "laatstGecontroleerd": "2026-10-28T08:25:00+01:00",
   "bronUrl": "https://www.pdok.nl/datasets",
   "beperkingen": [
-    "Een zoekopdracht in het Nationaal Georegister, de catalogus achter PDOK, op hoogspanning en op elektriciteitsnet levert geen landelijke dataset van het hoogspanningsnet op.",
+    "Bij deze controle is wel een landelijke laag met bovengrondse hoogspanningslijnen gevonden: de RIVM-netkaart, geregistreerd via het Nationaal Georegister. Die staat nu als eigen item in de catalogus.",
+    "Die laag dekt alleen de bovengrondse lijnen. Voor schakel- en transformatorstations is nog geen landelijke open bron gevonden.",
     "Wat er wel staat is regionaal of historisch, zoals Elektriciteitstations TenneT en netbeheerders Zuid-Holland 2024 en Hoogspanningsleiding (historie).",
     "Wat PDOK wel landelijk aanbiedt zijn de liggingsgegevens elektriciteitsnetten van Liander, onder CC BY 4.0. Die dekken alleen het gebied van Liander en bevatten ook midden- en laagspanning.",
     "Omdat de onderliggende bron niet is vastgesteld, zijn leverancier, frequentie, startjaar, eenheid en licentie van dit item niet bij een bron bevestigd. Het item blijft daarom als voorbeeld gemarkeerd.",
-    "De oorspronkelijke beschrijving meldde dat overheidsbronnen en OpenStreetMap door elkaar lopen. Dat is niet terug te vinden bij PDOK en is bij deze controle niet bevestigd."
+    "De oorspronkelijke beschrijving meldde dat overheidsbronnen en OpenStreetMap door elkaar lopen. Dat is niet terug te vinden bij PDOK en is bij deze controle niet bevestigd.",
+    "Verwijder dit item met de hand zodra de catalogus de echte netkaarten dekt, net als bij de verzonnen evenementen in de agenda. Een agent mag bestanden niet weggooien."
   ],
   "preview": {
     "enabled": false,
