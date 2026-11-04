@@ -3,22 +3,52 @@
   "naam": "Capaciteitskaart elektriciteitsnet",
   "leverancier": "netbeheer-nederland",
   "thema": "net",
-  "beschrijving": "Landelijke kaart van de netbeheerders met de transportcapaciteit en de congestie op het elektriciteitsnet, apart voor afname en voor teruglevering. Drie lagen: een totaaloverzicht, het hoogspanningsnet van TenneT en de voedingsgebieden van de regionale netbeheerders. De brondata achter de kaart is als puntkomma-gescheiden CSV te downloaden.",
+  "beschrijving": "Landelijke kaart van de netbeheerders met de transportcapaciteit en de congestie op het elektriciteitsnet, apart voor afname en voor teruglevering. Drie lagen: een totaaloverzicht, het hoogspanningsnet van TenneT en de voedingsgebieden van de regionale netbeheerders. De brondata achter de kaart is als puntkomma-gescheiden CSV te downloaden, inclusief de geplande netuitbreidingen.",
   "frequentie": "statisch",
   "frequentieLabel": "onregelmatig, per netbeheerder bijgewerkt",
   "formaat": "Kaart",
   "toegang": "open",
-  "sinds": 2022,
+  "sinds": 2021,
   "eenheid": "MW",
-  "laatstBijgewerkt": "2026-10-19",
-  "laatstGecontroleerd": "2026-10-28T08:25:00+01:00",
+  "laatstBijgewerkt": "2026-10-30",
+  "laatstGecontroleerd": "2026-11-04T08:30:00+01:00",
   "bronUrl": "https://capaciteitskaart.netbeheernederland.nl/",
   "documentatieUrl": "https://capaciteitskaart.netbeheernederland.nl/info/algemene-info",
   "velden": [
     {
+      "naam": "postcode",
+      "type": "tekst",
+      "betekenis": "Postcode van zes tekens waarover de regel gaat; in congestie_pc6"
+    },
+    {
+      "naam": "afname (kleurcode)",
+      "type": "geheel getal",
+      "betekenis": "Kleurcode voor afname: -1 geen beschikbare informatie, 0 transparant, 1 geel, 2 oranje, 3 rood"
+    },
+    {
+      "naam": "opwek (kleurcode)",
+      "type": "geheel getal",
+      "betekenis": "Kleurcode voor invoeding, met dezelfde waarden van -1 tot en met 3"
+    },
+    {
       "naam": "voedingsgebied_id",
       "type": "tekst",
       "betekenis": "Unieke sleutel van het voedingsgebied van de regionale netbeheerder"
+    },
+    {
+      "naam": "voedingsgebied_naam",
+      "type": "tekst",
+      "betekenis": "Naam van het voedingsgebied zoals de kaart die toont"
+    },
+    {
+      "naam": "tennet_id",
+      "type": "tekst",
+      "betekenis": "Unieke sleutel van het tussenstation van TenneT waaraan het gebied gekoppeld kan worden"
+    },
+    {
+      "naam": "RNB_postcode",
+      "type": "tekst",
+      "betekenis": "De netbeheerder die het grootste deel van het postcodegebied in beheer heeft"
     },
     {
       "naam": "aanwezige_transportcapaciteit_afname",
@@ -56,23 +86,38 @@
       "betekenis": "Aantal unieke aanvragen voor afname"
     },
     {
+      "naam": "unieke_verzoeken_invoeding",
+      "type": "geheel getal",
+      "betekenis": "Aantal unieke aanvragen voor invoeding"
+    },
+    {
       "naam": "RNB",
       "type": "tekst",
       "betekenis": "De regionale netbeheerder die het voedingsgebied beheert"
     },
     {
-      "naam": "afname (kleurcode)",
-      "type": "geheel getal",
-      "betekenis": "Kleurcode per postcode6 of per TenneT-tussenstation: -1 geen informatie, 0 transparant, 1 geel, 2 oranje, 3 rood"
+      "naam": "congestiegebied",
+      "type": "tekst",
+      "betekenis": "Het congestiegebied van TenneT waarover de regel gaat; in tennetgebieden"
+    },
+    {
+      "naam": "info",
+      "type": "tekst",
+      "betekenis": "Aanvullende toelichting die de netbeheerder bij dit gebied meegeeft"
+    },
+    {
+      "naam": "projectnaam",
+      "type": "tekst",
+      "betekenis": "Naam of korte beschrijving van een netuitbreiding; in projecten, met kwartaal, jaar en einddatum van de verwachte oplevering"
     }
   ],
   "beperkingen": [
     "De kaart is een indicatie. Netbeheer Nederland geeft geen garantie over de volledigheid, juistheid of actualiteit en u kunt er geen rechten aan ontlenen; neem bij concrete plannen eerst contact op met uw netbeheerder.",
-    "Netbeheer Nederland noemt bij de kaart en bij de downloads geen licentie of hergebruikvoorwaarden, alleen een disclaimer. Daarom staat er hier geen licentie ingevuld.",
+    "Netbeheer Nederland noemt bij de kaart en bij de downloads geen licentie of hergebruikvoorwaarden, alleen een disclaimer: gebruik van de gegevens is op eigen verantwoordelijkheid. Daarom staat er hier geen licentie ingevuld.",
     "Er is geen vaste actualisatiefrequentie. Elke netbeheerder werkt zijn eigen gegevens bij; de pagina Laatst vernieuwd geeft per netbeheerder en per gegevenssoort de datum van de laatste wijziging.",
-    "De kaart gaat over aansluitingen groter dan 3 x 80 ampere en geldt niet voor huishoudelijke aansluitingen op het laagspanningsnet.",
-    "De wachtrij van een regionale netbeheerder telt klanten mee die last hebben van TenneT-congestie, maar niet wie alleen op het net van TenneT zit. Een wachtrij van 0 kan ook op ontbrekende gegevens duiden.",
-    "Het startjaar 2022 in het veld sinds staat niet in de documentatie van de kaart en is niet bij de bron bevestigd."
+    "De kaart is bedoeld voor plannen die een netaansluiting groter dan 3 x 80 ampere nodig hebben.",
+    "De wachtrij is exclusief klanten die alleen een aansluiting op het hoogspanningsnet van TenneT hebben, en zegt niets over hoe lang u werkelijk op capaciteit wacht. Een wachtrij van 0 kan ook op incomplete data duiden.",
+    "De velden hier komen uit Uitleg over csv-bestanden, versie 2.0 van 20 november 2024. Het export voedingsgebieden_year_granularity.csv staat nog niet in die documentatie, dus de velden daarvan zijn hier niet opgenomen."
   ],
   "preview": {
     "enabled": false,
@@ -82,7 +127,8 @@
     "valkuilen": [
       "De CSV-bestanden zijn gescheiden met een puntkomma en gebruiken een komma als decimaalteken.",
       "De eenheid is MW, niet MVA; de kleurcodes zijn gehele getallen van -1 tot en met 3 en geen capaciteit.",
-      "De kaart kent geen historische reeks: elke download is een momentopname, en de netbeheerders werken op verschillende datums bij."
+      "De kaart kent geen historische reeks: elke download is een momentopname, en de netbeheerders werken op verschillende datums bij. Het jaarbestand kijkt vooruit naar netuitbreidingen, niet terug.",
+      "Elk gebied heeft aparte kolommen voor afname en invoeding. Haal die niet door elkaar: krapte voor teruglevering zegt niets over de ruimte voor afname."
     ]
   },
   "zekerheid": "laag",
