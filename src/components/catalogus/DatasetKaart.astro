@@ -6,6 +6,12 @@
  * verzonnen. Echte voorbeelddata komt pas in fase 2 uit `data/voorbeelden/`
  * (docs/02-bouwspecificatie.md §7.2). Zolang die er niet is, laten we het
  * grafiekje weg: een lege-staat-blokje twaalf keer herhaald is ruis.
+ *
+ * Is de metadata nog niet bij de leverancier nagetrokken (`voorbeeld: true`),
+ * dan staat dat als badge op de kaart. Dat hoort hier en niet alleen op de
+ * detailpagina: wie het overzicht bekijkt, moet kunnen zien welke
+ * beschrijvingen al gecontroleerd zijn en welke nog niet. Zonder die badge
+ * zien alle kaarten er even betrouwbaar uit.
  */
 
 import { frequentieLabel } from '../../lib/format.ts';
@@ -40,6 +46,7 @@ const attributen = itemAttributen({
   <div class="top">
     <Themalabel thema={d.thema} />
     <Toegangbadge toegang={d.toegang} />
+    {d.voorbeeld === true && <span class="badge key">Ongecontroleerd</span>}
   </div>
   <div>
     <h3>{d.naam}</h3>
