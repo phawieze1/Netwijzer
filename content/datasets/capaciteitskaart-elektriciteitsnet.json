@@ -11,7 +11,7 @@
   "sinds": 2021,
   "eenheid": "MW",
   "laatstBijgewerkt": "2026-10-30",
-  "laatstGecontroleerd": "2026-11-04T08:30:00+01:00",
+  "laatstGecontroleerd": "2026-11-11T08:30:00+01:00",
   "bronUrl": "https://capaciteitskaart.netbeheernederland.nl/",
   "documentatieUrl": "https://capaciteitskaart.netbeheernederland.nl/info/algemene-info",
   "velden": [
@@ -114,10 +114,13 @@
   "beperkingen": [
     "De kaart is een indicatie. Netbeheer Nederland geeft geen garantie over de volledigheid, juistheid of actualiteit en u kunt er geen rechten aan ontlenen; neem bij concrete plannen eerst contact op met uw netbeheerder.",
     "Netbeheer Nederland noemt bij de kaart en bij de downloads geen licentie of hergebruikvoorwaarden, alleen een disclaimer: gebruik van de gegevens is op eigen verantwoordelijkheid. Daarom staat er hier geen licentie ingevuld.",
+    "Bij de controle van 11 november 2026 stond op de pagina Algemene info nog steeds alleen die disclaimer, met als enige uitspraak over hergebruik dat een export van de brondata mogelijk is.",
     "Er is geen vaste actualisatiefrequentie. Elke netbeheerder werkt zijn eigen gegevens bij; de pagina Laatst vernieuwd geeft per netbeheerder en per gegevenssoort de datum van de laatste wijziging.",
+    "Die pagina gaf op 11 november 2026: Enexis 1 augustus 2026, Liander 25 september 2026, TenneT 19 oktober 2026 en Stedin 30 oktober 2026. Het veld laatstBijgewerkt volgt de nieuwste daarvan.",
     "De kaart is bedoeld voor plannen die een netaansluiting groter dan 3 x 80 ampere nodig hebben.",
     "De wachtrij is exclusief klanten die alleen een aansluiting op het hoogspanningsnet van TenneT hebben, en zegt niets over hoe lang u werkelijk op capaciteit wacht. Een wachtrij van 0 kan ook op incomplete data duiden.",
-    "De velden hier komen uit Uitleg over csv-bestanden, versie 2.0 van 20 november 2024. Het export voedingsgebieden_year_granularity.csv staat nog niet in die documentatie, dus de velden daarvan zijn hier niet opgenomen."
+    "De velden hier komen uit Uitleg over csv-bestanden, versie 2.0 van 20 november 2024. Het export voedingsgebieden_year_granularity.csv staat nog niet in die documentatie, dus de velden daarvan zijn hier niet opgenomen.",
+    "Dat documentatiebestand wordt doorgestuurd naar een tijdelijke S3-link en kon bij deze controle niet opnieuw worden gelezen; de veldenlijst hier is dus niet opnieuw tegen de bron gelegd."
   ],
   "preview": {
     "enabled": false,
