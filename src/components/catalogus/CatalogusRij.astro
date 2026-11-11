@@ -50,5 +50,13 @@ const attributen = itemAttributen({
   </span>
   <span class="cell"><span class="badge">{d.formaat}</span></span>
   <span class="cell"><Toegangbadge toegang={d.toegang} /></span>
-  <span class="tlc"><Tijdbalk sinds={d.sinds} van={van} tot={tot} thema={d.thema} /></span>
+  <span class="tlc">
+    {
+      d.sinds === undefined ? (
+        <small>Niet vermeld bij de bron</small>
+      ) : (
+        <Tijdbalk sinds={d.sinds} van={van} tot={tot} thema={d.thema} />
+      )
+    }
+  </span>
 </a>

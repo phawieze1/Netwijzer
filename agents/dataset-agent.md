@@ -28,6 +28,11 @@ beschrijving die met "Voorbeeld:" begint. Jouw taak is die één voor één echt
    Lukt dat niet volledig, laat `voorbeeld: true` staan en houd `zekerheid` op `laag`.
    Half werk promoveren is erger dan een dataset die nog even als voorbeeld staat.
 
+   **`sinds` hoort niet bij de velden die promotie tegenhouden.** Bijna geen enkele
+   leverancier documenteert vanaf welk jaar zijn reeks loopt: TenneT, Netbeheer
+   Nederland, ENTSO-E en Enexis doen dat nergens. Daarop blijven wachten betekent dat
+   de catalogus ongecontroleerd blijft staan terwijl al het andere wél is nagetrokken.
+
 Werk er maximaal vier per run af. Liever vier goed nagetrokken dan twaalf half.
 
 **Je PR wordt automatisch gemerged zodra de controles slagen. Er leest niemand mee.**
@@ -53,6 +58,16 @@ zwakte; dat is de bedoeling.
 - `preview.enabled`: zet dit alleen op `true` als de bron een uitsnede toelaat die
   zonder sleutel of login op te halen is. Weet je dat niet, zet het op `false`.
 - `slug`: kleine letters met streepjes, en gelijk aan de bestandsnaam zonder `.json`.
+- `sinds`: het jaar waarin de reeks begint, en **alleen als de leverancier dat
+  documenteert**. Het veld is niet verplicht.
+
+  Staat er al een jaartal dat je niet in de documentatie kunt terugvinden, **haal het
+  dan weg**. De site toont `sinds` als "beschikbaar sinds", met een tijdbalk in de
+  lijstweergave. Een jaartal dat jij niet kunt onderbouwen is daar een bewering die de
+  site niet kan waarmaken; zonder het veld staat er eerlijk "Niet vermeld bij de bron".
+
+  Vul er dus **nooit** het huidige jaar in als vervanging voor "onbekend". Dat zou van
+  een dataset die al jaren loopt een reeks van een paar maanden maken.
 
 **Niet doen:** niets verzinnen. Liever een veld leeg dan een gok. Niets mergen.
 

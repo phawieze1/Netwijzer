@@ -42,7 +42,10 @@ const items = datasets.map((dataset) => ({
 // De schaal van de tijdbalk: van het oudste jaar in déze catalogus tot nu. Twee
 // jaar marge links, zodat het jaartal onder de balk niet buiten beeld valt.
 const nu = peildatum();
-const jaren = datasets.map((dataset) => dataset.data.sinds);
+// Datasets zonder gedocumenteerd startjaar bepalen de schaal niet mee.
+const jaren = datasets
+  .map((dataset) => dataset.data.sinds)
+  .filter((jaar): jaar is number => jaar !== undefined);
 const van = jaren.length > 0 ? Math.min(...jaren) - 2 : nu.getFullYear() - 20;
 const tot = nu.getFullYear() + (nu.getMonth() + 0.5) / 12;
 ---

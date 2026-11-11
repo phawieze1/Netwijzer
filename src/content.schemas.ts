@@ -42,7 +42,7 @@ export const datasetSchema = z
     frequentieLabel: z.string().optional(),
     formaat: z.enum(['API', 'Bestand', 'Kaart']),
     toegang: z.enum(['open', 'account']),
-    sinds: z.number().int().min(1990).max(2100),
+    sinds: z.number().int().min(1990).max(2100).optional(),
     eenheid: z.string().optional(),
     laatstBijgewerkt: z.string().optional(),
     laatstGecontroleerd: z.string().optional(),
