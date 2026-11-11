@@ -11,9 +11,13 @@
   "sinds": 2015,
   "eenheid": "EUR/MWh",
   "laatstBijgewerkt": "2026-10-08",
-  "laatstGecontroleerd": "2026-11-04T08:30:00+01:00",
+  "laatstGecontroleerd": "2026-11-11T08:30:00+01:00",
   "bronUrl": "https://transparency.entsoe.eu/",
   "documentatieUrl": "https://transparencyplatform.zendesk.com/hc/en-us/articles/16647234190100-Energy-Prices-12-1-D",
+  "licentie": {
+    "naam": "ENTSO-E Transparency Platform Terms of Use; geen open-datalicentie",
+    "url": "https://eepublicdownloads.entsoe.eu/clean-documents/mc-documents/transparency-platform/ENTSOE_Transparency_Terms_Conditions.pdf"
+  },
   "velden": [
     {
       "naam": "TimeInterval",
@@ -42,14 +46,15 @@
     }
   ],
   "beperkingen": [
-    "Day-ahead prijzen (artikel 12.1.d van de Transparantieverordening) staan niet op de lijst van gegevens die ENTSO-E vrijgeeft onder CC BY 4.0. Daarom staat er hier geen licentie ingevuld.",
-    "Hergebruik vraagt vooraf toestemming van de primaire eigenaar van de gegevens, meestal de elektriciteitsbeurs.",
+    "Er is geen open-datalicentie. De Terms of Use van het Transparency Platform eisen bronvermelding van ENTSO-E en, voor gegevens buiten de vrijgavelijst, voorafgaande toestemming van de primaire eigenaar van de gegevens.",
+    "Day-ahead prijzen (artikel 12.1.d) stonden bij een eerdere controle niet op die vrijgavelijst; de primaire eigenaar is meestal de elektriciteitsbeurs. De lijst staat in het Help Center en was nu niet te openen.",
     "De API vraagt een account op het Transparency Platform plus een security token. Dat token krijg je pas na een mail aan transparency@entsoe.eu met RESTful API access in de onderwerpregel; ENTSO-E verleent toegang binnen drie werkdagen.",
     "Sinds handelsdag 30 september 2025, voor leveringsdag 1 oktober 2025, werkt de Europese day-ahead koppeling SDAC met een markttijdseenheid van een kwartier. Oudere reeksen staan per uur, nieuwere per kwartier.",
     "Het antwoord is XML en geeft geen tijdstempel per punt: je leidt het tijdstip af uit het begin van de periode, de resolution en het volgnummer.",
     "Het startjaar 2015 is bevestigd: ENTSO-E meldt dat het Transparency Platform op 5 januari 2015 live ging, onder Verordening 543/2013.",
     "Het platform biedt daarnaast de historische gegevens van 2011 tot en met 2014 van het oude entsoe.net aan. Wie verder terug wil kijken dan 2015 heeft dus mogelijk een langere reeks tot zijn beschikking.",
-    "De documentatiepagina in het Help Center van het Transparency Platform weigert bezoekers zonder browser met HTTP 403. Bij deze controle kon de lijst met gegevens die ENTSO-E vrijgeeft daarom niet opnieuw worden nagetrokken."
+    "Het Help Center weigert bezoekers zonder browser met HTTP 403. De Terms of Use zijn daarom gelezen in het PDF van ENTSO-E zelf: de versie die de Market Committee op 8 november 2018 goedkeurde.",
+    "Of er sindsdien een nieuwere geconsolideerde versie van de Terms of Use in het Help Center staat, kon bij deze controle niet worden vastgesteld."
   ],
   "preview": {
     "enabled": false,
@@ -63,6 +68,5 @@
       "De prijs staat in EUR per MWh, niet per kWh."
     ]
   },
-  "zekerheid": "laag",
-  "voorbeeld": true
+  "zekerheid": "midden"
 }
