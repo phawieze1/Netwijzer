@@ -1,0 +1,12 @@
+{
+  "slug": "2026-11-13-cbs-revisie-energiebalans",
+  "titel": "CBS reviseert de energiebalans en past de elektriciteitscijfers 2021-2025 aan",
+  "samenvatting": "Het CBS heeft de energiebalans gereviseerd. Aangepast zijn de verdeling van dieselverbruik over sectoren (1990-2023), een consistente reeks voor warmteverbruik in de diensten (2015-2023), de boeking van cokesoven- en hoogovengas vanaf 2022 en de bunkers van zware stookolie in 2023, goed voor bijna 40 petajoule. Ook de elektriciteitsbalans is over 2021-2025 bijgesteld.",
+  "thema": "verbruik",
+  "bron": "CBS",
+  "bronUrl": "https://www.cbs.nl/nl-nl/cijfers/detail/83140NED",
+  "gepubliceerd": "2026-11-13",
+  "toegevoegd": "2026-11-13T07:30:00+01:00",
+  "datasets": ["elektriciteitsbalans-cbs"],
+  "zekerheid": "hoog"
+}
