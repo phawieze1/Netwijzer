@@ -1,0 +1,134 @@
+{
+  "slug": "kleinverbruik-postcode-stedin",
+  "naam": "Verbruiksdata kleinverbruikaansluitingen",
+  "leverancier": "stedin",
+  "thema": "verbruik",
+  "beschrijving": "Standaardjaarverbruik van alle kleinverbruikaansluitingen in het verzorgingsgebied van Stedin, samengevoegd per postcode. Elektriciteit tot en met 3 x 80 ampere en gas tot en met G25. Naast het gemiddelde verbruik staan er percentages in het bestand voor leveringsrichting, slimme meters en de meest voorkomende aansluitwaarde.",
+  "frequentie": "jaar",
+  "frequentieLabel": "jaarlijks, peildatum 1 januari",
+  "formaat": "Bestand",
+  "toegang": "open",
+  "sinds": 2009,
+  "eenheid": "kWh",
+  "laatstBijgewerkt": "2026-01-01",
+  "laatstGecontroleerd": "2026-11-18T08:20:00+01:00",
+  "bronUrl": "https://www.stedin.net/zakelijk/open-data",
+  "documentatieUrl": "https://www.stedin.net/zakelijk/open-data/verbruiksgegevens",
+  "licentie": {
+    "naam": "Stedin open data: hergebruik toegestaan met vermelding van 'Stedin' en het jaartal van publicatie; geen benoemde open licentie",
+    "url": "https://www.stedin.net/zakelijk/open-data/disclaimer"
+  },
+  "velden": [
+    {
+      "naam": "NETBEHEERDER",
+      "type": "tekst",
+      "betekenis": "EAN-code van de regionale netbeheerder; bij kleinverbruik is die ook de meetverantwoordelijke"
+    },
+    {
+      "naam": "NETGEBIED",
+      "type": "tekst",
+      "betekenis": "Aanduiding van het gesloten inkoopgebied waaronder de aansluiting valt"
+    },
+    {
+      "naam": "STRAATNAAM",
+      "type": "tekst",
+      "betekenis": "Straatnaam; verschillen POSTCODE_VAN en POSTCODE_TOT, dan hoort de naam bij POSTCODE_VAN"
+    },
+    {
+      "naam": "POSTCODE_VAN",
+      "type": "tekst (6 tekens)",
+      "betekenis": "Postcode als vier cijfers en twee letters zonder spatie; begin van de range"
+    },
+    {
+      "naam": "POSTCODE_TOT",
+      "type": "tekst (6 tekens)",
+      "betekenis": "Gelijk aan POSTCODE_VAN bij tien of meer aansluitingen; zijn er minder, dan de bovengrens van de samengevoegde postcodereeks"
+    },
+    {
+      "naam": "WOONPLAATS",
+      "type": "tekst",
+      "betekenis": "Plaatsnaam; verschillen POSTCODE_VAN en POSTCODE_TOT, dan hoort de naam bij POSTCODE_VAN"
+    },
+    {
+      "naam": "LANDCODE",
+      "type": "tekst",
+      "betekenis": "Landcode van Nederland volgens ISO 3166 alpha-2, dus altijd NL"
+    },
+    {
+      "naam": "PRODUCTSOORT",
+      "type": "tekst (3 tekens)",
+      "betekenis": "ELK voor elektriciteit of GAS voor gas"
+    },
+    {
+      "naam": "VERBRUIKSSEGMENT",
+      "type": "tekst (3 tekens)",
+      "betekenis": "Altijd KVB: kleinverbruik, dus elektriciteit tot en met 3 x 80 ampere en gas tot en met G25"
+    },
+    {
+      "naam": "AANSLUITINGEN_AANTAL",
+      "type": "geheel getal",
+      "betekenis": "Aantal aansluitingen in dit postcodegebied voor deze energiesoort"
+    },
+    {
+      "naam": "LEVERINGSRICHTING_PERC",
+      "type": "percentage",
+      "betekenis": "Percentage aansluitingen met netto verbruik; dit daalt naarmate er meer wordt teruggeleverd, bijvoorbeeld door zonnepanelen"
+    },
+    {
+      "naam": "FYSIEKE_STATUS_PERC",
+      "type": "percentage",
+      "betekenis": "Percentage aansluitingen dat in bedrijf is; de rest is in aanleg, uit bedrijf of gesloopt"
+    },
+    {
+      "naam": "SOORT_AANSLUITING_PERC",
+      "type": "percentage",
+      "betekenis": "Percentage van de meest voorkomende aansluitwaarde in dit postcodegebied"
+    },
+    {
+      "naam": "SOORT_AANSLUITING",
+      "type": "tekst",
+      "betekenis": "Naam van die meest voorkomende aansluitwaarde, bij elektriciteit van 1x25 tot 3x80 en bij gas van G4 tot G25"
+    },
+    {
+      "naam": "SJV_GEMIDDELD",
+      "type": "getal",
+      "betekenis": "Gemiddeld standaardjaarverbruik, in kWh bij elektriciteit en in kubieke meter bij gas"
+    },
+    {
+      "naam": "SJV_LAAG_TARIEF_PERC",
+      "type": "percentage",
+      "betekenis": "Percentage aansluitingen met een dubbel tarief"
+    },
+    {
+      "naam": "SLIMME_METER_PERC",
+      "type": "percentage",
+      "betekenis": "Percentage slimme meters, alle generaties samen"
+    }
+  ],
+  "beperkingen": [
+    "Gegevens zijn samengevoegd per postcode met minimaal tien aansluitingen per regel. Zijn er minder, dan worden postcodes samengevoegd om de anonimiteit te waarborgen.",
+    "Het standaardjaarverbruik (SJV) is het verwachte jaarverbruik bij gestandaardiseerde condities, gebaseerd op het verbruik van het jaar ervoor. Het is geen gemeten verbruik.",
+    "Bij een aansluiting die uit bedrijf is blijft het laatst bekende SJV staan tot de aansluiting weer in bedrijf komt.",
+    "Bij een oude draaistroommeter is het SJV gesaldeerd met de teruglevering; bij andere meters is het alleen op verbruik gebaseerd. Teruglevering staat niet apart in dit bestand.",
+    "Stedin noemt geen benoemde open licentie. Volgens de disclaimer mag u de gegevens kopieren, verspreiden, doorgeven of hergebruiken mits u 'Stedin' met het jaartal van publicatie vermeldt; Stedin behoudt zijn intellectuele eigendomsrechten.",
+    "Stedin geeft geen garantie dat de informatie juist, volledig of actueel is en aanvaardt geen aansprakelijkheid.",
+    "Per peildatum 1 januari 2016 zijn de bestanden van alle voorgaande jaren vervangen.",
+    "Alle netbeheerders werken pas sinds april 2013 met het Centraal Aansluitingenregister. Stedin meldt daarom zelf dat de gepubliceerde data van voor 2012 incompleet kan zijn.",
+    "Zeeland staat van peildatum 2013 tot en met 2025 in een eigen bestand. Vanaf peildatum 2026 zit Zeeland in het hoofdbestand.",
+    "De peildatum 2021 heeft op de pagina wel een regel voor Zeeland, maar geen downloadlink."
+  ],
+  "preview": {
+    "enabled": false,
+    "weergave": "staven"
+  },
+  "prompt": {
+    "valkuilen": [
+      "Het bestand heet CSV maar is gescheiden met tab-tekens, met een komma als decimaalteken, zonder scheidingsteken voor duizendtallen, en in UTF-8 met BOM.",
+      "Filter eerst op PRODUCTSOORT: elektriciteit staat in kWh en gas in kubieke meters in dezelfde kolom SJV_GEMIDDELD.",
+      "Verschillen POSTCODE_VAN en POSTCODE_TOT, dan beslaat de regel meerdere postcodes; straatnaam en woonplaats horen dan bij POSTCODE_VAN.",
+      "SJV_GEMIDDELD is een gemiddelde per aansluiting. Wilt u een totaal per postcode, vermenigvuldig dan met AANSLUITINGEN_AANTAL.",
+      "Zeeland staat tot en met peildatum 2025 in een apart bestand. Laat u dat weg, dan mist u een deel van het verzorgingsgebied en maakt de reeks bij 2026 een sprong omhoog."
+    ]
+  },
+  "zekerheid": "midden"
+}

@@ -11,7 +11,7 @@
   "sinds": 2018,
   "eenheid": "MW",
   "laatstBijgewerkt": "2026-10-09",
-  "laatstGecontroleerd": "2026-11-11T08:30:00+01:00",
+  "laatstGecontroleerd": "2026-11-18T08:20:00+01:00",
   "bronUrl": "https://www.tennet.eu/nl-en/grids-and-markets/transparency-data-netherlands/download-page-transparency",
   "documentatieUrl": "https://developer.tennet.eu/specs/balance-delta-high-res",
   "licentie": {
@@ -82,7 +82,8 @@
     "Strakke verzoeklimieten: het endpoint /latest mag maximaal 1 verzoek per seconde en 10 per minuut, en geeft de laatste 30 minuten terug. Het endpoint over een tijdvak mag maximaal 8 verzoeken per dag met een tijdvak van hoogstens 4 uur.",
     "Voor grote historische bestanden verwijst TenneT naar de handmatige download op de transparantiepagina, tot 100 MB per keer.",
     "TenneT publiceert de gegevens met een door TenneT instelbare vertraging.",
-    "Het startjaar 2018 is nog niet bij de bron bevestigd. De specificatiepagina van Balance Delta High Res noemt geen historiebereik, de OpenAPI-specificatie is niet zonder account te downloaden en tennet.eu antwoordt met HTTP 403."
+    "Het startjaar 2018 is nog niet bij de bron bevestigd. De specificatiepagina van Balance Delta High Res noemt geen historiebereik en tennet.eu antwoordt een bezoeker zonder browser met HTTP 403.",
+    "Op 18 november 2026 opnieuw geprobeerd: de specificatiepagina leidt nu door naar /specs/v1/balance-delta-high-res en noemt nog steeds geen bereik. Het bestand openapi-spec.json geeft HTTP 404 zonder sessie in het developerportaal."
   ],
   "preview": {
     "enabled": false,

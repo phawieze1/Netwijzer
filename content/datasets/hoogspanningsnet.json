@@ -10,7 +10,7 @@
   "toegang": "open",
   "sinds": 2016,
   "eenheid": "kV",
-  "laatstGecontroleerd": "2026-10-28T08:25:00+01:00",
+  "laatstGecontroleerd": "2026-11-18T08:20:00+01:00",
   "bronUrl": "https://www.pdok.nl/datasets",
   "beperkingen": [
     "Bij deze controle is wel een landelijke laag met bovengrondse hoogspanningslijnen gevonden: de RIVM-netkaart, geregistreerd via het Nationaal Georegister. Die staat nu als eigen item in de catalogus.",
@@ -19,6 +19,8 @@
     "Wat PDOK wel landelijk aanbiedt zijn de liggingsgegevens elektriciteitsnetten van Liander, onder CC BY 4.0. Die dekken alleen het gebied van Liander en bevatten ook midden- en laagspanning.",
     "Omdat de onderliggende bron niet is vastgesteld, zijn leverancier, frequentie, startjaar, eenheid en licentie van dit item niet bij een bron bevestigd. Het item blijft daarom als voorbeeld gemarkeerd.",
     "De oorspronkelijke beschrijving meldde dat overheidsbronnen en OpenStreetMap door elkaar lopen. Dat is niet terug te vinden bij PDOK en is bij deze controle niet bevestigd.",
+    "Op 18 november 2026 staat er in de datasetlijst van PDOK nog steeds geen landelijke laag met hoogspanningslijnen of met schakel- en transformatorstations.",
+    "Die lijst heeft wel een themafilter Energie met vijf datasets, maar dat filter werkt alleen in de browser; de vijf namen zijn bij deze controle dus niet gelezen.",
     "Verwijder dit item met de hand zodra de catalogus de echte netkaarten dekt, net als bij de verzonnen evenementen in de agenda. Een agent mag bestanden niet weggooien."
   ],
   "preview": {

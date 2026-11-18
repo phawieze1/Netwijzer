@@ -8,7 +8,7 @@
   "formaat": "Bestand",
   "toegang": "open",
   "sinds": 2010,
-  "laatstGecontroleerd": "2026-10-23T09:49:00+02:00",
+  "laatstGecontroleerd": "2026-11-18T08:20:00+01:00",
   "bronUrl": "https://klimaatmonitor.databank.nl/",
   "documentatieUrl": "https://klimaatmonitor.databank.nl/content/klimaatmonitor-api",
   "beperkingen": [
@@ -18,7 +18,10 @@
     "Geautomatiseerd ophalen gaat via de Open Data Service, een JSON-API. Die vraagt een API-sleutel die je met naam, organisatie en mailadres via het contactformulier aanvraagt. De sleutel mag je niet delen.",
     "RVO vraagt applicaties de opgehaalde gegevens zelf op te slaan en niet rechtstreeks aan de Open Data Service te koppelen.",
     "De cijfers zijn een regionale uitsplitsing van landelijke registraties. Soms zijn ze identiek aan de landelijke cijfers, soms een deelverzameling of een verdeling daarvan over Nederland.",
-    "Welke eenheid de indicator gebruikt en vanaf welk jaar de reeks loopt, staat niet op de openbare paginas van de monitor: het dashboard is alleen interactief te doorlopen. Die twee velden zijn niet bevestigd."
+    "Welke eenheid de indicator gebruikt en vanaf welk jaar de reeks loopt, staat niet op de openbare paginas van de monitor: het dashboard is alleen interactief te doorlopen. Die twee velden zijn niet bevestigd.",
+    "Op 18 november 2026 ook de dashboardpagina Kerndataset 2.2 Hernieuwbare elektriciteit en de Handleiding Open Data Service nagelopen. Geen van beide noemt een eenheid of een startjaar.",
+    "De handleiding noemt het jaar 2016 alleen als voorbeeld in een URL. De eenheid staat alleen in de metadata van de API, en daarvoor is een sleutel nodig.",
+    "De registratie van de Klimaatmonitor op data.overheid.nl noemt RVO als data-eigenaar en verantwoordelijke, maar vermeldt geen licentie of gebruiksvoorwaarden."
   ],
   "preview": {
     "enabled": false,

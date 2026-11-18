@@ -34,7 +34,9 @@
   "beperkingen": [
     "Voorbeeld: fictieve dataset, niet geschikt om mee te rekenen.",
     "Voorbeeld: dit item hoort bij de bron Voorbeeldbron, die geen echte organisatie is, en wijst naar example.org. Er valt dus niets bij een leverancier na te trekken en het item kan niet worden gepromoveerd.",
-    "Voorbeeld: verwijder dit item met de hand zodra er een echte dataset over laadpunten in de catalogus staat, net als bij de verzonnen evenementen in de agenda."
+    "Voorbeeld: verwijder dit item met de hand zodra er een echte dataset over laadpunten in de catalogus staat, net als bij de verzonnen evenementen in de agenda.",
+    "Voorbeeld: bij de ronde van 18 november 2026 is gezocht naar een echte open dataset over openbare laadpunten als vervanger van dit item. Die is nog niet gevonden.",
+    "Voorbeeld: het dichtstbijzijnde is Openbare laadpunten Nederland van NDW, maar de licentie staat daar als 'Creative Commons of vergelijkbaar' en de documentatiepagina is niet zonder browser te lezen."
   ],
   "preview": {
     "enabled": true,
