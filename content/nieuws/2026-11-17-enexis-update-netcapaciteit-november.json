@@ -1,0 +1,14 @@
+{
+  "slug": "2026-11-17-enexis-update-netcapaciteit-november",
+  "titel": "Enexis meldt 48 nieuwe knelpunten en trekt 3 congestieonderzoeken in",
+  "samenvatting": "Enexis publiceert de maandelijkse update van de transportcapaciteit in zijn elektriciteitsnet. Er komen 48 nieuwe knelpunten bij in Groningen, Drenthe, Overijssel, Noord-Brabant en Limburg; die gebieden gaan van congestiefase 0 naar 1a op de capaciteitskaart. Drie congestieonderzoeken worden ingetrokken, in Kelpen, Enschede Wesselerbrink en Oldenzaal. Alleen op station Weiwerd volgt direct transportschaarste voor afname.",
+  "thema": "net",
+  "bron": "Enexis",
+  "bronUrl": "https://www.enexis.nl/nieuws/2026/11/update-netcapaciteit-november-2026",
+  "gepubliceerd": "2026-11-17",
+  "toegevoegd": "2026-11-18T07:30:00+01:00",
+  "datasets": [
+    "capaciteitskaart-elektriciteitsnet"
+  ],
+  "zekerheid": "hoog"
+}
