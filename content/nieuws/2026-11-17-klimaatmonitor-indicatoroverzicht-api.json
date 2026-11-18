@@ -1,0 +1,11 @@
+{
+  "slug": "2026-11-17-klimaatmonitor-indicatoroverzicht-api",
+  "titel": "Klimaatmonitor publiceert een overzicht van alle indicatoren met API-links",
+  "samenvatting": "De Regionale klimaatmonitor heeft een nieuw overzicht gemaakt van alle indicatoren in de themaboom van de viewer, te downloaden als Excelbestand. Per indicator staan de vier niveaus van de themaboom, de indicatorcode, de naam, de eenheid, de bron of methode en een directe API-link naar de gegevens.",
+  "thema": "verbruik",
+  "bron": "Regionale klimaatmonitor",
+  "bronUrl": "https://klimaatmonitor.databank.nl/nieuws/update-indicatoroverzicht,-inclusief-api-informatie/338",
+  "gepubliceerd": "2026-11-17",
+  "toegevoegd": "2026-11-18T07:30:00+01:00",
+  "zekerheid": "hoog"
+}
