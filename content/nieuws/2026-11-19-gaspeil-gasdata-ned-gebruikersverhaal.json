@@ -1,0 +1,11 @@
+{
+  "slug": "2026-11-19-gaspeil-gasdata-ned-gebruikersverhaal",
+  "titel": "Gaspeil.nl bouwt op de gasdata van ned.nl een beeld van voorraad en aanvoer",
+  "samenvatting": "In een gebruikersverhaal van het Nationaal Energie Dashboard legt Lucas Huizinga uit hoe hij Gaspeil.nl bouwde. De site combineert de dagelijkse vulgraad van de Nederlandse gasopslagen uit de API van ned.nl met Europese opslagcijfers, scheepsbewegingen, weergegevens en gasprijzen. Sinds september voorspelt een lng-radar welke ladingen Nederland over ongeveer twee weken bereiken.",
+  "thema": "markt",
+  "bron": "Nationaal Energie Dashboard",
+  "bronUrl": "https://ned.nl/nl/gebruikersverhalen/lucas-huizinga-gaspeilnl",
+  "gepubliceerd": "2026-11-19",
+  "toegevoegd": "2026-11-20T07:20:00+01:00",
+  "zekerheid": "hoog"
+}
