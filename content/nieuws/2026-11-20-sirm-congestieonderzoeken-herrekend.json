@@ -1,0 +1,14 @@
+{
+  "slug": "2026-11-20-sirm-congestieonderzoeken-herrekend",
+  "titel": "SiRM herrekent 278 congestieonderzoeken met lagere vraaggroei",
+  "samenvatting": "Adviesbureau SiRM analyseerde 467 congestiemanagementonderzoeken van Enexis, Liander, Stedin en TenneT en hield er 278 over. Met de scenario's VVT en KEV in plaats van de prognoses van de netbeheerders wordt in 40 tot 60 procent van de onderzochte regionale gebieden de capaciteit niet meer overschreden: 0,9 tot 1,1 gigawatt extra ruimte, en 2,9 tot 4,0 gigawatt bij TenneT.",
+  "thema": "net",
+  "bron": "SiRM",
+  "bronUrl": "https://www.sirm.nl/publicaties/verwachtingen-van-de-vraag-naar-elektriciteit-en-hun-effect-op-afnamecongestie",
+  "gepubliceerd": "2026-11-20",
+  "toegevoegd": "2026-11-24T07:18:45+01:00",
+  "datasets": [
+    "capaciteitskaart-elektriciteitsnet"
+  ],
+  "zekerheid": "hoog"
+}

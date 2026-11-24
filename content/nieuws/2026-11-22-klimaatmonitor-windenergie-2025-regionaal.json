@@ -1,0 +1,14 @@
+{
+  "slug": "2026-11-22-klimaatmonitor-windenergie-2025-regionaal",
+  "titel": "Klimaatmonitor actualiseert windenergie over 2025 voor provincies, regio's en gemeenten",
+  "samenvatting": "De Regionale klimaatmonitor actualiseerde de gegevens over windenergie over 2025, voor provincies, regio's en gemeenten. Daarmee vervangt de monitor de voorlopige cijfers die in juli van dit jaar zijn gepubliceerd. De gegevens staan in het dashboard onder hernieuwbare energie per techniek en in de viewer.",
+  "thema": "opwek",
+  "bron": "Regionale klimaatmonitor",
+  "bronUrl": "https://klimaatmonitor.databank.nl/nieuws/windenergie-2025-provincies,-regio-s,-gemeenten/342",
+  "gepubliceerd": "2026-11-22",
+  "toegevoegd": "2026-11-24T07:18:45+01:00",
+  "datasets": [
+    "hernieuwbare-elektriciteit-per-gemeente"
+  ],
+  "zekerheid": "hoog"
+}
