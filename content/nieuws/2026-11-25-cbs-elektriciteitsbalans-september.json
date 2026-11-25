@@ -1,0 +1,14 @@
+{
+  "slug": "2026-11-25-cbs-elektriciteitsbalans-september",
+  "titel": "CBS voegt september 2026 toe aan de elektriciteitsbalans",
+  "samenvatting": "StatLine-tabel 84575NED kreeg op 25 november de maandcijfers over september 2026. De netto elektriciteitsproductie kwam uit op 10.589 miljoen kWh, waarvan 2.312 uit wind en 2.248 uit zon; het berekende netto verbruik was 9.017 miljoen kWh. Cijfers over 2026 zijn voorlopig. Eerder deze maand reviseerde CBS de jaren 2021 tot en met 2025.",
+  "thema": "verbruik",
+  "bron": "CBS StatLine",
+  "bronUrl": "https://www.cbs.nl/nl-nl/cijfers/detail/84575NED",
+  "gepubliceerd": "2026-11-25",
+  "toegevoegd": "2026-11-25T07:20:00+01:00",
+  "datasets": [
+    "elektriciteitsbalans-cbs"
+  ],
+  "zekerheid": "hoog"
+}

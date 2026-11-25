@@ -1,0 +1,14 @@
+{
+  "slug": "2026-11-23-netbeheer-nederland-reactie-sirm-prognoses",
+  "titel": "Netbeheer Nederland: een lagere vraagprognose is nog geen vrije netcapaciteit",
+  "samenvatting": "Netbeheer Nederland reageert op de herberekening van SiRM, die met een lagere groei van de elektriciteitsvraag 900 tot 1.100 megawatt extra transportcapaciteit vindt. Volgens de netbeheerders is dat een modeluitkomst: netcongestie hangt af van de piekbelasting op plaats en tijd, en ruimte in het ene gebied is niet elders te gebruiken. Per gebied blijft een actuele toets nodig.",
+  "thema": "net",
+  "bron": "Netbeheer Nederland",
+  "bronUrl": "https://www.netbeheernederland.nl/artikelen/nieuws/minder-stroomverbruik-betekent-niet-automatisch-meer-ruimte-op-het-stroomnet",
+  "gepubliceerd": "2026-11-23",
+  "toegevoegd": "2026-11-25T07:20:00+01:00",
+  "datasets": [
+    "capaciteitskaart-elektriciteitsnet"
+  ],
+  "zekerheid": "hoog"
+}
