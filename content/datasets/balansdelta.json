@@ -8,10 +8,10 @@
   "frequentieLabel": "elke 12 seconden",
   "formaat": "API",
   "toegang": "account",
-  "sinds": 2018,
+  "sinds": 2019,
   "eenheid": "MW",
   "laatstBijgewerkt": "2026-10-09",
-  "laatstGecontroleerd": "2026-11-18T08:20:00+01:00",
+  "laatstGecontroleerd": "2026-11-25T08:29:00+01:00",
   "bronUrl": "https://www.tennet.eu/nl-en/grids-and-markets/transparency-data-netherlands/download-page-transparency",
   "documentatieUrl": "https://developer.tennet.eu/specs/balance-delta-high-res",
   "licentie": {
@@ -78,12 +78,16 @@
   "beperkingen": [
     "De API vraagt een API-sleutel. Die vraag je aan in het API Developer Portal van TenneT of via je MyTenneT-account.",
     "De algemene voorwaarden van de API Gateway dragen geen rechten op de gegevens over (artikel E.3) en verbieden delen of doorverkopen aan derden, tenzij de documentatie dat toestaat (artikel C.4). Het is dus geen open-datalicentie.",
-    "Die voorwaarden zijn op 11 november 2026 opnieuw gelezen in het PDF achter de fair use policy van het developerportaal, opgemaakt op 30 juli 2024. Ze zijn inhoudelijk ongewijzigd.",
+    "Die voorwaarden zijn op 11 november 2026 gelezen in het PDF achter de fair use policy van het developerportaal, opgemaakt op 30 juli 2024. Ze zijn inhoudelijk ongewijzigd.",
     "Strakke verzoeklimieten: het endpoint /latest mag maximaal 1 verzoek per seconde en 10 per minuut, en geeft de laatste 30 minuten terug. Het endpoint over een tijdvak mag maximaal 8 verzoeken per dag met een tijdvak van hoogstens 4 uur.",
     "Voor grote historische bestanden verwijst TenneT naar de handmatige download op de transparantiepagina, tot 100 MB per keer.",
     "TenneT publiceert de gegevens met een door TenneT instelbare vertraging.",
-    "Het startjaar 2018 is nog niet bij de bron bevestigd. De specificatiepagina van Balance Delta High Res noemt geen historiebereik en tennet.eu antwoordt een bezoeker zonder browser met HTTP 403.",
-    "Op 18 november 2026 opnieuw geprobeerd: de specificatiepagina leidt nu door naar /specs/v1/balance-delta-high-res en noemt nog steeds geen bereik. Het bestand openapi-spec.json geeft HTTP 404 zonder sessie in het developerportaal."
+    "Op 25 november 2026 is het exportportaal publications.tennet.eu in een browser doorlopen. De oudste periode die je voor Balance delta en Balance delta high res kunt kiezen is november 2019; het veld sinds volgt die waarneming.",
+    "Dat is geen begin van de meting maar een rollend venster van 84 maanden: ook oudere datasets als Settlement prices beginnen in het portaal bij november 2019. Het echte startjaar is door TenneT niet gedocumenteerd.",
+    "Het eerder genoteerde startjaar 2018 kwam uit fase 1 en was bij geen enkele bron terug te vinden. Het is vervangen door wat het portaal werkelijk aanbiedt.",
+    "In het portaal is Balance delta high res alleen per maand of per dag te exporteren. Alleen de grovere reeks Balance delta kan ook per heel jaar.",
+    "De specificatiepagina van Balance Delta High Res is met een browser wel leesbaar (versie 1.5.0 van de Aether-API) en noemt geen historiebereik.",
+    "Het formulier van het exportportaal opent zonder inloggen, maar de download zelf kwam zonder browsersessie niet af. Of de bulkexport echt zonder account werkt is niet bevestigd; toegang blijft daarom op account staan."
   ],
   "preview": {
     "enabled": false,
