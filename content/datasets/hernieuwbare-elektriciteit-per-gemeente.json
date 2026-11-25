@@ -3,12 +3,12 @@
   "naam": "Hernieuwbare elektriciteit per gemeente",
   "leverancier": "klimaatmonitor",
   "thema": "opwek",
-  "beschrijving": "Regionale uitsplitsing van landelijke cijfers over hernieuwbaar opgewekte elektriciteit, tot op gemeenteniveau. Onderdeel van de Regionale klimaatmonitor van RVO, waaruit je een selectie met de hand als CSV of Excel kunt exporteren. Frequentie, eenheid en startjaar zijn nog niet bij de bron bevestigd.",
+  "beschrijving": "Regionale uitsplitsing van landelijke cijfers over hernieuwbaar opgewekte elektriciteit, tot op gemeenteniveau, in terajoule en met een reeks vanaf 2010. Onderdeel van de Regionale klimaatmonitor van RVO, waaruit je een selectie met de hand als CSV of Excel exporteert.",
   "frequentie": "jaar",
   "formaat": "Bestand",
   "toegang": "open",
   "sinds": 2010,
-  "laatstGecontroleerd": "2026-11-18T08:20:00+01:00",
+  "laatstGecontroleerd": "2026-11-25T08:29:00+01:00",
   "bronUrl": "https://klimaatmonitor.databank.nl/",
   "documentatieUrl": "https://klimaatmonitor.databank.nl/content/klimaatmonitor-api",
   "beperkingen": [
@@ -17,10 +17,14 @@
     "De gebruiksvoorwaarden van de Open Data Service richten zich op (decentrale) overheden, die de webservices vrij mogen gebruiken zolang ze de dienst niet overbelasten. Of hergebruik door anderen is toegestaan, staat er niet.",
     "Geautomatiseerd ophalen gaat via de Open Data Service, een JSON-API. Die vraagt een API-sleutel die je met naam, organisatie en mailadres via het contactformulier aanvraagt. De sleutel mag je niet delen.",
     "RVO vraagt applicaties de opgehaalde gegevens zelf op te slaan en niet rechtstreeks aan de Open Data Service te koppelen.",
-    "De cijfers zijn een regionale uitsplitsing van landelijke registraties. Soms zijn ze identiek aan de landelijke cijfers, soms een deelverzameling of een verdeling daarvan over Nederland.",
-    "Welke eenheid de indicator gebruikt en vanaf welk jaar de reeks loopt, staat niet op de openbare paginas van de monitor: het dashboard is alleen interactief te doorlopen. Die twee velden zijn niet bevestigd.",
-    "Op 18 november 2026 ook de dashboardpagina Kerndataset 2.2 Hernieuwbare elektriciteit en de Handleiding Open Data Service nagelopen. Geen van beide noemt een eenheid of een startjaar.",
-    "De handleiding noemt het jaar 2016 alleen als voorbeeld in een URL. De eenheid staat alleen in de metadata van de API, en daarvoor is een sleutel nodig.",
+    "De cijfers zijn een regionale uitsplitsing van landelijke registraties. Van de meeste technieken is de lokale productie niet bekend; de monitor verdeelt dan het landelijke, provinciale of regionale totaal over gemeenten.",
+    "Die verdeling gaat volgens de monitor meestal op basis van het opgestelde vermogen van de productie-installaties. De grafiektitels noemen dat een verdeelsleutel.",
+    "Op 25 november 2026 is het dashboard Hernieuwbare energie op gemeenteniveau in een browser doorlopen. De reeks Hernieuwbare elektriciteit staat daar in TJ over de jaren 2010 tot en met 2024.",
+    "Daarmee zijn eenheid, frequentie en startjaar bij de bron bevestigd. Eerdere rondes kwamen daar niet bij, omdat het dashboard alleen interactief te doorlopen is.",
+    "Het nieuwste jaar in de reeks is 2024. Op welke datum RVO dat jaar toevoegde staat niet op de dashboardpagina, dus laatstBijgewerkt is leeg gelaten.",
+    "De afgeleide indicator Bekende hernieuwbare elektriciteit per inwoner staat in MJ per inwoner, niet in TJ. Controleer per indicator de eenheid die boven de grafiek staat.",
+    "Op data.overheid.nl staan twee registraties die naar de Klimaatmonitor verwijzen met verschillende licenties: een als CC BY 4.0 (ingediend door de gemeente Groningen) en een als publiek domein (via het Nationaal Georegister).",
+    "Geen van beide is een uitspraak van RVO zelf, en ze spreken elkaar tegen. Daarom blijft het veld licentie leeg en blijft deze dataset als voorbeeld gemarkeerd.",
     "De registratie van de Klimaatmonitor op data.overheid.nl noemt RVO als data-eigenaar en verantwoordelijke, maar vermeldt geen licentie of gebruiksvoorwaarden."
   ],
   "preview": {
@@ -30,9 +34,11 @@
   "prompt": {
     "valkuilen": [
       "Gemeentelijke herindelingen maken een reeks over lange perioden lastig te vergelijken; controleer de gebiedsindeling per jaar.",
-      "Controleer de eenheid in de export zelf voordat je rekent: de monitor gebruikt voor energie zowel TJ als kWh, afhankelijk van de indicator."
+      "Controleer de eenheid in de export zelf voordat je rekent: Hernieuwbare elektriciteit staat in TJ, terwijl de variant per inwoner in MJ per inwoner staat.",
+      "De gemeentecijfers zijn voor veel technieken een verdeling van een landelijk totaal, geen lokale meting. Noem die verdeelsleutel als je per gemeente conclusies trekt."
     ]
   },
   "zekerheid": "laag",
-  "voorbeeld": true
+  "voorbeeld": true,
+  "eenheid": "TJ"
 }
